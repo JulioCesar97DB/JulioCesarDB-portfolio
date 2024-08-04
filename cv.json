@@ -1,12 +1,12 @@
 {
   "basics": {
     "name": "Julio César Díaz",
-    "label": "Junior Front-End Developer",
+    "label": "Front-End Developer",
     "image": "/JULIOCESAR.jpg",
     "email": "juliocesar97db@gmail.com",
     "phone": "+34 695-434-378",
     "url": "https://johndoe.dev",
-    "summary": "Junior Front-End Developer with a passion for building web applications. Currently seeking opportunities to further develop my skills in a professional setting.",
+    "summary": "Front-End Developer with a passion for building web applications. Currently seeking opportunities to further develop my skills in a professional setting.",
     "theme": "blue",
     "location": {
       "address": "Av Alfonso el Sabio",
@@ -36,7 +36,7 @@
   "work": [
     {
       "name": "Freelancer",
-      "position": "Junior Web Developer",
+      "position": "Web Developer",
       "location_type": "Remote",
       "location": "Alacant, Spain",
       "url": "",
@@ -380,8 +380,8 @@
         "Built with React and Tailwind",
         "Includes a blog and contact form"
       ],
-      "url": "https://johndoe.dev",
-      "github": "https://github.com"
+      "url": "https://juliocesardb.com",
+      "github": "https://github.com/JulioCesar97DB/JulioCesarDB-portfolio"
     },
     {
       "name": "BetHomeWeb",
