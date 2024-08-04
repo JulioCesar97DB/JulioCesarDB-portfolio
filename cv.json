@@ -1,0 +1,439 @@
+{
+  "basics": {
+    "name": "Julio César Díaz",
+    "label": "Junior Front-End Developer",
+    "image": "/JULIOCESAR.jpg",
+    "email": "juliocesar97db@gmail.com",
+    "phone": "+34 695-434-378",
+    "url": "https://johndoe.dev",
+    "summary": "Junior Front-End Developer with a passion for building web applications. Currently seeking opportunities to further develop my skills in a professional setting.",
+    "theme": "blue",
+    "location": {
+      "address": "Av Alfonso el Sabio",
+      "postalCode": "03002",
+      "city": "Alacant",
+      "countryCode": "ES",
+      "region": "Spain"
+    },
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "username": "juliocesardb",
+        "url": "https://www.linkedin.com/in/julio-césar-díaz-boente-49727821b"
+      },
+      {
+        "network": "X",
+        "username": "juliocesardb_",
+        "url": "https://x.com/juliocesardb_"
+      },
+      {
+        "network": "GitHub",
+        "username": "JulioCesar97DB",
+        "url": "https://github.com/JulioCesar97DB"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "Freelancer",
+      "position": "Junior Web Developer",
+      "location_type": "Repote",
+      "location": "Alacant, Spain",
+      "url": "",
+      "startDate": "2024-03-01",
+      "endDate": null,
+      "summary": "Developing and maintaining websites for clients using modern web technologies. Collaborating with clients to understand their needs and deliver high-quality solutions.",
+      "highlights": [
+        "Improved website performance by optimizing code"
+      ],
+      "responsibilities": [
+        "Designed, developed, and maintained responsive web applications using React and Next.js.",
+        "Collaborated closely with clients to understand their needs and translate them into effective technical solutions.",
+        "Optimized web application performance to ensure fast load times and smooth user experiences.",
+        "Worked with designers to faithfully implement UI/UX designs using Tailwind CSS for consistent styling.",
+        "Integrated APIs and backend services into web applications using REST and GraphQL.",
+        "Wrote and maintained unit and integration tests to ensure code quality using tools like Jest and React Testing Library.",
+        "Stayed updated with the latest trends and best practices in web development, proposing and implementing continuous improvements.",
+        "Created and maintained clear and concise technical documentation to facilitate project maintenance and scalability.",
+        "Planned and managed projects from conceptualization to final delivery, ensuring adherence to deadlines and client requirements using tools like Trello, Asana, or Jira.",
+        "Adapted to different technology stacks and specific project requirements, efficiently managing multiple projects simultaneously."
+      ],
+      "achievements": [
+        "Successfully designed, developed, and deployed multiple web applications using React and Next.js, improving user engagement and performance metrics.",
+        "Optimized existing applications, reducing load times by up to 40% through code optimization and efficient use of resources.",
+        "Led the front-end development of a high-traffic e-commerce platform, resulting in a significant increase in user satisfaction and sales.",
+        "Implemented CI/CD pipelines for front-end projects, reducing deployment times and increasing release frequency.",
+        "Contributed to open-source projects, enhancing community tools and gaining recognition among peers in the web development community."
+      ],
+      "skills": [
+        "React",
+        "Next.js",
+        "Tailwind",
+        "JavaScript",
+        "TypeScript",
+        "Redux",
+        "RESTful APIs",
+        "GraphQL",
+        "Jest",
+        "React Testing Library",
+        "GitHub",
+        "CI/CD",
+        "Responsive Web Design",
+        "Agile Methodologies"
+      ]
+    },
+    {
+      "name": "Legacy BHC",
+      "position": "Web Developer / IT Specialist",
+      "location_type": "On-site",
+      "location": "West Palm Beach, United States",
+      "url": "https://legacybhc.com",
+      "startDate": "2023-01-15",
+      "endDate": "2024-03-04",
+      "summary": "Developed and maintained various web applications and managed IT infrastructure, ensuring smooth operations and security within the company.",
+      "highlights": [
+        "Successfully developed and launched a website to manage company trainings and certifications, enhancing operational efficiency.",
+        "Implemented a clocking website to manage worker status and vacations, improving HR processes."
+      ],
+      "responsibilities": [
+        "Developed a website to manage trainings and certifications using Next.js, Jest, Tailwind, and MongoDB.",
+        "Created a clocking website for managing worker status and vacations.",
+        "Maintained and updated company websites, ensuring they were up-to-date and functional.",
+        "Managed Microsoft Office 365 suites and provided support for Active Directory.",
+        "Configured and maintained Windows Server and Hyper-V Manager.",
+        "Installed and configured hardware and software for optimal performance.",
+        "Managed and maintained the network, including LANs, VLANs, WANs, firewalls, routers, switches, and VOIP phone systems.",
+        "Implemented and managed backup and recovery systems to ensure data integrity."
+      ],
+      "achievements": [
+        "Developed and launched a critical internal website that streamlined employee training and certification processes.",
+        "Created and implemented a clocking system that improved the accuracy of employee work hour tracking and vacation management."
+      ],
+      "skills": [
+        "Next.js",
+        "JavaScript",
+        "Jest",
+        "Tailwind",
+        "MongoDB",
+        "Microsoft Office 365",
+        "Active Directory",
+        "Windows Server",
+        "Hyper-V Manager",
+        "Network Management (LANs, VLANs, WANs)",
+        "Firewall Management",
+        "Router and Switch Configuration",
+        "VOIP Phone Systems",
+        "Backup and Recovery"
+      ]
+    },
+    {
+      "name": "ETECSA",
+      "position": "Web Developer & IT Specialist",
+      "location_type": "On-site",
+      "location": "Santa Clara, Cuba",
+      "url": "",
+      "startDate": "2019-09-02",
+      "endDate": "2021-12-12",
+      "summary": "Developed and maintained web applications to manage internal processes, updated legacy code, and ensured smooth IT operations within the company.",
+      "highlights": [
+        "Successfully developed a website to manage telephone transfers in the region, improving operational efficiency.",
+        "Implemented a website to handle worker complaints and suggestions, enhancing internal communication."
+      ],
+      "responsibilities": [
+        "Developed a website to manage telephone transfers using React, Jest, Tailwind, Django, Docker, and MariaDB.",
+        "Created a website to manage complaints and suggestions from workers using React, Jest, Tailwind, and MongoDB.",
+        "Updated legacy code and maintained older websites to ensure continued functionality and performance."
+      ],
+      "achievements": [
+        "Developed and launched a critical website for managing regional telephone transfers, streamlining communication and operations.",
+        "Implemented a worker complaint and suggestion management system, improving feedback mechanisms and employee satisfaction."
+      ],
+      "skills": [
+        "React",
+        "JavaScript",
+        "Jest",
+        "Tailwind",
+        "Django",
+        "Docker",
+        "MariaDB",
+        "MongoDB",
+        "Legacy Code Maintenance"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Universidad Martha Abreu de Las Villas",
+      "url": "https://www.uclv.edu.cu/",
+      "area": "Software Engineering",
+      "studyType": "Bachelor",
+      "startDate": "2016-09-03",
+      "endDate": "2021-12-12",
+      "score": "3.8",
+      "courses": [
+        "CS101 - Introduction to Computer Science",
+        "CS102 - Data Structures"
+      ]
+    }
+  ],
+  "certificates": [
+    {
+      "name": "Software Engineering Certificate",
+      "date": "2021-12-12",
+      "issuer": "UCLV",
+      "url": "https://www.uclv.edu.cu/"
+    }
+  ],
+  "skills": [
+    {
+      "name": "React",
+      "level": "Expert",
+      "keywords": [
+        "Web Development",
+        "Frontend",
+        "JavaScript Library",
+        "UI"
+      ]
+    },
+    {
+      "name": "Next.js",
+      "level": "Expert",
+      "keywords": [
+        "Web Development",
+        "Frontend",
+        "React Framework",
+        "SSR",
+        "Static Generation"
+      ]
+    },
+    {
+      "name": "Tailwind",
+      "level": "Expert",
+      "keywords": [
+        "Web Development",
+        "Frontend",
+        "CSS Framework",
+        "Responsive Design"
+      ]
+    },
+    {
+      "name": "JavaScript",
+      "level": "Expert",
+      "keywords": [
+        "Web Development",
+        "Frontend",
+        "Backend",
+        "Fullstack"
+      ]
+    },
+    {
+      "name": "TypeScript",
+      "level": "Intermediate",
+      "keywords": [
+        "Web Development",
+        "Frontend",
+        "Backend",
+        "JavaScript Superset"
+      ]
+    },
+    {
+      "name": "Jest",
+      "level": "Intermediate",
+      "keywords": [
+        "Testing",
+        "JavaScript",
+        "Unit Testing",
+        "Integration Testing"
+      ]
+    },
+    {
+      "name": "GraphQL",
+      "level": "Intermediate",
+      "keywords": [
+        "Web Development",
+        "APIs",
+        "Data Fetching",
+        "Frontend",
+        "Backend"
+      ]
+    },
+    {
+      "name": "Redux",
+      "level": "Intermediate",
+      "keywords": [
+        "State Management",
+        "Web Development",
+        "Frontend",
+        "JavaScript"
+      ]
+    },
+    {
+      "name": "HTML",
+      "level": "Intermediate",
+      "keywords": [
+        "Web Development",
+        "Frontend"
+      ]
+    },
+    {
+      "name": "CSS",
+      "level": "Intermediate",
+      "keywords": [
+        "Web Development",
+        "Frontend",
+        "Responsive Design"
+      ]
+    },
+    {
+      "name": "Git",
+      "level": "Intermediate",
+      "keywords": [
+        "Version Control",
+        "Collaboration",
+        "Source Code"
+      ]
+    },
+    {
+      "name": "GitHub",
+      "level": "Intermediate",
+      "keywords": [
+        "Version Control",
+        "Collaboration",
+        "Source Code",
+        "Git"
+      ]
+    },
+    {
+      "name": "Docker",
+      "level": "Intermediate",
+      "keywords": [
+        "Containerization",
+        "DevOps",
+        "Deployment",
+        "Backend"
+      ]
+    },
+    {
+      "name": "MariaDB",
+      "level": "Intermediate",
+      "keywords": [
+        "Databases",
+        "SQL",
+        "Data Storage",
+        "Backend"
+      ]
+    },
+    {
+      "name": "MongoDB",
+      "level": "Intermediate",
+      "keywords": [
+        "Databases",
+        "NoSQL",
+        "Data Storage",
+        "Backend"
+      ]
+    },
+    {
+      "name": "Django",
+      "level": "Intermediate",
+      "keywords": [
+        "Web Development",
+        "Backend",
+        "Python",
+        "Framework"
+      ]
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "fluency": "Highly Proficient"
+    },
+    {
+      "language": "Spanish",
+      "fluency": "Native Speaker"
+    }
+  ],
+  "interests": [
+    {
+      "name": "Technology",
+      "keywords": [
+        "AI",
+        "Blockchain",
+        "Astro",
+        "Backend"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "name": "Jane Smith",
+      "reference": "Reference…"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Personal Portfolio",
+      "isActive": false,
+      "description": "A personal portfolio website to showcase my projects and skills.",
+      "highlights": [
+        "Built with React and Tailwind",
+        "Includes a blog and contact form"
+      ],
+      "url": "https://johndoe.dev",
+      "github": "https://github.com"
+    },
+    {
+      "name": "BetHomeWeb",
+      "isActive": true,
+      "description": "A betting platform that allows users to place bets on various sports events.",
+      "highlights": [
+        "Built with React, Tailwind CSS, and JavaScript",
+        "Hosted on AWS with secure payment processing",
+        "Real-time updates and responsive design"
+      ],
+      "url": "https://develop.dehp9v8k4vj0v.amplifyapp.com",
+      "github": "https://github.com/BlindersBetHome/bethome-web"
+    },
+    {
+      "name": "Training and Certification Management",
+      "isActive": false,
+      "description": "A website to manage trainings and certifications within the company.",
+      "highlights": [
+        "Built with Next.js, Jest, Tailwind, and MongoDB",
+        "Streamlined the process of tracking employee training and certification"
+      ],
+      "url": ""
+    },
+    {
+      "name": "Clocking Management Website",
+      "isActive": false,
+      "description": "A website to manage the status and vacations of workers within the company.",
+      "highlights": [
+        "Developed to efficiently track employee working hours and vacation status",
+        "Enhanced HR operations and employee management"
+      ],
+      "url": ""
+    },
+    {
+      "name": "Telephone Transfer Management",
+      "isActive": false,
+      "description": "A website to manage telephone transfers within the region.",
+      "highlights": [
+        "Built with React, Jest, Tailwind, Django, Docker, and MariaDB",
+        "Improved the efficiency of managing telephone transfers"
+      ],
+      "url": ""
+    },
+    {
+      "name": "Approach Management System(AMS)",
+      "isActive": false,
+      "description": "A website to manage complaints and suggestions from workers.",
+      "highlights": [
+        "Developed with React, Jest, Tailwind, and MongoDB",
+        "Facilitated better communication and feedback from employees"
+      ],
+      "url": ""
+    }
+  ]
+}
