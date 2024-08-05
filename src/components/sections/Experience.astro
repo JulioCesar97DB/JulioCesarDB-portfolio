@@ -17,6 +17,11 @@ import Swift from "@/icons/swift.astro"
 import SwiftUI from "@/icons/swiftui.astro"
 import Kotlin from "@/icons/kotlin.astro"
 import Flutter from "@/icons/flutter.astro"
+import Redux from "@/icons/Redux.astro"
+import MongoDB from "@/icons/mongodb.astro"
+import Docker from "@/icons/docker.astro"
+import Django from "@/icons/django.astro"
+
 
 const SKILLS_ICONS: Record<string, any> = {
   HTML,
@@ -34,6 +39,10 @@ const SKILLS_ICONS: Record<string, any> = {
   SwiftUI,
   Kotlin,
   Flutter,
+  Redux,
+  MongoDB,
+  Docker,
+  Django
 }
 ---
 <Section className={Astro.props.className} title="Experience">
@@ -90,7 +99,7 @@ const SKILLS_ICONS: Record<string, any> = {
                 )}
 
                 {(responsibilities || achievements) &&  (
-                <div class="md:after:from-skin-hue dark:md:after:to-skin-hue/0  flex relative flex-col max-sm:!h-auto print:!h-auto gap-4 print:gap-2 md:after:bg-gradient-to-t md:after:absolute md:after:bottom-0 md:after:w-full print:after:hidden md:after:h-12 md:after:content-[''] " :class="expanded ? 'after:hidden' : ''" x-show="expanded" x-collapse.min.50px>
+                <div class="md:after:from-skin-hue dark:md:after:to-skin-hue/0  flex relative flex-col max-sm:!h-auto print:!h-auto gap-4 print:gap-2 md:after:bg-gradient-to-t md:after:absolute md:after:bottom-0 md:after:w-full print:after:hidden md:after:h-12 md:after:content-[''] " :class="{ 'after:hidden': expanded }" x-show="expanded">
                 {responsibilities && (
                   <div class="flex flex-col gap-1">
                     <h4>Responsibilities:</h4>

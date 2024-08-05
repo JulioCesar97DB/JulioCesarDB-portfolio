@@ -18,6 +18,10 @@ import Kotlin from "@/icons/kotlin.astro";
 import Flutter from "@/icons/flutter.astro";
 import Figma from "@/icons/Figma.astro";
 import Gitlab from "@/icons/Gitlab.astro";
+import Redux from "@/icons/Redux.astro";
+import MongoDB from "@/icons/mongodb.astro";
+import Docker from "@/icons/docker.astro";
+import Django from "@/icons/django.astro";
 
 const SKILLS_ICONS: Record<string, any> = {
 	HTML,
@@ -37,11 +41,17 @@ const SKILLS_ICONS: Record<string, any> = {
 	Flutter,
 	Figma,
 	Gitlab,
+	Redux,
+	MongoDB,
+	Docker,
+	Django,
 };
 ---
 
 <Section className={Astro.props.className} title="Skills">
-	<ul class="[&>li>svg]:text-skin-hue inline-flex flex-wrap gap-6 [&>li>svg]:size-5 [&>li]:text-sm">
+	<ul
+		class="inline-flex flex-wrap gap-6 [&>li>svg]:size-5 [&>li>svg]:text-skin-hue [&>li]:text-sm"
+	>
 		{
 			skills.map(({ name }) => {
 				const iconName = name === "Next.js" ? "Next" : name;
