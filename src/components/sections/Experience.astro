@@ -22,7 +22,6 @@ import MongoDB from "@/icons/mongodb.astro"
 import Docker from "@/icons/docker.astro"
 import Django from "@/icons/django.astro"
 
-
 const SKILLS_ICONS: Record<string, any> = {
   HTML,
   CSS,
@@ -42,7 +41,7 @@ const SKILLS_ICONS: Record<string, any> = {
   Redux,
   MongoDB,
   Docker,
-  Django
+  Django,
 }
 ---
 <Section className={Astro.props.className} title="Experience">
@@ -53,12 +52,12 @@ const SKILLS_ICONS: Record<string, any> = {
 
       return (
         <li class="relative print:py-2">
-          <div class="group relative grid pb-1 print:pb-0 transition-all print:grid-cols-1 print:gap-1 sm:grid-cols-12 sm:gap-8 md:gap-6 lg:hover:!opacity-100 ">
+          <div class="group relative grid pb-1 print:pb-0 transition-all print:grid-cols-1 print:gap-1 sm:grid-cols-12 sm:gap-8 md:gap-6 lg:hover:!opacity-100">
             <header class="relative mt-1 text-xs font-semibold sm:col-span-2">
               <time datetime={startDate} data-title={startDate}>{startYear}</time> - <time datetime={endDate} data-title={endDate}>{endYear}</time>
             </header>
             <div class="relative flex flex-col pb-6 print:pb-0 before:-ml-6 sm:col-span-10 before:w-px print:before:hidden before:absolute before:bg-skin-muted before:h-full before:mt-2">
-            <div class="absolute w-2 h-2 bg-skin-muted rounded-full mt-2 -translate-x-[1.71rem] ring print:hidden ring-skin-fill"></div>
+              <div class="absolute w-2 h-2 bg-skin-muted rounded-full mt-2 -translate-x-[1.71rem] ring print:hidden ring-skin-fill"></div>
               <h3>
                 <div class="inline-flex items-center text-lg print:text-base leading-tight group/link focus-visible:text-amber-500" aria-label="{position} - {company}">
                   <span>{position} <span>@</span> 
@@ -82,13 +81,13 @@ const SKILLS_ICONS: Record<string, any> = {
                   {location} {location && location_type && '-'} {location_type}
                 </div>
               )}
-              <div class="mt-4  print:gap-0 flex flex-col gap-4 print:text-xs text-sm" x-data="{ expanded: false }">
+              <div class="mt-4 print:gap-0 flex flex-col gap-4 print:text-xs text-sm" x-data="{ expanded: false }">
                 {summary && (
                   <div class="flex flex-col gap-1">
                     <h4>Summary:</h4>
                     <ul class="text-skin-muted [&>li]:ml-4 flex list-disc flex-col gap-2">
                       {Array.isArray(summary) ? (
-                        summary.map(item => (
+                        summary.map((item) => (
                           {item}
                         ))
                       ) : (
@@ -98,36 +97,38 @@ const SKILLS_ICONS: Record<string, any> = {
                   </div>
                 )}
 
-                {(responsibilities || achievements) &&  (
-                <div class="md:after:from-skin-hue dark:md:after:to-skin-hue/0  flex relative flex-col max-sm:!h-auto print:!h-auto gap-4 print:gap-2 md:after:bg-gradient-to-t md:after:absolute md:after:bottom-0 md:after:w-full print:after:hidden md:after:h-12 md:after:content-[''] " :class="{ 'after:hidden': expanded }" x-show="expanded">
-                {responsibilities && (
-                  <div class="flex flex-col gap-1">
-                    <h4>Responsibilities:</h4>
-                    <ul class="text-skin-muted [&>li]:ml-4 flex list-disc flex-col gap-2">
-                      {responsibilities.map(responsibility => (
-                        <li>{responsibility}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                {(responsibilities || achievements) && (
+                  <div class="relative flex flex-col gap-4 print:gap-2 md:after:bg-gradient-to-t md:after:absolute md:after:bottom-0 md:after:w-full print:after:hidden md:after:h-12 md:after:content-['']" :class="{ 'after:hidden': expanded }" x-show="expanded" x-collapse.min.48px>
+                    {responsibilities && (
+                      <div class="flex flex-col gap-1">
+                        <h4>Responsibilities:</h4>
+                        <ul class="text-skin-muted [&>li]:ml-4 flex list-disc flex-col gap-2">
+                          {responsibilities.map(responsibility => (
+                            <li>{responsibility}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
 
-                {achievements && (
-                  <div class="flex flex-col gap-1">
-                    <h4>Achievements:</h4>
-                    <ul class="text-skin-muted [&>li]:ml-4 flex list-disc flex-col gap-2">
-                      {achievements.map(achievement => (
-                        <li>{achievement}</li>
-                      ))}
-                    </ul>
+                    {achievements && (
+                      <div class="flex flex-col gap-1">
+                        <h4>Achievements:</h4>
+                        <ul class="text-skin-muted [&>li]:ml-4 flex list-disc flex-col gap-2">
+                          {achievements.map(achievement => (
+                            <li>{achievement}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
-                )}
-                </div>
                 
-                <button @click="expanded = ! expanded" class="print:hidden group/more w-fit cursor-pointer items-center justify-center gap-1.5 text-xs underline text-skin-muted transition-all hover:text-skin-base flex">
+                
+                <button @click="expanded = !expanded" class="print:hidden group/more w-fit cursor-pointer items-center justify-center gap-1.5 text-xs underline text-skin-muted transition-all hover:text-skin-base flex">
                   <span x-text="expanded ? 'Show less' : 'Show more'">Show more</span>
-                  <svg class="w-4 h-4 group-hover/more:translate-y-0.5 duration-200 ease-out" :class="{ 'rotate-180': expanded }" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  <svg class="w-4 h-4 group-hover/more:translate-y-0.5 duration-200 ease-out" :class="{ 'rotate-180': expanded }" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
                 </button>
-
 
                 <ul class="flex print:hidden flex-wrap gap-2" aria-label="Technologies used">
                   {skills && skills.map(skill => {
@@ -143,7 +144,7 @@ const SKILLS_ICONS: Record<string, any> = {
 )}
               </div>
             </div>
-        </div>
+          </div>
         </li>
       )
     })}
@@ -154,6 +155,6 @@ const SKILLS_ICONS: Record<string, any> = {
 
 <style>
   li::marker {
-    @apply text-skin-hue
+    @apply text-skin-hue;
   }
 </style>
