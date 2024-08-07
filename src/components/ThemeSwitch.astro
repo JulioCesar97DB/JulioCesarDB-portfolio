@@ -41,26 +41,18 @@ import LightTheme from "@/icons/lightTheme.astro";
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const select = document.getElementById("themeSwitch") as HTMLSelectElement;
-      const darkIcon = document.getElementById("darkIcon");
-      const lightIcon = document.getElementById("lightIcon");
+      const darkIcon = document.getElementById("darkIcon") as HTMLSpanElement;
+      const lightIcon = document.getElementById("lightIcon") as HTMLSpanElement;
       const theme = localStorage.getItem("theme");
       const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 
-      const setIconVisibility = (theme) => {
+      const setIconVisibility = (theme: string) => {
         if (theme === "dark") {
-          if (darkIcon !== null) {
-            darkIcon.classList.remove("hidden");
-          }
-          if (lightIcon !== null) {
-            lightIcon.classList.add("hidden");
-          }
+          darkIcon.classList.remove("hidden");
+          lightIcon.classList.add("hidden");
         } else {
-          if (darkIcon !== null) {
-            darkIcon.classList.add("hidden");
-          }
-          if (lightIcon !== null) {
-            lightIcon.classList.remove("hidden");
-          }
+          darkIcon.classList.add("hidden");
+          lightIcon.classList.remove("hidden");
         }
       };
 
@@ -72,7 +64,7 @@ import LightTheme from "@/icons/lightTheme.astro";
         setIconVisibility(systemTheme);
       }
 
-      function updateTheme(value) {
+      function updateTheme(value: string) {
         const theme = value === "system" ? systemTheme : value;
         document.documentElement.classList.remove("light", "dark");
         document.documentElement.classList.add(theme);
@@ -82,7 +74,7 @@ import LightTheme from "@/icons/lightTheme.astro";
 
       updateTheme(select.value);
 
-      select.addEventListener("change", (event) => {
+      select.addEventListener("change", (event: Event) => {
         const select = event.target as HTMLSelectElement;
         updateTheme(select.value);
       });
