@@ -6,8 +6,8 @@
     --color-text-inverted: 255, 255, 255;
     --color-fill: 245, 245, 245;
     --muted: 200, 200, 200;
-    --color: 249, 115, 22;
-    --color-button-accent: 249, 115, 22;
+    --color: 0, 139, 139; /* Azul ligeramente más oscuro que aguamarina */
+    --color-button-accent: 0, 139, 139; /* Azul ligeramente más oscuro que aguamarina */
     --color-button-accent-hover: 55, 55, 55;
     --color-button-muted: 244, 239, 238;
     [data-theme="blue"] {
@@ -61,8 +61,8 @@
     --color-text-inverted: 255, 255, 255;
     --color-fill: 18, 18, 18;
     --muted: 36, 36, 36;
-    --color: 227, 77, 10;
-    --color-button-accent: 227, 77, 10;
+    --color: 0, 139, 139; /* Azul ligeramente más oscuro que aguamarina */
+    --color-button-accent: 0, 139, 139; /* Azul ligeramente más oscuro que aguamarina */
     --color-button-accent-hover: 231, 121, 43;
     --color-button-muted: 26, 26, 26;
     [data-theme="blue"] {
@@ -109,4 +109,5 @@
       --color-button-accent-hover: 0, 185, 255;
       --color-button-muted: 25, 81, 86;
     }
+  }
 }
