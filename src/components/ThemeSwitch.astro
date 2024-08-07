@@ -1,64 +1,91 @@
 ---
-import Theme from "@/icons/themeSwitch.astro";
+import DarkTheme from "@/icons/darkTheme.astro";
+import LightTheme from "@/icons/lightTheme.astro";
 ---
 
 <div class="no-print inline-flex items-center">
-	<!-- <div class="flex items-center gap-1">
-		<Theme />
-		<select name="themeSwitch" id="themeSwitch" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 dark:text-gray-100 dark:ring-gray-700 sm:text-sm sm:leading-6">
-			<option value="system">System</option>
-			<option value="dark">Dark</option>
-			<option value="light">Light</option>
-		</select>
-	</div> -->
+  <div class="group/theme flex items-center gap-2">
+    <label
+      for="themeSwitch"
+      class="flex items-center gap-1 text-sm font-medium leading-6 text-skin-base transition-transform ease-in-out group-hover/theme:rotate-45"
+    >
+      <span id="darkIcon"><DarkTheme /></span>
+      <span id="lightIcon" class="hidden"><LightTheme /></span>
+    </label>
+    <select
+      id="themeSwitch"
+      name="themeSwitch"
+      class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-skin-base ring-1 ring-inset ring-skin-muted focus:ring-2 focus:ring-skin-hue sm:text-sm sm:leading-6"
+    >
+      <option value="system">System</option>
+      <option value="dark">Dark</option>
+      <option value="light">Light</option>
+    </select>
+  </div>
 
-	<div class="group/theme flex items-center gap-2">
-		<label for="themeSwitch" class="flex items-center gap-1 text-sm font-medium leading-6 text-skin-base transition-transform ease-in-out group-hover/theme:rotate-45"> <Theme /></label>
-		<select id="themeSwitch" name="themeSwitch" class="focus:ring-skin-hue ring-skin-muted block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-skin-base ring-1 ring-inset focus:ring-2 sm:text-sm sm:leading-6">
-			<option value="system">System</option>
-			<option value="dark">Dark</option>
-			<option value="light">Light</option>
-		</select>
-	</div>
+  <style>
+    :global(.dark) {
+      color-scheme: dark;
+    }
+    /* Estilos específicos para el select en modo oscuro */
+    :global(.dark) #themeSwitch {
+      background-color: #1a1a1a;
+      color: #ffffff;
+    }
+    :global(.dark) #themeSwitch option {
+      background-color: #1a1a1a;
+      color: #ffffff;
+    }
+  </style>
 
-	<style>
-		:global(.dark) {
-			color-scheme: dark;
-		}
-		/* Estilos específicos para el select en modo oscuro */
-		:global(.dark) #themeSwitch {
-			background-color: #1a1a1a;
-			color: #ffffff;
-		}
-		:global(.dark) #themeSwitch option {
-			background-color: #1a1a1a;
-			color: #ffffff;
-		}
-	</style>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const select = document.getElementById("themeSwitch") as HTMLSelectElement;
+      const darkIcon = document.getElementById("darkIcon");
+      const lightIcon = document.getElementById("lightIcon");
+      const theme = localStorage.getItem("theme");
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 
-	<script>
-		const select = document.getElementById("themeSwitch") as HTMLSelectElement;
-		const theme = localStorage.getItem("theme");
-		const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      const setIconVisibility = (theme) => {
+        if (theme === "dark") {
+          if (darkIcon !== null) {
+            darkIcon.classList.remove("hidden");
+          }
+          if (lightIcon !== null) {
+            lightIcon.classList.add("hidden");
+          }
+        } else {
+          if (darkIcon !== null) {
+            darkIcon.classList.add("hidden");
+          }
+          if (lightIcon !== null) {
+            lightIcon.classList.remove("hidden");
+          }
+        }
+      };
 
-		if (theme !== null) {
-			select.value = theme;
-		} else {
-			select.value = systemTheme;
-		}
+      if (theme !== null) {
+        select.value = theme;
+        setIconVisibility(theme);
+      } else {
+        select.value = systemTheme;
+        setIconVisibility(systemTheme);
+      }
 
-		function updateTheme(value: string) {
-			const theme = value === "system" ? systemTheme : value;
-			document.documentElement.classList.remove("light", "dark");
-			document.documentElement.classList.add(theme);
-			localStorage.setItem("theme", value);
-		}
+      function updateTheme(value) {
+        const theme = value === "system" ? systemTheme : value;
+        document.documentElement.classList.remove("light", "dark");
+        document.documentElement.classList.add(theme);
+        localStorage.setItem("theme", value);
+        setIconVisibility(theme);
+      }
 
-		updateTheme(select.value);
+      updateTheme(select.value);
 
-		select.addEventListener("change", (event: Event) => {
-			const select = event.target as HTMLSelectElement;
-			updateTheme(select.value);
-		});
-	</script>
+      select.addEventListener("change", (event) => {
+        const select = event.target as HTMLSelectElement;
+        updateTheme(select.value);
+      });
+    });
+  </script>
 </div>
