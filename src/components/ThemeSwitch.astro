@@ -25,6 +25,15 @@ import Theme from "@/icons/themeSwitch.astro";
 		:global(.dark) {
 			color-scheme: dark;
 		}
+		/* Estilos específicos para el select en modo oscuro */
+		:global(.dark) #themeSwitch {
+			background-color: #1a1a1a;
+			color: #ffffff;
+		}
+		:global(.dark) #themeSwitch option {
+			background-color: #1a1a1a;
+			color: #ffffff;
+		}
 	</style>
 
 	<script>
