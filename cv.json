@@ -377,7 +377,7 @@
       "isActive": false,
       "description": "A personal portfolio website to showcase my projects and skills.",
       "highlights": [
-        "Built with React and Tailwind",
+        "Built with Astro and Tailwind",
         "Includes a blog and contact form"
       ],
       "url": "https://juliocesardb.com",
@@ -430,7 +430,7 @@
       "isActive": false,
       "description": "A website to manage complaints and suggestions from workers.",
       "highlights": [
-        "Developed with React, Jest, Tailwind, and MongoDB",
+        "Developed with React, Jest, Tailwind, Django, Docker and MongoDB",
         "Facilitated better communication and feedback from employees"
       ],
       "url": ""
