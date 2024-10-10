@@ -15,14 +15,39 @@ import { basics } from "@cv";
 const { name, label } = basics;
 ---
 
+<script>
+	fetch("/api/notify", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			message: "Un usuario ha visitado tu portafolio",
+		}),
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			console.log("Mensaje enviado a Telegram:", data);
+		})
+		.catch((error) => {
+			console.error("Error al enviar el mensaje a Telegram:", error);
+		});
+</script>
+
 <Layout title={`${name} Portfolio - ${label}`}>
-	<main class="relative grid max-w-7xl gap-12 p-8 max-sm:py-16 md:grid-cols-6 md:p-16 xl:gap-24 print:max-w-none print:grid-cols-1 print:gap-6">
-		<div class="space-y-6 md:col-span-2 print:col-span-1 print:grid print:grid-cols-2 print:gap-5 print:space-y-0">
+	<main
+		class="relative grid max-w-7xl gap-12 p-8 max-sm:py-16 md:grid-cols-6 md:p-16 xl:gap-24 print:max-w-none print:grid-cols-1 print:gap-6"
+	>
+		<div
+			class="space-y-6 md:col-span-2 print:col-span-1 print:grid print:grid-cols-2 print:gap-5 print:space-y-0"
+		>
 			<Hero />
 			<About />
 			<ThemeSwitch />
 		</div>
-		<div class="space-y-12 md:col-span-4 print:col-span-1 print:grid print:grid-cols-4 print:gap-2 print:space-y-0">
+		<div
+			class="space-y-12 md:col-span-4 print:col-span-1 print:grid print:grid-cols-4 print:gap-2 print:space-y-0"
+		>
 			<Experience className="print:col-span-3" />
 			<Projects className="print:hidden" />
 			<Skills className="print:hidden" />
