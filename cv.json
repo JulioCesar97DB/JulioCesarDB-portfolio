@@ -6,7 +6,7 @@
     "email": "juliocesar97db@gmail.com",
     "phone": "+34 695-434-378",
     "url": "https://www.juliocesardb.com",
-    "summary": "Front-End Developer with a passion for building web applications. Currently seeking opportunities to further develop my skills in a professional setting.",
+    "summary": "Software Engineer with expertise in front-end development, specializing in creating responsive and dynamic web applications using React and Next.js.",
     "theme": "default",
     "location": {
       "address": "Av Alfonso el Sabio",
@@ -35,17 +35,53 @@
   },
   "work": [
     {
+      "name": "Second Window",
+      "position": "Front End Developer",
+      "location_type": "Remote",
+      "location": "Alicante, Spain",
+      "url": "",
+      "startDate": "2024-10-27",
+      "endDate": null,
+      "summary": "Designing and developing both a private admin application for internal management and a public-facing application for user engagement, focusing on secure, intuitive, and scalable solutions.",
+      "highlights": [
+        "Successfully implemented a secure private application for managing users, content, and site administration.",
+        "Developed a responsive, public-facing application for user onboarding, subscription selection, and service exploration, enhancing the user journey."
+      ],
+      "responsibilities": [
+        "Built a private admin application to manage users, roles, permissions, and content updates.",
+        "Created a user-friendly public application allowing users to create accounts, select subscription plans, and explore services.",
+        "Leveraged React, Next.js, and Tailwind CSS to build dynamic and visually cohesive front-end components.",
+        "Integrated authentication and data management systems to enable smooth transitions between public and private sections.",
+        "Collaborated closely with the client to align the development with Turing Dream's vision, using project management tools like Jira and Trello for tracking.",
+        "Optimized both applications for performance, ensuring fast load times, responsiveness, and scalability.",
+        "Established a foundation for maintenance by documenting key processes and enabling continuous improvement."
+      ],
+      "skills": [
+        "React",
+        "Next.js",
+        "Tailwind",
+        "JavaScript",
+        "TypeScript",
+        "Jest",
+        "Redux",
+        "RESTful APIs",
+        "Data Management",
+        "Project Management (Jira)",
+        "Responsive Web Design",
+        "Performance Optimization",
+        "Scalability"
+      ]
+    },
+    {
       "name": "Freelancer",
       "position": "Web Developer",
       "location_type": "Remote",
       "location": "Alacant, Spain",
       "url": "",
       "startDate": "2024-03-01",
-      "endDate": null,
+      "endDate": "2024-10-20",
       "summary": "Developing and maintaining websites for clients using modern web technologies. Collaborating with clients to understand their needs and deliver high-quality solutions.",
-      "highlights": [
-        "Improved website performance by optimizing code"
-      ],
+      "highlights": ["Improved website performance by optimizing code"],
       "responsibilities": [
         "Designed, developed, and maintained responsive web applications using React and Next.js.",
         "Collaborated closely with clients to understand their needs and translate them into effective technical solutions.",
@@ -188,12 +224,7 @@
     {
       "name": "React",
       "level": "Expert",
-      "keywords": [
-        "Web Development",
-        "Frontend",
-        "JavaScript Library",
-        "UI"
-      ]
+      "keywords": ["Web Development", "Frontend", "JavaScript Library", "UI"]
     },
     {
       "name": "Next.js",
@@ -219,12 +250,7 @@
     {
       "name": "JavaScript",
       "level": "Expert",
-      "keywords": [
-        "Web Development",
-        "Frontend",
-        "Backend",
-        "Fullstack"
-      ]
+      "keywords": ["Web Development", "Frontend", "Backend", "Fullstack"]
     },
     {
       "name": "TypeScript",
@@ -270,78 +296,42 @@
     {
       "name": "HTML",
       "level": "Intermediate",
-      "keywords": [
-        "Web Development",
-        "Frontend"
-      ]
+      "keywords": ["Web Development", "Frontend"]
     },
     {
       "name": "CSS",
       "level": "Intermediate",
-      "keywords": [
-        "Web Development",
-        "Frontend",
-        "Responsive Design"
-      ]
+      "keywords": ["Web Development", "Frontend", "Responsive Design"]
     },
     {
       "name": "Git",
       "level": "Intermediate",
-      "keywords": [
-        "Version Control",
-        "Collaboration",
-        "Source Code"
-      ]
+      "keywords": ["Version Control", "Collaboration", "Source Code"]
     },
     {
       "name": "GitHub",
       "level": "Intermediate",
-      "keywords": [
-        "Version Control",
-        "Collaboration",
-        "Source Code",
-        "Git"
-      ]
+      "keywords": ["Version Control", "Collaboration", "Source Code", "Git"]
     },
     {
       "name": "Docker",
       "level": "Intermediate",
-      "keywords": [
-        "Containerization",
-        "DevOps",
-        "Deployment",
-        "Backend"
-      ]
+      "keywords": ["Containerization", "DevOps", "Deployment", "Backend"]
     },
     {
       "name": "MariaDB",
       "level": "Intermediate",
-      "keywords": [
-        "Databases",
-        "SQL",
-        "Data Storage",
-        "Backend"
-      ]
+      "keywords": ["Databases", "SQL", "Data Storage", "Backend"]
     },
     {
       "name": "MongoDB",
       "level": "Intermediate",
-      "keywords": [
-        "Databases",
-        "NoSQL",
-        "Data Storage",
-        "Backend"
-      ]
+      "keywords": ["Databases", "NoSQL", "Data Storage", "Backend"]
     },
     {
       "name": "Django",
       "level": "Intermediate",
-      "keywords": [
-        "Web Development",
-        "Backend",
-        "Python",
-        "Framework"
-      ]
+      "keywords": ["Web Development", "Backend", "Python", "Framework"]
     }
   ],
   "languages": [
@@ -357,12 +347,7 @@
   "interests": [
     {
       "name": "Technology",
-      "keywords": [
-        "AI",
-        "Blockchain",
-        "Astro",
-        "Backend"
-      ]
+      "keywords": ["AI", "Blockchain", "Astro", "Backend"]
     }
   ],
   "references": [
