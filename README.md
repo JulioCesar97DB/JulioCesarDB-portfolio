@@ -38,6 +38,24 @@ Change the data-theme of `cv.json` and choose one of the colour themes defined i
 | ⚙️  | `build`         | Checks for errors and creates a production build in `./dist/`. |
 | ⚙️  | `preview`       | Local preview at `localhost:4321`                                       |
 
+## Project Structure
+
+```
+.
+├── public/               # Static assets and theme CSS
+│   └── themes/
+│       └── themes.css    # Custom color themes
+├── src/
+│   ├── components/       # UI components
+│   │   ├── sections/     # CV sections (About, Experience, etc.)
+│   │   ├── KeyboardManager.astro
+│   │   ├── Section.astro
+│   │   └── ThemeSwitch.astro
+│   ├── icons/            # SVG icons for technologies and social media
+│   ├── layouts/          # Page layouts
+│   └── pages/            # Website pages
+└── cv.json               # Your CV/resume data
+```
 
 CV JSON schema from [**jsonresume.org**](https://jsonresume.org/schema/)
 
