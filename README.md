@@ -1,10 +1,10 @@
 # Professional Developer Portfolio
 
-![React](https://img.shields.io/badge/React-19.0.0-61DAFB?logo=react&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.7.2-3178C6?logo=typescript&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-6.2.0-646CFF?logo=vite&logoColor=white)
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.0.9-38B2AC?logo=tailwind-css&logoColor=white)
-![ReactFlow](https://img.shields.io/badge/ReactFlow-12.4.4-007ACC?logo=flow&logoColor=white)
+![Astro](https://img.shields.io/badge/Astro-3.0.0-FF5D01?logo=astro&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0.0-3178C6?logo=typescript&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.3.0-38B2AC?logo=tailwind-css&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
 
 A modern, interactive professional portfolio and CV built with cutting-edge web technologies. This project showcases development skills, work experience, and projects in an elegant and functional format.
 
