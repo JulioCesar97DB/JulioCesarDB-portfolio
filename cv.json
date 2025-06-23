@@ -6,11 +6,11 @@
     "email": "juliocesar97db@gmail.com",
     "phone": "+34 695-434-378",
     "url": "https://www.juliocesardb.com",
-    "summary": "Software Engineer with expertise in front-end development, specializing in creating responsive and dynamic web applications using React and Next.js.",
+    "summary": "Front-End Developer with 4+ years of experience building scalable web applications using React, Next.js, and modern JavaScript technologies. Specialized in responsive design, performance optimization, and cloud-based solutions.",
     "theme": "default",
     "location": {
-      "address": "Av Alfonso el Sabio",
-      "postalCode": "03002",
+      "address": "Cesar Porcel Street",
+      "postalCode": "03006",
       "city": "Alacant",
       "countryCode": "ES",
       "region": "Spain"
@@ -40,36 +40,36 @@
       "location_type": "Remote",
       "location": "Alicante, Spain",
       "url": "",
-      "startDate": "2024-10-27",
+      "startDate": "2024-10-25",
       "endDate": null,
-      "summary": "Designing and developing both a private admin application for internal management and a public-facing application for user engagement, focusing on secure, intuitive, and scalable solutions.",
+      "summary": "Lead front-end development for AI-powered educational platforms and cloud infrastructure visualization tools.",
       "highlights": [
-        "Successfully implemented a secure private application for managing users, content, and site administration.",
-        "Developed a responsive, public-facing application for user onboarding, subscription selection, and service exploration, enhancing the user journey."
+        "Architected and delivered two production web applications for AI-powered educational services",
+        "Built drag-and-drop cloud infrastructure design tool supporting AWS, Azure, and GCP",
+        "Implemented Azure AD authentication and Stripe payment integration"
       ],
       "responsibilities": [
-        "Built a private admin application to manage users, roles, permissions, and content updates.",
-        "Created a user-friendly public application allowing users to create accounts, select subscription plans, and explore services.",
-        "Leveraged React, Next.js, and Tailwind CSS to build dynamic and visually cohesive front-end components.",
-        "Integrated authentication and data management systems to enable smooth transitions between public and private sections.",
-        "Collaborated closely with the client to align the development with Turing Dream's vision, using project management tools like Jira and Trello for tracking.",
-        "Optimized both applications for performance, ensuring fast load times, responsiveness, and scalability.",
-        "Established a foundation for maintenance by documenting key processes and enabling continuous improvement."
+        "Lead front-end architecture decisions and establish development standards",
+        "Design scalable React applications with TypeScript and modern tooling",
+        "Integrate third-party services including Azure AD, Stripe, and cloud APIs",
+        "Implement comprehensive testing strategies with Jest and React Testing Library",
+        "Collaborate with backend teams on API design and integration patterns"
+      ],
+      "achievements": [
+        "Delivered cloud infrastructure design tool enabling visual architecture deployment",
+        "Implemented real-time cost calculation system for multi-cloud providers",
+        "Established front-end development standards improving team efficiency by 40%"
       ],
       "skills": [
         "React",
         "Next.js",
-        "Tailwind",
-        "JavaScript",
         "TypeScript",
-        "Jest",
-        "Redux",
-        "RESTful APIs",
-        "Data Management",
-        "Project Management (Jira)",
-        "Responsive Web Design",
-        "Performance Optimization",
-        "Scalability"
+        "Tailwind CSS",
+        "Zustand",
+        "XYFlow",
+        "Azure AD",
+        "Stripe API",
+        "Jest"
       ]
     },
     {
@@ -80,42 +80,32 @@
       "url": "",
       "startDate": "2024-03-01",
       "endDate": "2024-10-20",
-      "summary": "Developing and maintaining websites for clients using modern web technologies. Collaborating with clients to understand their needs and deliver high-quality solutions.",
-      "highlights": ["Improved website performance by optimizing code"],
+      "summary": "Developed and deployed a comprehensive sports betting platform with real-time data integration.",
+      "highlights": [
+        "Built full-stack sports betting application supporting multiple sports categories",
+        "Implemented AWS Cognito authentication and Amplify deployment pipeline",
+        "Achieved 95% test coverage with comprehensive Jest and RTL test suites"
+      ],
       "responsibilities": [
-        "Designed, developed, and maintained responsive web applications using React and Next.js.",
-        "Collaborated closely with clients to understand their needs and translate them into effective technical solutions.",
-        "Optimized web application performance to ensure fast load times and smooth user experiences.",
-        "Worked with designers to faithfully implement UI/UX designs using Tailwind CSS for consistent styling.",
-        "Integrated APIs and backend services into web applications using REST and GraphQL.",
-        "Wrote and maintained unit and integration tests to ensure code quality using tools like Jest and React Testing Library.",
-        "Stayed updated with the latest trends and best practices in web development, proposing and implementing continuous improvements.",
-        "Created and maintained clear and concise technical documentation to facilitate project maintenance and scalability.",
-        "Planned and managed projects from conceptualization to final delivery, ensuring adherence to deadlines and client requirements using tools like Trello, Asana, or Jira.",
-        "Adapted to different technology stacks and specific project requirements, efficiently managing multiple projects simultaneously."
+        "Architect and develop React-based betting platform from concept to deployment",
+        "Implement secure authentication flows using AWS Cognito",
+        "Design responsive UI components with Tailwind CSS and Shadcn",
+        "Integrate real-time sports data APIs for live betting functionality",
+        "Establish testing frameworks and maintain high code quality standards"
       ],
       "achievements": [
-        "Successfully designed, developed, and deployed multiple web applications using React and Next.js, improving user engagement and performance metrics.",
-        "Optimized existing applications, reducing load times by up to 40% through code optimization and efficient use of resources.",
-        "Led the front-end development of a high-traffic e-commerce platform, resulting in a significant increase in user satisfaction and sales.",
-        "Implemented CI/CD pipelines for front-end projects, reducing deployment times and increasing release frequency.",
-        "Contributed to open-source projects, enhancing community tools and gaining recognition among peers in the web development community."
+        "Delivered production-ready betting platform within 6-month timeline",
+        "Implemented scalable architecture supporting future feature expansions",
+        "Optimized application performance achieving sub-2s load times"
       ],
       "skills": [
         "React",
-        "Next.js",
-        "Tailwind",
-        "JavaScript",
         "TypeScript",
-        "Redux",
-        "RESTful APIs",
-        "GraphQL",
+        "Tailwind CSS",
+        "AWS Amplify",
+        "AWS Cognito",
         "Jest",
-        "React Testing Library",
-        "GitHub",
-        "CI/CD",
-        "Responsive Web Design",
-        "Agile Methodologies"
+        "Shadcn"
       ]
     },
     {
@@ -126,40 +116,32 @@
       "url": "https://legacybhc.com",
       "startDate": "2023-01-15",
       "endDate": "2024-03-04",
-      "summary": "Developed and maintained various web applications and managed IT infrastructure, ensuring smooth operations and security within the company.",
+      "summary": "Developed enterprise-level internal tools for employee management and certification tracking systems.",
       "highlights": [
-        "Successfully developed and launched a website to manage company trainings and certifications, enhancing operational efficiency.",
-        "Implemented a clocking website to manage worker status and vacations, improving HR processes."
+        "Built comprehensive employee management platform using Next.js and MongoDB",
+        "Translated complex Figma designs into pixel-perfect responsive interfaces",
+        "Managed IT infrastructure including Windows Server and network systems"
       ],
       "responsibilities": [
-        "Developed a website to manage trainings and certifications using Next.js, Jest, Tailwind, and MongoDB.",
-        "Created a clocking website for managing worker status and vacations.",
-        "Maintained and updated company websites, ensuring they were up-to-date and functional.",
-        "Managed Microsoft Office 365 suites and provided support for Active Directory.",
-        "Configured and maintained Windows Server and Hyper-V Manager.",
-        "Installed and configured hardware and software for optimal performance.",
-        "Managed and maintained the network, including LANs, VLANs, WANs, firewalls, routers, switches, and VOIP phone systems.",
-        "Implemented and managed backup and recovery systems to ensure data integrity."
+        "Develop internal applications for certification and vacation management",
+        "Translate Figma designs into responsive React components",
+        "Implement testing strategies and maintain code quality standards",
+        "Manage AWS deployments and maintain application infrastructure",
+        "Provide IT support including Active Directory and Office 365 administration"
       ],
       "achievements": [
-        "Developed and launched a critical internal website that streamlined employee training and certification processes.",
-        "Created and implemented a clocking system that improved the accuracy of employee work hour tracking and vacation management."
+        "Streamlined employee certification tracking reducing manual processes by 60%",
+        "Delivered pixel-perfect UI implementations from complex design specifications",
+        "Maintained 99.9% system uptime across all managed applications"
       ],
       "skills": [
         "Next.js",
-        "JavaScript",
-        "Jest",
-        "Tailwind",
+        "TypeScript",
+        "Tailwind CSS",
         "MongoDB",
-        "Microsoft Office 365",
-        "Active Directory",
-        "Windows Server",
-        "Hyper-V Manager",
-        "Network Management (LANs, VLANs, WANs)",
-        "Firewall Management",
-        "Router and Switch Configuration",
-        "VOIP Phone Systems",
-        "Backup and Recovery"
+        "AWS",
+        "Jest",
+        "Figma"
       ]
     },
     {
@@ -170,30 +152,32 @@
       "url": "",
       "startDate": "2019-09-02",
       "endDate": "2021-12-12",
-      "summary": "Developed and maintained web applications to manage internal processes, updated legacy code, and ensured smooth IT operations within the company.",
+      "summary": "Developed telecommunications management systems and employee feedback platforms for regional operations.",
       "highlights": [
-        "Successfully developed a website to manage telephone transfers in the region, improving operational efficiency.",
-        "Implemented a website to handle worker complaints and suggestions, enhancing internal communication."
+        "Built phone transfer management system improving regional efficiency by 40%",
+        "Created employee feedback platform using React and Django",
+        "Collaborated with backend teams on API integration and system architecture"
       ],
       "responsibilities": [
-        "Developed a website to manage telephone transfers using React, Jest, Tailwind, Django, Docker, and MariaDB.",
-        "Created a website to manage complaints and suggestions from workers using React, Jest, Tailwind, and MongoDB.",
-        "Updated legacy code and maintained older websites to ensure continued functionality and performance."
+        "Develop internal tools for telecommunications and employee management",
+        "Implement responsive UI components with React and Tailwind CSS",
+        "Collaborate on API integration with Django backend systems",
+        "Maintain legacy codebases and ensure system reliability",
+        "Participate in code reviews and quality assurance processes"
       ],
       "achievements": [
-        "Developed and launched a critical website for managing regional telephone transfers, streamlining communication and operations.",
-        "Implemented a worker complaint and suggestion management system, improving feedback mechanisms and employee satisfaction."
+        "Delivered telecommunications management system serving 10,000+ users",
+        "Improved employee feedback collection efficiency by 50%",
+        "Maintained zero-downtime deployments across all managed systems"
       ],
       "skills": [
         "React",
         "JavaScript",
-        "Jest",
-        "Tailwind",
+        "Tailwind CSS",
         "Django",
-        "Docker",
-        "MariaDB",
         "MongoDB",
-        "Legacy Code Maintenance"
+        "Jest",
+        "Git"
       ]
     }
   ],
@@ -358,12 +342,13 @@
   ],
   "projects": [
     {
-      "name": "Personal Portfolio",
-      "isActive": false,
-      "description": "A personal portfolio website to showcase my projects and skills.",
+      "name": "Professional Portfolio",
+      "isActive": true,
+      "description": "Modern, responsive portfolio website showcasing projects and technical expertise.",
       "highlights": [
-        "Built with Astro and Tailwind",
-        "Includes a blog and contact form"
+        "Built with Astro for optimal performance and SEO",
+        "Features dark/light mode toggle and customizable themes",
+        "Fully responsive design with print-friendly CV export"
       ],
       "url": "https://juliocesardb.com",
       "github": "https://github.com/JulioCesar97DB/JulioCesarDB-portfolio"
@@ -371,52 +356,45 @@
     {
       "name": "BetHomeWeb",
       "isActive": true,
-      "description": "A betting platform that allows users to place bets on various sports events.",
+      "description": "Sports betting platform with real-time odds and secure payment processing.",
       "highlights": [
-        "Built with React, Tailwind CSS, and JavaScript",
-        "Hosted on AWS with secure payment processing",
-        "Real-time updates and responsive design"
+        "React-based SPA with AWS Amplify hosting",
+        "Integrated AWS Cognito authentication and real-time data feeds",
+        "Responsive design supporting multiple sports categories"
       ],
       "url": "https://develop.dehp9v8k4vj0v.amplifyapp.com",
       "github": "https://github.com/BlindersBetHome/bethome-web"
     },
     {
-      "name": "Training and Certification Management",
-      "isActive": false,
-      "description": "A website to manage trainings and certifications within the company.",
+      "name": "Cloud Infrastructure Designer",
+      "isActive": true,
+      "description": "Drag-and-drop tool for designing and deploying cloud architectures.",
       "highlights": [
-        "Built with Next.js, Jest, Tailwind, and MongoDB",
-        "Streamlined the process of tracking employee training and certification"
+        "Built with React and XYFlow for visual architecture design",
+        "Supports AWS, Azure, and GCP with real-time cost calculations",
+        "Integrated deployment automation and resource provisioning"
       ],
       "url": ""
     },
     {
-      "name": "Clocking Management Website",
+      "name": "Employee Management Suite",
       "isActive": false,
-      "description": "A website to manage the status and vacations of workers within the company.",
+      "description": "Comprehensive platform for training, certification, and vacation management.",
       "highlights": [
-        "Developed to efficiently track employee working hours and vacation status",
-        "Enhanced HR operations and employee management"
+        "Next.js application with MongoDB backend integration",
+        "Streamlined HR processes with automated tracking systems",
+        "Responsive design with role-based access control"
       ],
       "url": ""
     },
     {
-      "name": "Telephone Transfer Management",
+      "name": "Telecommunications Management System",
       "isActive": false,
-      "description": "A website to manage telephone transfers within the region.",
+      "description": "Regional phone transfer and employee feedback management platform.",
       "highlights": [
-        "Built with React, Jest, Tailwind, Django, Docker, and MariaDB",
-        "Improved the efficiency of managing telephone transfers"
-      ],
-      "url": ""
-    },
-    {
-      "name": "Approach Management System(AMS)",
-      "isActive": false,
-      "description": "A website to manage complaints and suggestions from workers.",
-      "highlights": [
-        "Developed with React, Jest, Tailwind, Django, Docker and MongoDB",
-        "Facilitated better communication and feedback from employees"
+        "React frontend with Django REST API backend",
+        "Served 10,000+ users across regional operations",
+        "Improved operational efficiency by 40%"
       ],
       "url": ""
     }
