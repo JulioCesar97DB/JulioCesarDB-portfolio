@@ -6,14 +6,14 @@
     "email": "juliocesar97db@gmail.com",
     "phone": "+34 695-434-378",
     "url": "https://www.juliocesardb.com",
-    "summary": "Front-End Developer with 4+ years of experience building scalable web applications using React, Next.js, and modern JavaScript technologies. Specialized in responsive design, performance optimization, and cloud-based solutions.",
+    "summary": "Frontend Developer with 5+ years of experience architecting and delivering production-grade web applications using React, Next.js, and TypeScript. Proven track record building complex platforms from scratch — from business intelligence dashboards to cloud infrastructure tools. Specialized in scalable frontend architectures, secure authentication patterns, and high-performance responsive interfaces.",
     "theme": "default",
     "location": {
-      "address": "Cesar Porcel Street",
-      "postalCode": "03006",
-      "city": "Alacant",
-      "countryCode": "ES",
-      "region": "Spain"
+      "address": "",
+      "postalCode": "33401",
+      "city": "West Palm Beach",
+      "countryCode": "US",
+      "region": "Florida"
     },
     "profiles": [
       {
@@ -35,30 +35,72 @@
   },
   "work": [
     {
+      "name": "ConsumrBuzz",
+      "position": "Main Frontend Developer",
+      "location_type": "Hybrid",
+      "location": "Lake Worth Beach, Florida",
+      "url": "https://consumrbuzz.com/",
+      "startDate": "2025-10-07",
+      "endDate": null,
+      "summary": "Built from scratch the entire frontend of Cerebro, a full-stack business intelligence dashboard for business listing management, automated publisher scanning, and analytics reporting.",
+      "highlights": [
+        "Architected and built the complete frontend from zero using Next.js 15, React 19, and TypeScript",
+        "Implemented a three-layer data flow architecture (Client Components → TanStack Query Hooks → Server Actions → DAL → API) ensuring secure authentication handling",
+        "Built role-based access control system supporting 7 roles across Admin, Agency, and SMB dashboards",
+        "Integrated Kinde Auth with secure server-side token management, preventing client-side token exposure",
+        "Implemented full internationalization (i18n) supporting English, Spanish, and French with next-intl"
+      ],
+      "responsibilities": [
+        "Lead all frontend architecture decisions and establish development standards",
+        "Design and implement scalable React application with strict TypeScript patterns",
+        "Build comprehensive entity management system for publishers, SMBs, and agencies",
+        "Implement automated scraping job monitoring and analytics dashboards",
+        "Integrate authentication, bulk upload, billing, and document management modules"
+      ],
+      "achievements": [
+        "Delivered production-ready business intelligence platform from concept to deployment",
+        "Established a strict three-layer architecture pattern ensuring security and maintainability",
+        "Built a modular dashboard supporting multiple user roles with dynamic navigation"
+      ],
+      "skills": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "shadcn/ui",
+        "Kinde Auth",
+        "next-intl",
+        "TanStack Query",
+        "React Hook Form",
+        "Zod"
+      ]
+    },
+    {
       "name": "Second Window",
       "position": "Front End Developer",
       "location_type": "Remote",
       "location": "Alicante, Spain",
-      "url": "",
+      "url": "https://secondwindow.es",
       "startDate": "2024-10-25",
-      "endDate": null,
-      "summary": "Lead front-end development for AI-powered educational platforms and cloud infrastructure visualization tools.",
+      "endDate": "2025-10-03",
+      "summary": "Led frontend development for AI-powered educational platforms and a multi-cloud infrastructure visualization tool, delivering two production applications end-to-end.",
       "highlights": [
-        "Architected and delivered two production web applications for AI-powered educational services",
-        "Built drag-and-drop cloud infrastructure design tool supporting AWS, Azure, and GCP",
-        "Implemented Azure AD authentication and Stripe payment integration"
+        "Architected and shipped two production web applications for AI-driven educational services from concept to launch",
+        "Built an interactive drag-and-drop cloud infrastructure designer with XYFlow supporting AWS, Azure, and GCP resource provisioning",
+        "Integrated Azure AD SSO authentication and Stripe subscription billing with webhook handling",
+        "Implemented real-time cost estimation engine calculating infrastructure pricing across three cloud providers"
       ],
       "responsibilities": [
-        "Lead front-end architecture decisions and establish development standards",
-        "Design scalable React applications with TypeScript and modern tooling",
-        "Integrate third-party services including Azure AD, Stripe, and cloud APIs",
-        "Implement comprehensive testing strategies with Jest and React Testing Library",
-        "Collaborate with backend teams on API design and integration patterns"
+        "Own frontend architecture decisions, tech stack selection, and code quality standards",
+        "Design and build interactive React applications with TypeScript, Zustand state management, and modern tooling",
+        "Integrate enterprise third-party services including Azure AD, Stripe, and multi-cloud provider APIs",
+        "Implement comprehensive testing strategies with Jest and React Testing Library achieving high coverage",
+        "Collaborate with backend engineers on REST API contracts and data integration patterns"
       ],
       "achievements": [
-        "Delivered cloud infrastructure design tool enabling visual architecture deployment",
-        "Implemented real-time cost calculation system for multi-cloud providers",
-        "Established front-end development standards improving team efficiency by 40%"
+        "Delivered a visual cloud architecture designer enabling non-technical users to design and deploy infrastructure",
+        "Built real-time multi-cloud cost calculator reducing client infrastructure planning time significantly",
+        "Established reusable component library and development standards that improved team velocity by 40%"
       ],
       "skills": [
         "React",
@@ -80,23 +122,24 @@
       "url": "",
       "startDate": "2024-03-01",
       "endDate": "2024-10-20",
-      "summary": "Developed and deployed a comprehensive sports betting platform with real-time data integration.",
+      "summary": "Designed and built a full-featured sports betting platform from scratch with real-time odds, live data feeds, and secure user authentication deployed on AWS.",
       "highlights": [
-        "Built full-stack sports betting application supporting multiple sports categories",
-        "Implemented AWS Cognito authentication and Amplify deployment pipeline",
-        "Achieved 95% test coverage with comprehensive Jest and RTL test suites"
+        "Built a complete React SPA for sports betting with live odds updates across multiple sports categories",
+        "Implemented end-to-end authentication flow with AWS Cognito including MFA and session management",
+        "Deployed via AWS Amplify CI/CD pipeline with automated preview environments per branch",
+        "Achieved 95% test coverage with Jest and React Testing Library ensuring production reliability"
       ],
       "responsibilities": [
-        "Architect and develop React-based betting platform from concept to deployment",
-        "Implement secure authentication flows using AWS Cognito",
-        "Design responsive UI components with Tailwind CSS and Shadcn",
-        "Integrate real-time sports data APIs for live betting functionality",
-        "Establish testing frameworks and maintain high code quality standards"
+        "Architect and develop the entire React-based betting platform independently from concept to production",
+        "Design and implement secure authentication flows with AWS Cognito including user pools and identity management",
+        "Build responsive, accessible UI components with Tailwind CSS and shadcn/ui component library",
+        "Integrate third-party sports data APIs for real-time odds and live match tracking",
+        "Establish testing strategies, CI/CD pipelines, and code quality standards"
       ],
       "achievements": [
-        "Delivered production-ready betting platform within 6-month timeline",
-        "Implemented scalable architecture supporting future feature expansions",
-        "Optimized application performance achieving sub-2s load times"
+        "Delivered production-ready betting platform within a 6-month timeline as a solo developer",
+        "Built a modular, scalable architecture enabling rapid feature additions post-launch",
+        "Optimized Core Web Vitals achieving sub-2s LCP and 90+ Lighthouse performance scores"
       ],
       "skills": [
         "React",
@@ -116,23 +159,23 @@
       "url": "https://legacybhc.com",
       "startDate": "2023-01-15",
       "endDate": "2024-03-04",
-      "summary": "Developed enterprise-level internal tools for employee management and certification tracking systems.",
+      "summary": "Built enterprise internal tools for a behavioral healthcare company, digitalizing employee certification tracking, vacation management, and HR workflows.",
       "highlights": [
-        "Built comprehensive employee management platform using Next.js and MongoDB",
-        "Translated complex Figma designs into pixel-perfect responsive interfaces",
-        "Managed IT infrastructure including Windows Server and network systems"
+        "Developed a full employee management suite with Next.js and MongoDB replacing manual spreadsheet-based processes",
+        "Translated complex Figma design systems into pixel-perfect, responsive React components",
+        "Managed AWS infrastructure deployments and maintained Windows Server/Active Directory environments"
       ],
       "responsibilities": [
-        "Develop internal applications for certification and vacation management",
-        "Translate Figma designs into responsive React components",
-        "Implement testing strategies and maintain code quality standards",
-        "Manage AWS deployments and maintain application infrastructure",
-        "Provide IT support including Active Directory and Office 365 administration"
+        "Develop and maintain internal web applications for certification tracking, vacation scheduling, and employee onboarding",
+        "Implement pixel-perfect responsive interfaces from detailed Figma design specifications",
+        "Build reusable component library and establish frontend code quality standards",
+        "Manage AWS deployments, CI/CD pipelines, and application infrastructure",
+        "Administer IT systems including Active Directory, Office 365, and network infrastructure"
       ],
       "achievements": [
-        "Streamlined employee certification tracking reducing manual processes by 60%",
-        "Delivered pixel-perfect UI implementations from complex design specifications",
-        "Maintained 99.9% system uptime across all managed applications"
+        "Digitalized employee certification tracking, eliminating manual processes and reducing administrative overhead by 60%",
+        "Delivered a complete HR management platform serving 200+ employees across multiple facilities",
+        "Maintained 99.9% uptime across all managed applications and IT infrastructure"
       ],
       "skills": [
         "Next.js",
@@ -149,26 +192,26 @@
       "position": "Web Developer & IT Specialist",
       "location_type": "On-site",
       "location": "Santa Clara, Cuba",
-      "url": "",
+      "url": "https://www.etecsa.cu/",
       "startDate": "2019-09-02",
       "endDate": "2021-12-12",
-      "summary": "Developed telecommunications management systems and employee feedback platforms for regional operations.",
+      "summary": "Developed internal web applications for Cuba's national telecommunications company, building management systems that streamlined regional operations for thousands of users.",
       "highlights": [
-        "Built phone transfer management system improving regional efficiency by 40%",
-        "Created employee feedback platform using React and Django",
-        "Collaborated with backend teams on API integration and system architecture"
+        "Built a phone line transfer management system that automated previously manual workflows, improving regional processing efficiency by 40%",
+        "Developed an employee feedback and evaluation platform with React frontend and Django REST API backend",
+        "Integrated frontend applications with existing enterprise systems and legacy databases"
       ],
       "responsibilities": [
-        "Develop internal tools for telecommunications and employee management",
-        "Implement responsive UI components with React and Tailwind CSS",
-        "Collaborate on API integration with Django backend systems",
-        "Maintain legacy codebases and ensure system reliability",
-        "Participate in code reviews and quality assurance processes"
+        "Design and develop internal web applications for telecommunications operations and HR management",
+        "Build responsive, accessible UI components with React and Tailwind CSS",
+        "Integrate frontend applications with Django REST API backends and legacy systems",
+        "Maintain and modernize existing codebases while ensuring zero-downtime operations",
+        "Collaborate in code reviews, technical planning, and cross-team coordination"
       ],
       "achievements": [
-        "Delivered telecommunications management system serving 10,000+ users",
-        "Improved employee feedback collection efficiency by 50%",
-        "Maintained zero-downtime deployments across all managed systems"
+        "Delivered telecommunications management platform serving 10,000+ daily users across regional offices",
+        "Automated employee feedback workflows reducing collection and processing time by 50%",
+        "Maintained zero-downtime record across all production deployments"
       ],
       "skills": [
         "React",
@@ -238,7 +281,7 @@
     },
     {
       "name": "TypeScript",
-      "level": "Intermediate",
+      "level": "Expert",
       "keywords": [
         "Web Development",
         "Frontend",
@@ -342,59 +385,73 @@
   ],
   "projects": [
     {
-      "name": "Professional Portfolio",
+      "name": "Cerebro - Business Intelligence Dashboard",
       "isActive": true,
-      "description": "Modern, responsive portfolio website showcasing projects and technical expertise.",
+      "description": "SaaS platform for business listing management with automated publisher scanning, analytics, and multi-tenant role-based dashboards.",
       "highlights": [
-        "Built with Astro for optimal performance and SEO",
-        "Features dark/light mode toggle and customizable themes",
-        "Fully responsive design with print-friendly CV export"
+        "Built the entire frontend from scratch with Next.js 15, React 19, TypeScript, and Tailwind v4",
+        "Three-layer secure architecture: Client → Server Actions → DAL → FastAPI backend",
+        "Role-based dashboards for 7 user roles across Admin, Agency, and SMB tenants",
+        "Full i18n support (EN/ES/FR) with Kinde Auth and automated publisher scraping workflows"
       ],
-      "url": "https://juliocesardb.com",
-      "github": "https://github.com/JulioCesar97DB/JulioCesarDB-portfolio"
+      "url": "https://consumrbuzz.com/"
+    },
+    {
+      "name": "Cloud Infrastructure Designer",
+      "isActive": true,
+      "description": "Interactive visual tool for designing, estimating costs, and deploying cloud architectures across AWS, Azure, and GCP.",
+      "highlights": [
+        "Drag-and-drop canvas built with React and XYFlow for visual cloud architecture design",
+        "Real-time cost estimation engine calculating pricing across three major cloud providers",
+        "Azure AD SSO authentication and Stripe subscription billing integration",
+        "Zustand-powered state management for complex multi-resource architecture graphs"
+      ],
+      "url": ""
     },
     {
       "name": "BetHomeWeb",
       "isActive": true,
-      "description": "Sports betting platform with real-time odds and secure payment processing.",
+      "description": "Full-featured sports betting platform with real-time odds, live match tracking, and secure user authentication.",
       "highlights": [
-        "React-based SPA with AWS Amplify hosting",
-        "Integrated AWS Cognito authentication and real-time data feeds",
-        "Responsive design supporting multiple sports categories"
+        "React SPA with live odds updates and multi-sport category support",
+        "AWS Cognito authentication with MFA and automated Amplify CI/CD pipeline",
+        "95% test coverage with Jest and React Testing Library",
+        "90+ Lighthouse performance score with sub-2s load times"
       ],
       "url": "https://develop.dehp9v8k4vj0v.amplifyapp.com",
       "github": "https://github.com/BlindersBetHome/bethome-web"
     },
     {
-      "name": "Cloud Infrastructure Designer",
+      "name": "Professional Portfolio",
       "isActive": true,
-      "description": "Drag-and-drop tool for designing and deploying cloud architectures.",
+      "description": "Personal portfolio and CV website built for performance, accessibility, and SEO.",
       "highlights": [
-        "Built with React and XYFlow for visual architecture design",
-        "Supports AWS, Azure, and GCP with real-time cost calculations",
-        "Integrated deployment automation and resource provisioning"
+        "Built with Astro achieving 100 Lighthouse performance score and fast static page loads",
+        "Dark/light mode toggle with multiple customizable themes",
+        "Fully responsive design with print-optimized CV export for PDF generation"
       ],
-      "url": ""
+      "url": "https://juliocesardb.com",
+      "github": "https://github.com/JulioCesar97DB/JulioCesarDB-portfolio"
     },
     {
       "name": "Employee Management Suite",
       "isActive": false,
-      "description": "Comprehensive platform for training, certification, and vacation management.",
+      "description": "Enterprise HR platform for certification tracking, vacation scheduling, and employee onboarding across multiple healthcare facilities.",
       "highlights": [
-        "Next.js application with MongoDB backend integration",
-        "Streamlined HR processes with automated tracking systems",
-        "Responsive design with role-based access control"
+        "Next.js application with MongoDB backend serving 200+ employees",
+        "Digitalized manual HR processes reducing administrative overhead by 60%",
+        "Pixel-perfect implementation from Figma designs with role-based access control"
       ],
       "url": ""
     },
     {
       "name": "Telecommunications Management System",
       "isActive": false,
-      "description": "Regional phone transfer and employee feedback management platform.",
+      "description": "Internal platform for managing phone line transfers and employee evaluations for Cuba's national telecom provider.",
       "highlights": [
-        "React frontend with Django REST API backend",
-        "Served 10,000+ users across regional operations",
-        "Improved operational efficiency by 40%"
+        "React frontend integrated with Django REST API backend",
+        "Served 10,000+ daily users across regional telecommunications offices",
+        "Automated manual workflows improving regional processing efficiency by 40%"
       ],
       "url": ""
     }

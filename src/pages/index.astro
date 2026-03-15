@@ -7,8 +7,6 @@ import Experience from "@/components/sections/Experience.astro";
 import Hero from "@/components/sections/Hero.astro";
 import Projects from "@/components/sections/Projects.astro";
 import Skills from "@/components/sections/Skills.astro";
-import Tail from "@/components/sections/Tail.astro";
-import KeyboardManager from "@/components/KeyboardManager.astro";
 import ThemeSwitch from "@/components/ThemeSwitch.astro";
 
 import { basics } from "@cv";
@@ -17,27 +15,30 @@ const { name, label } = basics;
 
 <Layout title={`${name} Portfolio - ${label}`}>
 	<main
+		id="main-content"
 		class="relative grid max-w-7xl gap-12 p-8 max-sm:py-16 md:grid-cols-6 md:p-16 xl:gap-24 print:max-w-none print:grid-cols-1 print:gap-6"
 	>
 		<div
 			class="space-y-6 md:col-span-2 print:col-span-1 print:grid print:grid-cols-2 print:gap-5 print:space-y-0"
 		>
 			<Hero />
-			<About />
 			<ThemeSwitch />
+			<About />
+			<Skills className="print:hidden" />
+			<Education />
 		</div>
 		<div
 			class="space-y-12 md:col-span-4 print:col-span-1 print:grid print:grid-cols-4 print:gap-2 print:space-y-0"
 		>
 			<Experience className="print:col-span-3" />
 			<Projects className="print:hidden" />
-			<Skills className="print:hidden" />
-			<Education className="order-first" />
 		</div>
-		<Tail />
+		<footer class="flex w-full max-w-7xl justify-center md:col-span-6 print:hidden">
+			<a href="https://github.com/JulioCesar97DB" rel="noopener noreferrer" target="_blank" class="group flex items-center space-x-1 font-mono text-xs text-skin-muted transition-colors hover:text-accent">
+				<span class="flex gap-1">Made by JulioCesarDB</span>
+			</a>
+		</footer>
 	</main>
-
-	<KeyboardManager />
 </Layout>
 
 <style>
