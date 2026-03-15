@@ -4,23 +4,15 @@
     --accent: 16, 185, 129;
     --color-text-base: 26, 26, 26;
     --color-text-muted: 100, 100, 100;
-    --color-text-inverted: 250, 250, 250;
     --color-fill: 250, 250, 250;
     --muted: 212, 212, 212;
-    --color: 16, 185, 129;
-    --color-button-accent: 16, 185, 129;
-    --color-button-accent-hover: 5, 150, 105;
     --color-button-muted: 245, 245, 245;
   }
   .dark {
     --color-text-base: 240, 240, 240;
     --color-text-muted: 150, 150, 150;
-    --color-text-inverted: 240, 240, 240;
     --color-fill: 10, 10, 10;
     --muted: 38, 38, 38;
-    --color: 16, 185, 129;
-    --color-button-accent: 16, 185, 129;
-    --color-button-accent-hover: 52, 211, 153;
     --color-button-muted: 23, 23, 23;
   }
 }

@@ -185,14 +185,18 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 <script>
 	const button = document.querySelector(".copy-email") as HTMLButtonElement | null;
 	if (button) {
-		button.addEventListener("click", () => {
+		button.addEventListener("click", async () => {
 			const email = button.getAttribute("data-email") ?? "";
-			navigator.clipboard.writeText(email);
-			const original = button.innerHTML;
-			button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-emerald-500"><path d="M20 6 9 17l-5-5"/></svg>`;
-			setTimeout(() => {
-				button.innerHTML = original;
-			}, 2000);
+			try {
+				await navigator.clipboard.writeText(email);
+				const original = button.innerHTML;
+				button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-emerald-500"><path d="M20 6 9 17l-5-5"/></svg>`;
+				setTimeout(() => {
+					button.innerHTML = original;
+				}, 2000);
+			} catch {
+				// Clipboard API not available
+			}
 		});
 	}
 </script>

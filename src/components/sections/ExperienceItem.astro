@@ -1,34 +1,21 @@
 ---
 import ExternalLink from "@/icons/ExternalLink.astro";
 import { getSkillIcon } from "@/utils/icons";
-import { formatDateRange } from "@/utils/dates";
+import type { Work } from "@/cv";
 
-interface Props {
-	name: string;
-	startDate: string;
-	endDate: string | null;
-	position: string;
-	summary?: string;
-	responsibilities?: string[];
-	achievements?: string[];
-	url?: string;
-	skills?: string[];
-	location?: string;
-	location_type?: string;
-}
+type Props = Pick<Work, "name" | "position" | "startDate" | "endDate" | "summary" | "responsibilities" | "achievements" | "url" | "skills" | "location" | "location_type">;
 
 const { name, startDate, endDate, position, summary, responsibilities, achievements, url, skills, location, location_type } = Astro.props;
 
-const dateRange = formatDateRange(startDate, endDate);
-const startYear = new Date(startDate).getFullYear();
-const endYear = endDate != null ? new Date(endDate).getFullYear() : "Present";
 const isCurrent = endDate == null;
+const startYear = new Date(startDate).getFullYear();
+const endYear = isCurrent ? "Present" : new Date(endDate).getFullYear();
 ---
 
 <li class="relative print:py-2">
 	<div class="group relative grid pb-1 print:pb-0 print:grid-cols-1 print:gap-1 md:grid-cols-12 md:gap-6">
 		<header class="relative mt-1 font-mono text-xs text-skin-muted md:col-span-2">
-			<time datetime={startDate} data-title={startDate}>{startYear}</time> - <time datetime={endDate} data-title={endDate}>{endYear}</time>
+			<time datetime={startDate}>{startYear}</time> - {isCurrent ? <span>Present</span> : <time datetime={endDate}>{endYear}</time>}
 		</header>
 		<div class="relative flex flex-col pb-6 print:pb-0 md:before:-ml-6 md:col-span-10 before:w-px print:before:hidden before:absolute before:bg-skin-muted before:h-full before:mt-2 before:hidden md:before:block">
 			<div class:list={["absolute w-2 h-2 rounded-full mt-2 -translate-x-[1.71rem] ring ring-skin-fill print:hidden hidden md:block", isCurrent ? "bg-green-500 ring-green-500/20" : "bg-skin-muted"]}></div>
