@@ -47,6 +47,11 @@ interface Work {
   endDate: DateStr | null;
   summary: string;
   highlights: Highlight;
+  responsibilities?: Array<string>;
+  achievements?: Array<string>;
+  skills?: Array<string>;
+  location?: string;
+  location_type?: string;
 }
 
 type DateStr = `${string}-${string}-${string}`;
@@ -142,4 +147,4 @@ interface References {
   reference: string;
 }
 
-type Highlight = Array<String>;
+type Highlight = Array<string>;

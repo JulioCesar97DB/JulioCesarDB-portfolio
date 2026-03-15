@@ -1,66 +1,19 @@
 ---
 import Section from "../Section.astro";
-import HTML from "@/icons/html.astro";
-import CSS from "@/icons/css.astro";
-import JavaScript from "@/icons/javascript.astro";
-import TypeScript from "@/icons/type.astro";
-import React from "@/icons/react.astro";
-import Node from "@/icons/node.astro";
-import MySQL from "@/icons/sql.astro";
-import Git from "@/icons/git.astro";
-import GitHub from "@/icons/GitHub.astro";
-import Tailwind from "@/icons/tailwind.astro";
-import Next from "@/icons/next.astro";
+import { getSkillIcon } from "@/utils/icons";
 import { skills } from "@cv";
-import Swift from "@/icons/swift.astro";
-import SwiftUI from "@/icons/swiftui.astro";
-import Flutter from "@/icons/flutter.astro";
-import Figma from "@/icons/Figma.astro";
-import Gitlab from "@/icons/Gitlab.astro";
-import Redux from "@/icons/Redux.astro";
-import MongoDB from "@/icons/mongodb.astro";
-import Docker from "@/icons/docker.astro";
-import Django from "@/icons/django.astro";
-import Jest from "@/icons/Jest.astro";
-import GraphQL from "@/icons/GraphQL.astro";
-
-const SKILLS_ICONS: Record<string, any> = {
-	HTML,
-	CSS,
-	JavaScript,
-	TypeScript,
-	React,
-	Node,
-	MySQL,
-	Git,
-	GitHub,
-	Next,
-	Tailwind,
-	Swift,
-	SwiftUI,
-	Flutter,
-	Figma,
-	Gitlab,
-	Redux,
-	MongoDB,
-	Docker,
-	Django,
-	Jest,
-	GraphQL,
-};
 ---
 
 <Section className={Astro.props.className} title="Skills">
 	<ul
-		class="inline-flex flex-wrap gap-6 [&>li>svg]:size-5 [&>li>svg]:text-skin-hue [&>li]:text-sm"
+		class="inline-flex flex-wrap gap-3 [&>li>svg]:size-5 [&>li>svg]:text-accent [&>li]:text-sm"
 	>
 		{
 			skills.map(({ name }) => {
-				const iconName = name === "Next.js" ? "Next" : name;
-				const Icon = SKILLS_ICONS[iconName];
+				const Icon = getSkillIcon(name);
 
 				return (
-					<li class="border-skin-hue/20s bg-skin-button-accent/20s borders border-solids flex items-center gap-1 rounded-md px-2 py-0.5 text-xs text-skin-muted print:border-none print:bg-transparent print:p-0 print:text-zinc-800">
+					<li class="skill-badge flex items-center gap-1.5 rounded-md border border-accent/15 bg-accent/5 px-2.5 py-1 text-xs text-skin-muted transition-all duration-300 hover:border-accent/40 hover:bg-accent/10 hover:text-accent print:border-none print:bg-transparent print:p-0 print:text-zinc-800">
 						{Icon && <Icon />} <span>{name}</span>
 					</li>
 				);
@@ -68,3 +21,9 @@ const SKILLS_ICONS: Record<string, any> = {
 		}
 	</ul>
 </Section>
+
+<style>
+	.skill-badge:hover {
+		box-shadow: 0 0 8px rgba(var(--accent), 0.15);
+	}
+</style>
