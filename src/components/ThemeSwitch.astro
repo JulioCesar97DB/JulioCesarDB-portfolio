@@ -25,8 +25,8 @@
 
 <script>
 	const toggle = document.getElementById("themeToggle") as HTMLButtonElement;
-	const sunIcon = document.getElementById("sunIcon") as SVGElement;
-	const moonIcon = document.getElementById("moonIcon") as SVGElement;
+	const sunIcon = document.getElementById("sunIcon")!;
+	const moonIcon = document.getElementById("moonIcon")!;
 	const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 
 	function getTheme(): string {
