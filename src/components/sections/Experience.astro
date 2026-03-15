@@ -37,27 +37,3 @@ import { work } from "@cv"
   });
 </script>
 
-<style>
-  .exp-peek {
-    max-height: 72px;
-    overflow: hidden;
-    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-                mask-image 0.4s ease;
-    mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
-  }
-
-  .exp-peek.exp-open {
-    mask-image: none;
-    -webkit-mask-image: none;
-  }
-
-  .timeline-dot {
-    background: radial-gradient(circle at center, rgb(var(--accent)) 0%, rgba(var(--accent), 0.6) 100%);
-    box-shadow: 0 0 6px rgba(var(--accent), 0.3);
-  }
-
-  li::marker {
-    color: rgb(var(--accent));
-  }
-</style>

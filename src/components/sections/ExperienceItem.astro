@@ -22,6 +22,7 @@ const { name, startDate, endDate, position, summary, responsibilities, achieveme
 const dateRange = formatDateRange(startDate, endDate);
 const startYear = new Date(startDate).getFullYear();
 const endYear = endDate != null ? new Date(endDate).getFullYear() : "Present";
+const isCurrent = endDate == null;
 ---
 
 <li class="relative print:py-2">
@@ -29,8 +30,8 @@ const endYear = endDate != null ? new Date(endDate).getFullYear() : "Present";
 		<header class="relative mt-1 font-mono text-xs text-skin-muted md:col-span-2">
 			<time datetime={startDate} data-title={startDate}>{startYear}</time> - <time datetime={endDate} data-title={endDate}>{endYear}</time>
 		</header>
-		<div class="relative flex flex-col pb-6 print:pb-0 md:before:-ml-6 md:col-span-10 before:w-px print:before:hidden before:absolute before:bg-gradient-to-b before:from-accent/40 before:to-accent/5 before:h-full before:mt-2 before:hidden md:before:block">
-			<div class="timeline-dot absolute w-2 h-2 rounded-full mt-2 -translate-x-[1.71rem] ring-2 print:hidden ring-skin-fill hidden md:block"></div>
+		<div class="relative flex flex-col pb-6 print:pb-0 md:before:-ml-6 md:col-span-10 before:w-px print:before:hidden before:absolute before:bg-skin-muted before:h-full before:mt-2 before:hidden md:before:block">
+			<div class:list={["absolute w-2 h-2 rounded-full mt-2 -translate-x-[1.71rem] ring ring-skin-fill print:hidden hidden md:block", isCurrent ? "bg-green-500 ring-green-500/20" : "bg-skin-muted"]}></div>
 			<h3>
 				<div class="inline-flex items-center text-lg print:text-base leading-tight group/link" aria-label={`${position} at ${name}`}>
 					<span>{position} <span class="text-accent">@</span>{" "}
@@ -108,3 +109,23 @@ const endYear = endDate != null ? new Date(endDate).getFullYear() : "Present";
 		</div>
 	</div>
 </li>
+
+<style>
+	.exp-peek {
+		max-height: 72px;
+		overflow: hidden;
+		transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+					mask-image 0.4s ease;
+		mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
+		-webkit-mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
+	}
+
+	.exp-peek.exp-open {
+		mask-image: none;
+		-webkit-mask-image: none;
+	}
+
+	li::marker {
+		color: rgb(var(--accent));
+	}
+</style>

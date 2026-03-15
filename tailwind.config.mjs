@@ -46,10 +46,10 @@ export default {
       },
       backgroundImage: {
         "grid-pattern":
-          "linear-gradient(rgba(var(--accent), 0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--accent), 0.07) 1px, transparent 1px)",
+          "radial-gradient(rgba(var(--accent), 0.18) 1.2px, transparent 1.2px)",
       },
       backgroundSize: {
-        "grid-pattern": "24px 24px",
+        "grid-pattern": "20px 20px",
       },
       fontFamily: {
         mono: ["'Courier New'", "Consolas", "monospace"],
