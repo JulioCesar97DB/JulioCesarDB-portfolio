@@ -32,6 +32,7 @@ export default {
           hue: withOpacity("--color"),
           muted: withOpacity("--muted"),
         },
+        accent: "rgb(var(--accent))",
       },
       ringColor: {
         skin: {
@@ -42,6 +43,16 @@ export default {
         skin: {
           hue: withOpacity("--color-fill"),
         },
+      },
+      backgroundImage: {
+        "grid-pattern":
+          "linear-gradient(rgba(var(--accent), 0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--accent), 0.07) 1px, transparent 1px)",
+      },
+      backgroundSize: {
+        "grid-pattern": "24px 24px",
+      },
+      fontFamily: {
+        mono: ["'Courier New'", "Consolas", "monospace"],
       },
     },
   },

@@ -1,83 +1,65 @@
 ---
-import DarkTheme from "@/icons/darkTheme.astro";
-import LightTheme from "@/icons/lightTheme.astro";
+
 ---
 
-<div class="no-print inline-flex items-center">
-  <div class="group/theme flex items-center gap-2">
-    <label
-      for="themeSwitch"
-      class="flex items-center gap-1 text-sm font-medium leading-6 text-skin-base transition-transform ease-in-out group-hover/theme:rotate-45"
-    >
-      <span id="darkIcon"><DarkTheme /></span>
-      <span id="lightIcon" class="hidden"><LightTheme /></span>
-    </label>
-    <select
-      id="themeSwitch"
-      name="themeSwitch"
-      class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-skin-base ring-1 ring-inset ring-skin-muted focus:ring-2 focus:ring-skin-hue sm:text-sm sm:leading-6"
-    >
-      <option value="system">System</option>
-      <option value="dark">Dark</option>
-      <option value="light">Light</option>
-    </select>
-  </div>
+<button
+	id="themeToggle"
+	class="no-print inline-flex size-9 items-center justify-center rounded-md text-accent transition-all duration-300 hover:bg-accent/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+	aria-label="Toggle dark mode"
+>
+	<svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden">
+		<circle cx="12" cy="12" r="4"></circle>
+		<path d="M12 2v2"></path>
+		<path d="M12 20v2"></path>
+		<path d="m4.93 4.93 1.41 1.41"></path>
+		<path d="m17.66 17.66 1.41 1.41"></path>
+		<path d="M2 12h2"></path>
+		<path d="M20 12h2"></path>
+		<path d="m6.34 17.66-1.41 1.41"></path>
+		<path d="m19.07 4.93-1.41 1.41"></path>
+	</svg>
+	<svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden">
+		<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+	</svg>
+</button>
 
-  <style>
-    :global(.dark) {
-      color-scheme: dark;
-    }
-    /* Estilos específicos para el select en modo oscuro */
-    :global(.dark) #themeSwitch {
-      background-color: #1a1a1a;
-      color: #ffffff;
-    }
-    :global(.dark) #themeSwitch option {
-      background-color: #1a1a1a;
-      color: #ffffff;
-    }
-  </style>
+<script>
+	const toggle = document.getElementById("themeToggle") as HTMLButtonElement;
+	const sunIcon = document.getElementById("sunIcon") as SVGElement;
+	const moonIcon = document.getElementById("moonIcon") as SVGElement;
+	const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const select = document.getElementById("themeSwitch") as HTMLSelectElement;
-      const darkIcon = document.getElementById("darkIcon") as HTMLSpanElement;
-      const lightIcon = document.getElementById("lightIcon") as HTMLSpanElement;
-      const theme = localStorage.getItem("theme");
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+	function getTheme(): string {
+		const stored = localStorage.getItem("theme");
+		return stored ?? systemTheme;
+	}
 
-      const setIconVisibility = (theme: string) => {
-        if (theme === "dark") {
-          darkIcon.classList.remove("hidden");
-          lightIcon.classList.add("hidden");
-        } else {
-          darkIcon.classList.add("hidden");
-          lightIcon.classList.remove("hidden");
-        }
-      };
+	function applyTheme(theme: string) {
+		document.documentElement.classList.remove("light", "dark");
+		document.documentElement.classList.add(theme);
+		localStorage.setItem("theme", theme);
+		updateIcons(theme);
+	}
 
-      if (theme !== null) {
-        select.value = theme;
-        setIconVisibility(theme);
-      } else {
-        select.value = systemTheme;
-        setIconVisibility(systemTheme);
-      }
+	function updateIcons(theme: string) {
+		const isDark = theme === "dark";
+		sunIcon.classList.toggle("hidden", isDark);
+		moonIcon.classList.toggle("hidden", !isDark);
+	}
 
-      function updateTheme(value: string) {
-        const theme = value === "system" ? systemTheme : value;
-        document.documentElement.classList.remove("light", "dark");
-        document.documentElement.classList.add(theme);
-        localStorage.setItem("theme", value);
-        setIconVisibility(theme);
-      }
+	applyTheme(getTheme());
 
-      updateTheme(select.value);
+	toggle.addEventListener("click", () => {
+		const isDark = document.documentElement.classList.contains("dark");
+		applyTheme(isDark ? "light" : "dark");
+	});
 
-      select.addEventListener("change", (event: Event) => {
-        const select = event.target as HTMLSelectElement;
-        updateTheme(select.value);
-      });
-    });
-  </script>
-</div>
+	window.addEventListener("beforeprint", () => {
+		document.documentElement.classList.remove("dark");
+		document.documentElement.classList.add("light");
+	});
+
+	window.addEventListener("afterprint", () => {
+		applyTheme(getTheme());
+	});
+</script>
