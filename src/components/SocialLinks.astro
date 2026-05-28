@@ -1,18 +1,22 @@
 ---
 import type { IconComponent } from "@/utils/icons";
+import type { CV } from "@/cv";
 import GitHub from "@/icons/GitHub.astro";
 import LinkedIn from "@/icons/LinkedIn.astro";
 import X from "@/icons/X.astro";
+import Instagram from "@/icons/Instagram.astro";
 import Mail from "@/icons/Mail.astro";
 import { basics } from "@cv";
 
+type Profile = CV["basics"]["profiles"][number];
+
 const { profiles, email } = basics;
-const iconFor: Record<string, IconComponent> = { GitHub, LinkedIn, X };
+const iconFor: Record<string, IconComponent> = { GitHub, LinkedIn, X, Instagram };
 ---
 
 <ul class="flex items-center gap-5 [&_svg]:size-6">
   {
-    profiles.map((profile) => {
+    (profiles as Profile[]).map((profile: Profile) => {
       const Icon = iconFor[profile.network];
       return (
         Icon && (
