@@ -10,7 +10,7 @@ const { profiles, email } = basics;
 const iconFor: Record<string, IconComponent> = { GitHub, LinkedIn, X };
 ---
 
-<ul class="flex items-center gap-5 [&_svg]:size-5">
+<ul class="flex items-center gap-5 [&_svg]:size-6">
   {
     profiles.map((profile) => {
       const Icon = iconFor[profile.network];

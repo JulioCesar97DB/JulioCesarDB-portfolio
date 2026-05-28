@@ -1,6 +1,5 @@
 ---
 import { formatDateRange } from "@/utils/dates";
-import { getSkillIcon } from "@/utils/icons";
 import ExternalLink from "@/icons/ExternalLink.astro";
 
 interface Props {
@@ -95,16 +94,10 @@ const hasDetails = responsibilities.length > 0 || achievements.length > 0;
 
       {
         skills.length > 0 && (
-          <ul class="flex flex-wrap gap-2 pt-1 [&_svg]:size-3.5 [&_svg]:text-accent">
-            {skills.map((skill) => {
-              const Icon = getSkillIcon(skill);
-              return (
-                <li class="inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1 font-mono text-xs text-accent">
-                  {Icon && <Icon />}
-                  <span>{skill}</span>
-                </li>
-              );
-            })}
+          <ul class="flex flex-wrap gap-2 pt-1">
+            {skills.map((skill) => (
+              <li class="tag-badge">{skill}</li>
+            ))}
           </ul>
         )
       }

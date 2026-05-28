@@ -1,12 +1,11 @@
 ---
 interface Props {
   id: string;
-  number: string;
   title: string;
   class?: string;
 }
 
-const { id, number, title, class: className } = Astro.props;
+const { id, title, class: className } = Astro.props;
 ---
 
 <section id={id} class:list={["scroll-mt-24", className]}>
@@ -14,7 +13,6 @@ const { id, number, title, class: className } = Astro.props;
     data-reveal
     class="mb-8 flex items-center gap-3 text-2xl font-bold text-slate-lightest sm:text-3xl"
   >
-    <span class="font-mono text-lg font-medium text-accent sm:text-xl">{number}.</span>
     <span>{title}</span>
     <span class="ml-4 hidden h-px max-w-xs flex-1 bg-navy-lightest sm:block"></span>
   </h2>

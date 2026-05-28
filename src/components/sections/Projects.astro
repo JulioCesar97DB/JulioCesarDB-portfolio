@@ -11,7 +11,7 @@ const featured = (projects as Project[]).filter((project: Project) => project.is
 const noteworthy = (projects as Project[]).filter((project: Project) => !featured.includes(project));
 ---
 
-<Section id="projects" number="03" title="Some Things I've Built">
+<Section id="projects" title="Some Things I've Built">
   <div class="space-y-6">
     {featured.map((project: Project) => <FeaturedProject {...project} />)}
   </div>

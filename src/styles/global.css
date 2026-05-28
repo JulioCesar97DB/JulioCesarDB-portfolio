@@ -1,11 +1,12 @@
 :root {
-  --navy: #0a192f;
-  --navy-light: #112240;
-  --navy-lightest: #233554;
-  --slate: #8892b0;
-  --slate-light: #a8b2d1;
-  --slate-lightest: #ccd6f6;
-  --accent: #64ffda;
+  /* Brittany Chiang v4 palette (Tailwind slate + teal), in OKLCH. */
+  --navy: oklch(0.208 0.042 265.755); /* slate-900 #0f172a */
+  --navy-light: oklch(0.279 0.041 260.031); /* slate-800 #1e293b */
+  --navy-lightest: oklch(0.372 0.044 257.287); /* slate-700 #334155 */
+  --slate: oklch(0.704 0.04 256.788); /* slate-400 #94a3b8 */
+  --slate-light: oklch(0.869 0.022 252.894); /* slate-300 #cbd5e1 */
+  --slate-lightest: oklch(0.929 0.013 255.508); /* slate-200 #e2e8f0 */
+  --accent: oklch(0.855 0.138 181.071); /* teal-300 #5eead4 */
 }
 
 *,
@@ -22,7 +23,8 @@ body {
   margin: 0;
   background-color: var(--navy);
   color: var(--slate);
-  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-family: "Inter Variable", Inter, system-ui, -apple-system, sans-serif;
+  font-weight: 440;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -59,7 +61,7 @@ img {
 }
 
 ::selection {
-  background: rgba(100, 255, 218, 0.2);
+  background: oklch(0.855 0.138 181.071 / 0.2);
   color: var(--slate-lightest);
 }
 
@@ -67,6 +69,19 @@ img {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 2px;
+}
+
+/* Brittany-style tech badge: pill, no icon, teal text on translucent teal */
+.tag-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  background-color: oklch(0.777 0.152 181.912 / 0.1); /* teal-400/10 */
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  color: var(--accent); /* teal-300 */
 }
 
 /* Frosted-glass hover for cards (jobs, projects, education) — no resting border */
@@ -79,10 +94,10 @@ img {
 }
 
 .glass-card:hover {
-  background-color: rgba(255, 255, 255, 0.035);
+  background-color: oklch(0.279 0.041 260.031 / 0.5); /* slate-800/50 */
   box-shadow:
-    inset 0 0 0 1px rgba(148, 163, 184, 0.16),
-    0 18px 40px -16px rgba(2, 12, 27, 0.7);
+    inset 0 0 0 1px oklch(0.929 0.013 255.508 / 0.1), /* slate-200/10 ring */
+    0 18px 40px -16px oklch(0.208 0.042 265.755 / 0.7); /* slate-900 shadow */
 }
 
 .glass-card--lift:hover {
@@ -111,9 +126,10 @@ html.js [data-reveal] {
   pointer-events: none;
   --x: 50vw;
   --y: 50vh;
+  /* blue-700 #1d4ed8 glow, heavily diffused */
   background: radial-gradient(
     760px circle at var(--x) var(--y),
-    rgba(29, 78, 216, 0.11),
+    oklch(0.488 0.243 264.376 / 0.12),
     transparent 78%
   );
   opacity: 0;

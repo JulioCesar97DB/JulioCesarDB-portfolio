@@ -1,6 +1,5 @@
 ---
 import Section from "@/components/Section.astro";
-import { getSkillIcon } from "@/utils/icons";
 import type { CV } from "@/cv";
 import { skills } from "@cv";
 
@@ -12,7 +11,7 @@ const groups = [
 ];
 ---
 
-<Section id="skills" number="04" title="Skills & Technologies">
+<Section id="skills" title="Skills & Technologies">
   <div class="space-y-8">
     {
       groups.map((group) => (
@@ -20,16 +19,10 @@ const groups = [
           <h3 class="mb-4 font-mono text-sm uppercase tracking-widest text-accent">
             {group.label}
           </h3>
-          <ul class="flex flex-wrap gap-3 [&_svg]:size-5 [&_svg]:text-accent">
-            {group.items.map((skill: Skill) => {
-              const Icon = getSkillIcon(skill.name);
-              return (
-                <li class="flex items-center gap-2 rounded-md bg-navy-light/40 px-3 py-2 text-base text-slate-light transition-colors duration-300 hover:text-accent">
-                  {Icon && <Icon />}
-                  <span>{skill.name}</span>
-                </li>
-              );
-            })}
+          <ul class="flex flex-wrap gap-2">
+            {group.items.map((skill: Skill) => (
+              <li class="tag-badge">{skill.name}</li>
+            ))}
           </ul>
         </div>
       ))

@@ -58,23 +58,21 @@ const { name, description, url, github, keywords = [], isActive } = Astro.props;
   </h3>
   <p class="mb-4 flex-1 text-base leading-relaxed text-slate">{description}</p>
 
-  <footer class="flex items-center justify-between gap-2">
-    {
-      keywords.length > 0 && (
-        <ul class="flex flex-wrap gap-x-2 gap-y-1 font-mono text-[11px] text-slate">
-          {keywords.slice(0, 4).map((keyword) => (
-            <li>{keyword}</li>
-          ))}
-        </ul>
-      )
-    }
-    <span
-      class:list={[
-        "ml-2 shrink-0 font-mono text-[11px]",
-        isActive ? "text-accent" : "text-slate",
-      ]}
-    >
-      {isActive ? "Active" : "Archived"}
-    </span>
-  </footer>
+  {
+    keywords.length > 0 && (
+      <ul class="mb-3 flex flex-wrap gap-2">
+        {keywords.slice(0, 4).map((keyword) => (
+          <li class="tag-badge">{keyword}</li>
+        ))}
+      </ul>
+    )
+  }
+  <span
+    class:list={[
+      "font-mono text-[11px]",
+      isActive ? "text-accent" : "text-slate",
+    ]}
+  >
+    {isActive ? "Active" : "Archived"}
+  </span>
 </li>

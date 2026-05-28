@@ -69,9 +69,9 @@ const { name, description, url, github, madeAt, keywords = [] } = Astro.props;
 
   {
     keywords.length > 0 && (
-      <ul class="flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-slate">
+      <ul class="flex flex-wrap gap-2">
         {keywords.map((keyword) => (
-          <li>{keyword}</li>
+          <li class="tag-badge">{keyword}</li>
         ))}
       </ul>
     )

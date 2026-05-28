@@ -4,7 +4,7 @@ import ExperienceItem from "@/components/sections/ExperienceItem.astro";
 import { work } from "@cv";
 ---
 
-<Section id="experience" number="02" title="Where I've Worked">
+<Section id="experience" title="Where I've Worked">
   <ul class="flex flex-col gap-2">
     {work.map((job) => <ExperienceItem {...job} />)}
   </ul>
