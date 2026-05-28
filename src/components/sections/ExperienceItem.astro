@@ -35,7 +35,10 @@ const place = [location_type, location].filter(Boolean).join(" · ");
 const hasDetails = responsibilities.length > 0 || achievements.length > 0;
 ---
 
-<li data-reveal>
+<li
+  data-reveal
+  class="transition-opacity duration-300 lg:group-hover/list:opacity-50 lg:hover:!opacity-100"
+>
   <div
     class="glass-card group grid gap-2 p-4 sm:grid-cols-[140px_1fr] sm:gap-6"
   >

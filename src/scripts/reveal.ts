@@ -3,6 +3,13 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Once an element has revealed, drop the data-reveal hook and any inline opacity
+// GSAP left behind, so CSS hover states (e.g. the focus/dim effect) take over.
+function settle(el: HTMLElement): void {
+  el.removeAttribute("data-reveal");
+  gsap.set(el, { clearProps: "opacity,transform" });
+}
+
 export function initReveal(): void {
   const els = gsap.utils.toArray<HTMLElement>("[data-reveal]");
   if (!els.length) return;
@@ -10,21 +17,21 @@ export function initReveal(): void {
   const mm = gsap.matchMedia();
 
   mm.add("(prefers-reduced-motion: reduce)", () => {
-    gsap.set(els, { autoAlpha: 1, y: 0 });
+    els.forEach(settle);
   });
 
   mm.add("(prefers-reduced-motion: no-preference)", () => {
-    gsap.set(els, { autoAlpha: 0, y: 24 });
-    ScrollTrigger.batch(els, {
+    ScrollTrigger.batch("[data-reveal]", {
       start: "top 88%",
       onEnter: (batch) =>
         gsap.to(batch, {
-          autoAlpha: 1,
+          opacity: 1,
           y: 0,
           duration: 0.6,
           ease: "power2.out",
           stagger: 0.08,
           overwrite: true,
+          onComplete: () => (batch as HTMLElement[]).forEach(settle),
         }),
     });
   });

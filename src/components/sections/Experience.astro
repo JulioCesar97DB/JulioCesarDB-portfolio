@@ -1,11 +1,14 @@
 ---
 import Section from "@/components/Section.astro";
 import ExperienceItem from "@/components/sections/ExperienceItem.astro";
+import type { CV } from "@/cv";
 import { work } from "@cv";
+
+type Work = CV["work"][number];
 ---
 
 <Section id="experience" title="Where I've Worked">
-  <ul class="flex flex-col gap-2">
-    {work.map((job) => <ExperienceItem {...job} />)}
+  <ul class="group/list flex flex-col gap-2">
+    {(work as Work[]).map((job: Work) => <ExperienceItem {...job} />)}
   </ul>
 </Section>

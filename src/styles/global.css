@@ -90,14 +90,16 @@ img {
   transition:
     transform 0.25s ease,
     background-color 0.25s ease,
-    box-shadow 0.25s ease;
+    box-shadow 0.25s ease,
+    opacity 0.25s ease;
 }
 
 .glass-card:hover {
-  background-color: oklch(0.279 0.041 260.031 / 0.5); /* slate-800/50 */
+  background-color: oklch(0.279 0.041 260.031 / 0.55); /* slate-800 */
   box-shadow:
-    inset 0 0 0 1px oklch(0.929 0.013 255.508 / 0.1), /* slate-200/10 ring */
-    0 18px 40px -16px oklch(0.208 0.042 265.755 / 0.7); /* slate-900 shadow */
+    inset 0 1px 0 0 oklch(1 0 0 / 0.06), /* top glass sheen */
+    inset 0 0 0 1px oklch(0.929 0.013 255.508 / 0.12), /* slate-200 ring */
+    0 22px 50px -18px oklch(0.208 0.042 265.755 / 0.85); /* deeper shadow */
 }
 
 .glass-card--lift:hover {
