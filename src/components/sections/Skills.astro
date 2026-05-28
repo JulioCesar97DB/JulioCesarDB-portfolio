@@ -1,29 +1,38 @@
 ---
-import Section from "../Section.astro";
+import Section from "@/components/Section.astro";
 import { getSkillIcon } from "@/utils/icons";
+import type { CV } from "@/cv";
 import { skills } from "@cv";
+
+type Skill = CV["skills"][number];
+
+const groups = [
+  { label: "Expert", items: (skills as Skill[]).filter((skill: Skill) => skill.level === "Expert") },
+  { label: "Proficient", items: (skills as Skill[]).filter((skill: Skill) => skill.level !== "Expert") },
+];
 ---
 
-<Section className={Astro.props.className} title="Skills">
-	<ul
-		class="inline-flex flex-wrap gap-3 [&>li>svg]:size-5 [&>li>svg]:text-accent [&>li]:text-sm"
-	>
-		{
-			skills.map(({ name }) => {
-				const Icon = getSkillIcon(name);
-
-				return (
-					<li class="skill-badge flex items-center gap-1.5 rounded-md border border-accent/15 bg-accent/5 px-2.5 py-1 text-xs text-skin-muted transition-all duration-300 hover:border-accent/40 hover:bg-accent/10 hover:text-accent print:border-none print:bg-transparent print:p-0 print:text-zinc-800">
-						{Icon && <Icon />} <span>{name}</span>
-					</li>
-				);
-			})
-		}
-	</ul>
+<Section id="skills" number="04" title="Skills & Technologies">
+  <div class="space-y-8">
+    {
+      groups.map((group) => (
+        <div data-reveal>
+          <h3 class="mb-4 font-mono text-sm uppercase tracking-widest text-accent">
+            {group.label}
+          </h3>
+          <ul class="flex flex-wrap gap-3 [&_svg]:size-5 [&_svg]:text-accent">
+            {group.items.map((skill: Skill) => {
+              const Icon = getSkillIcon(skill.name);
+              return (
+                <li class="flex items-center gap-2 rounded-md border border-navy-lightest/60 bg-navy-light/40 px-3 py-2 text-sm text-slate-light transition-all duration-300 hover:border-accent/40 hover:text-accent">
+                  {Icon && <Icon />}
+                  <span>{skill.name}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
 </Section>
-
-<style>
-	.skill-badge:hover {
-		box-shadow: 0 0 8px rgba(var(--accent), 0.15);
-	}
-</style>
