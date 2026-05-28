@@ -1,19 +1,22 @@
 ---
 interface Props {
-	className?: string;
-	title?: string;
+  id: string;
+  number: string;
+  title: string;
+  class?: string;
 }
 
-const { className, title } = Astro.props;
+const { id, number, title, class: className } = Astro.props;
 ---
 
-<section class:list={["flex flex-col gap-4 print:gap-0", className]}>
-	{title && (
-		<div class="flex items-center gap-3 pb-4 print:pb-0">
-			<div class="h-3 w-1 rounded-full bg-accent print:hidden"></div>
-			<h3 class="text-sm font-semibold uppercase tracking-widest print:text-xl print:normal-case print:tracking-normal">{title}</h3>
-			<div class="hidden h-px flex-1 sm:block print:hidden" style="background: linear-gradient(to right, rgba(var(--accent), 0.4), rgba(var(--accent), 0.15) 40%, transparent);"></div>
-		</div>
-	)}
-	<slot />
+<section id={id} class:list={["scroll-mt-24", className]}>
+  <h2
+    data-reveal
+    class="mb-8 flex items-center gap-3 text-xl font-bold text-slate-lightest sm:text-2xl"
+  >
+    <span class="font-mono text-base font-medium text-accent sm:text-lg">{number}.</span>
+    <span>{title}</span>
+    <span class="ml-4 hidden h-px max-w-xs flex-1 bg-navy-lightest sm:block"></span>
+  </h2>
+  <slot />
 </section>

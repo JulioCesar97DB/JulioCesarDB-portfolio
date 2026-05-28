@@ -1,0 +1,43 @@
+---
+import type { IconComponent } from "@/utils/icons";
+import GitHub from "@/icons/GitHub.astro";
+import LinkedIn from "@/icons/LinkedIn.astro";
+import X from "@/icons/X.astro";
+import Mail from "@/icons/Mail.astro";
+import { basics } from "@cv";
+
+const { profiles, email } = basics;
+const iconFor: Record<string, IconComponent> = { GitHub, LinkedIn, X };
+---
+
+<ul class="flex items-center gap-5 [&_svg]:size-5">
+  {
+    profiles.map((profile) => {
+      const Icon = iconFor[profile.network];
+      return (
+        Icon && (
+          <li>
+            <a
+              href={profile.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={profile.network}
+              class="text-slate transition-colors hover:text-accent"
+            >
+              <Icon />
+            </a>
+          </li>
+        )
+      );
+    })
+  }
+  <li>
+    <a
+      href={`mailto:${email}`}
+      aria-label="Email"
+      class="text-slate transition-colors hover:text-accent"
+    >
+      <Mail />
+    </a>
+  </li>
+</ul>
