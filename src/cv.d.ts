@@ -135,6 +135,9 @@ interface Projects {
   highlights: Highlight;
   url: string;
   github?: string;
+  year?: string;
+  madeAt?: string;
+  keywords?: Array<string>;
 }
 
 interface Interests {

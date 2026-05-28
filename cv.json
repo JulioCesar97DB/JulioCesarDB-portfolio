@@ -394,7 +394,10 @@
         "Role-based dashboards for 7 user roles across Admin, Agency, and SMB tenants",
         "Full i18n support (EN/ES/FR) with Kinde Auth and automated publisher scraping workflows"
       ],
-      "url": "https://consumrbuzz.com/"
+      "url": "https://consumrbuzz.com/",
+      "year": "2025",
+      "madeAt": "ConsumrBuzz",
+      "keywords": ["Next.js", "React", "TypeScript", "Tailwind CSS", "TanStack Query", "Kinde Auth"]
     },
     {
       "name": "Cloud Infrastructure Designer",
@@ -406,7 +409,10 @@
         "Azure AD SSO authentication and Stripe subscription billing integration",
         "Zustand-powered state management for complex multi-resource architecture graphs"
       ],
-      "url": ""
+      "url": "",
+      "year": "2025",
+      "madeAt": "Second Window",
+      "keywords": ["React", "TypeScript", "XYFlow", "Zustand", "Azure AD", "Stripe API"]
     },
     {
       "name": "BetHomeWeb",
@@ -419,7 +425,10 @@
         "90+ Lighthouse performance score with sub-2s load times"
       ],
       "url": "https://develop.dehp9v8k4vj0v.amplifyapp.com",
-      "github": "https://github.com/BlindersBetHome/bethome-web"
+      "github": "https://github.com/BlindersBetHome/bethome-web",
+      "year": "2024",
+      "madeAt": "Freelance",
+      "keywords": ["React", "TypeScript", "Tailwind CSS", "AWS Cognito", "AWS Amplify", "Jest"]
     },
     {
       "name": "Professional Portfolio",
@@ -431,7 +440,10 @@
         "Fully responsive design with print-optimized CV export for PDF generation"
       ],
       "url": "https://juliocesardb.com",
-      "github": "https://github.com/JulioCesar97DB/JulioCesarDB-portfolio"
+      "github": "https://github.com/JulioCesar97DB/JulioCesarDB-portfolio",
+      "year": "2024",
+      "madeAt": "Personal",
+      "keywords": ["Astro", "TypeScript", "Tailwind CSS", "GSAP"]
     },
     {
       "name": "Employee Management Suite",
@@ -442,7 +454,10 @@
         "Digitalized manual HR processes reducing administrative overhead by 60%",
         "Pixel-perfect implementation from Figma designs with role-based access control"
       ],
-      "url": ""
+      "url": "",
+      "year": "2023",
+      "madeAt": "Legacy BHC",
+      "keywords": ["Next.js", "TypeScript", "MongoDB", "Tailwind CSS"]
     },
     {
       "name": "Telecommunications Management System",
@@ -453,7 +468,10 @@
         "Served 10,000+ daily users across regional telecommunications offices",
         "Automated manual workflows improving regional processing efficiency by 40%"
       ],
-      "url": ""
+      "url": "",
+      "year": "2020",
+      "madeAt": "ETECSA",
+      "keywords": ["React", "JavaScript", "Django", "MongoDB"]
     }
   ]
 }
