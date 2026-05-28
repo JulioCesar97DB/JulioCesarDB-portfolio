@@ -1,133 +1,61 @@
 ---
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/500.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
+import "@fontsource/jetbrains-mono/400.css";
+import "@fontsource/jetbrains-mono/500.css";
+import "@/styles/global.css";
 import { basics } from "@cv";
 
 interface Props {
-	title: string;
+  title: string;
 }
 
 const { title } = Astro.props;
-
 const { image, summary, url } = basics;
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<title>{title}</title>
-		<meta name="description" content={summary} />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
-		<meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
-		<link rel="canonical" href={url} />
-		<link rel="stylesheet" href="/themes/themes.css" />
+  <head>
+    <meta charset="UTF-8" />
+    <title>{title}</title>
+    <meta name="description" content={summary} />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#0a192f" />
+    <link rel="canonical" href={url} />
 
-		<meta property="og:url" content={url} />
-		<meta property="og:type" content="website" />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={summary} />
-		<meta property="og:image" content={`${url}${image}`} />
+    <meta property="og:url" content={url} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={summary} />
+    <meta property="og:image" content={`${url}${image}`} />
 
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta property="twitter:domain" content={url.split("//")[1] ?? ""} />
-		<meta property="twitter:url" content={url} />
-		<meta name="twitter:title" content={title} />
-		<meta name="twitter:description" content={summary} />
-		<meta name="twitter:image" content={`${url}${image}`} />
-	</head>
-	<body class="relative bg-skin-fill text-skin-base">
-		<div class="pointer-events-none fixed inset-0 -z-10 bg-grid-pattern print:hidden"></div>
-		<div class="pointer-events-none fixed left-1/4 top-0 -z-10 h-[300px] w-[300px] -translate-x-1/2 rounded-full bg-accent/5 blur-[100px] print:hidden"></div>
-		<a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-white">
-			Skip to content
-		</a>
-		<slot />
-		<style is:global>
-			body,
-			figure {
-				margin: 0;
-				padding: 0;
-			}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={summary} />
+    <meta name="twitter:image" content={`${url}${image}`} />
 
-			a {
-				text-decoration: none;
-			}
-
-			ul {
-				list-style: none;
-				margin: 0;
-				padding: 0;
-			}
-
-			*,
-			*::before,
-			*::after {
-				box-sizing: border-box;
-			}
-
-			h1,
-			h2,
-			h3,
-			h4 {
-				@apply text-skin-base;
-				margin: 0;
-				font-family:
-					system-ui,
-					-apple-system,
-					BlinkMacSystemFont,
-					"Segoe UI",
-					Roboto,
-					Oxygen,
-					Ubuntu,
-					Cantarell,
-					"Open Sans",
-					"Helvetica Neue",
-					sans-serif;
-			}
-
-			p {
-				@apply text-sm text-skin-muted;
-				line-height: 1.5;
-				text-wrap: pretty;
-			}
-
-			.print {
-				display: none !important;
-			}
-
-			@keyframes fade-in {
-				from {
-					opacity: 0;
-					transform: translateY(8px);
-				}
-				to {
-					opacity: 1;
-					transform: translateY(0);
-				}
-			}
-
-			.animate-on-scroll {
-				animation: fade-in 0.5s ease-out both;
-			}
-
-			@media print {
-				.no-print {
-					display: none !important;
-				}
-
-				.print {
-					display: block !important;
-				}
-
-				astro-dev-toolbar {
-					display: none !important;
-				}
-
-				article {
-					break-inside: avoid;
-				}
-			}
-		</style>
-	</body>
+    <script is:inline>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body>
+    <div id="spotlight" aria-hidden="true"></div>
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:text-navy"
+    >
+      Skip to content
+    </a>
+    <slot />
+    <script>
+      import { initSpotlight } from "@/scripts/spotlight";
+      import { initReveal } from "@/scripts/reveal";
+      initSpotlight();
+      initReveal();
+    </script>
+  </body>
 </html>
