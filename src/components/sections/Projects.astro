@@ -1,114 +1,46 @@
 ---
-import Git from "@/icons/git.astro";
-import Arrow from "@/icons/Arrow.astro";
-import Folder from "@/icons/Folder.astro";
-import Section from "../Section.astro";
-
+import Section from "@/components/Section.astro";
+import FeaturedProject from "@/components/FeaturedProject.astro";
+import ProjectCard from "@/components/ProjectCard.astro";
+import type { CV } from "@/cv";
 import { projects } from "@cv";
+
+type Project = CV["projects"][number];
+
+const featured = (projects as Project[]).filter((project: Project) => project.isActive).slice(0, 3);
+const noteworthy = (projects as Project[]).filter((project: Project) => !featured.includes(project));
 ---
 
-<Section className={Astro.props.className} title="Projects">
-	<div class="grid grid-cols-1 gap-3 md:grid-cols-2 print:flex print:flex-col">
-		{
-			projects.map(({ url, description, highlights, name, isActive, github }) => {
-				return (
-					<article class="project-card group/card relative flex flex-col justify-between rounded-md border border-accent/10 bg-skin-button-muted/50 p-5 shadow-sm transition-all duration-300 hover:border-accent/30 hover:shadow-md hover:shadow-accent/5">
-						<div>
-							<div class="flex items-center justify-between">
-								<div class="flex items-center gap-2">
-									<Folder />
-									<div class="flex items-center gap-[6px]">
-										{isActive && url ? (
-											<a class="hover:text-accent group flex items-center gap-[6px] text-base sm:text-lg decoration-dotted underline-offset-[5px] hover:underline" href={url} title={`Visit ${name}`} target="_blank" rel="noopener noreferrer">
-												{name}
-												<span class="text-accent transition ease-linear group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
-													<Arrow />
-												</span>
-											</a>
-										) : (
-											<span class="text-base sm:text-lg">{name}</span>
-										)}
-									</div>
-								</div>
+<Section id="projects" number="03" title="Some Things I've Built">
+  <div class="space-y-6">
+    {featured.map((project: Project) => <FeaturedProject {...project} />)}
+  </div>
 
-								<div class="flex items-center gap-2">
-									{github && (
-										<a href={github} title={`View ${name} repository on GitHub`} target="_blank" rel="noopener noreferrer" class="text-accent opacity-75 transition-opacity duration-200 hover:opacity-100" aria-label={`${name} GitHub repository`}>
-											<Git />
-										</a>
-									)}
-								</div>
-							</div>
+  {
+    noteworthy.length > 0 && (
+      <>
+        <h3
+          class="mb-6 mt-16 text-center font-mono text-lg text-slate-lightest"
+          data-reveal
+        >
+          Other Noteworthy Projects
+        </h3>
+        <ul class="grid gap-4 sm:grid-cols-2">
+          {noteworthy.map((project: Project) => (
+            <ProjectCard {...project} />
+          ))}
+        </ul>
+      </>
+    )
+  }
 
-							<p class="mt-3 text-sm leading-relaxed text-skin-muted">{description}</p>
-
-							<ul class="mt-3 text-sm text-skin-muted">
-								{highlights.map((highlight) => {
-									return <li>{highlight}</li>;
-								})}
-							</ul>
-						</div>
-
-						<div class="mt-4 flex items-center justify-between">
-							<span class:list={[
-								"inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider",
-								isActive
-									? "bg-accent/10 text-accent"
-									: "bg-skin-button-muted/50 text-skin-muted"
-							]}>
-								<span class:list={[
-									"h-1.5 w-1.5 rounded-full",
-									isActive ? "bg-accent animate-pulse" : "bg-skin-muted/50"
-								]}></span>
-								{isActive ? "Active" : "Archived"}
-							</span>
-						</div>
-					</article>
-				);
-			})
-		}
-	</div>
+  <div class="mt-12 text-center" data-reveal>
+    <a
+      href="/archive"
+      class="inline-flex items-center gap-2 rounded border border-accent px-6 py-3 font-mono text-sm text-accent transition-colors hover:bg-accent/10"
+    >
+      View Full Project Archive
+      <span aria-hidden="true">&rarr;</span>
+    </a>
+  </div>
 </Section>
-
-<style>
-	ul {
-		@apply ml-4 list-disc space-y-1;
-		li {
-			color: var(--slate);
-		}
-	}
-
-	li::marker {
-		color: rgb(var(--accent));
-	}
-
-	.project-card {
-		position: relative;
-	}
-
-	.project-card::before {
-		content: "";
-		position: absolute;
-		inset: -1px;
-		border-radius: 0.375rem;
-		padding: 1px;
-		background: linear-gradient(
-			135deg,
-			rgba(var(--accent), 0.3) 0%,
-			transparent 40%,
-			transparent 60%,
-			rgba(var(--accent), 0.3) 100%
-		);
-		-webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-		mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-		-webkit-mask-composite: xor;
-		mask-composite: exclude;
-		opacity: 0;
-		transition: opacity 0.3s ease;
-		pointer-events: none;
-	}
-
-	.project-card:hover::before {
-		opacity: 1;
-	}
-</style>

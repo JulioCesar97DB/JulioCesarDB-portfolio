@@ -1,0 +1,80 @@
+---
+import Folder from "@/icons/Folder.astro";
+import ExternalLink from "@/icons/ExternalLink.astro";
+import GitHub from "@/icons/GitHub.astro";
+
+interface Props {
+  name: string;
+  description: string;
+  url: string;
+  github?: string;
+  keywords?: string[];
+  isActive: boolean;
+}
+
+const { name, description, url, github, keywords = [], isActive } = Astro.props;
+---
+
+<li
+  data-reveal
+  class="group flex h-full flex-col rounded-lg border border-navy-lightest/50 bg-navy-light/40 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40"
+>
+  <header class="mb-3 flex items-center justify-between">
+    <div class="text-accent [&_svg]:size-8"><Folder /></div>
+    <div class="flex items-center gap-3 text-slate-light [&_svg]:size-4">
+      {
+        github && (
+          <a
+            href={github}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${name} GitHub repository`}
+            class="transition-colors hover:text-accent"
+          >
+            <GitHub />
+          </a>
+        )
+      }
+      {
+        url && (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${name} live site`}
+            class="transition-colors hover:text-accent"
+          >
+            <ExternalLink />
+          </a>
+        )
+      }
+    </div>
+  </header>
+
+  <h3
+    class="mb-2 font-semibold text-slate-lightest transition-colors group-hover:text-accent"
+  >
+    {name}
+  </h3>
+  <p class="mb-4 flex-1 text-sm leading-relaxed text-slate">{description}</p>
+
+  <footer class="flex items-center justify-between gap-2">
+    {
+      keywords.length > 0 && (
+        <ul class="flex flex-wrap gap-x-2 gap-y-1 font-mono text-[11px] text-slate">
+          {keywords.slice(0, 4).map((keyword) => (
+            <li>{keyword}</li>
+          ))}
+        </ul>
+      )
+    }
+    <span
+      class:list={[
+        "ml-2 shrink-0 font-mono text-[11px]",
+        isActive ? "text-accent" : "text-slate",
+      ]}
+    >
+      {isActive ? "Active" : "Archived"}
+    </span>
+  </footer>
+</li>

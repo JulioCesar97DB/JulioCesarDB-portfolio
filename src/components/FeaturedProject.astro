@@ -1,0 +1,79 @@
+---
+import Folder from "@/icons/Folder.astro";
+import ExternalLink from "@/icons/ExternalLink.astro";
+import GitHub from "@/icons/GitHub.astro";
+
+interface Props {
+  name: string;
+  description: string;
+  url: string;
+  github?: string;
+  madeAt?: string;
+  keywords?: string[];
+}
+
+const { name, description, url, github, madeAt, keywords = [] } = Astro.props;
+---
+
+<article
+  data-reveal
+  class="group rounded-lg border border-navy-lightest/60 bg-navy-light/40 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40"
+>
+  <header class="mb-4 flex items-center justify-between">
+    <div class="text-accent [&_svg]:size-10"><Folder /></div>
+    <div class="flex items-center gap-4 text-slate-light [&_svg]:size-5">
+      {
+        github && (
+          <a
+            href={github}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${name} GitHub repository`}
+            class="transition-colors hover:text-accent"
+          >
+            <GitHub />
+          </a>
+        )
+      }
+      {
+        url && (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${name} live site`}
+            class="transition-colors hover:text-accent"
+          >
+            <ExternalLink />
+          </a>
+        )
+      }
+    </div>
+  </header>
+
+  <h3
+    class="mb-2 text-lg font-semibold text-slate-lightest transition-colors group-hover:text-accent"
+  >
+    {
+      url ? (
+        <a href={url} target="_blank" rel="noopener noreferrer">
+          {name}
+        </a>
+      ) : (
+        name
+      )
+    }
+  </h3>
+  {madeAt && <p class="mb-2 font-mono text-xs text-slate">@ {madeAt}</p>}
+  <p class="mb-4 text-sm leading-relaxed text-slate">{description}</p>
+
+  {
+    keywords.length > 0 && (
+      <ul class="flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-slate">
+        {keywords.map((keyword) => (
+          <li>{keyword}</li>
+        ))}
+      </ul>
+    )
+  }
+</article>
