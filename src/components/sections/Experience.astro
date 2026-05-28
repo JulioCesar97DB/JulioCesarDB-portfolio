@@ -1,39 +1,11 @@
 ---
-import Section from "../Section.astro"
-import ExperienceItem from "./ExperienceItem.astro"
-import { work } from "@cv"
+import Section from "@/components/Section.astro";
+import ExperienceItem from "@/components/sections/ExperienceItem.astro";
+import { work } from "@cv";
 ---
 
-<Section className={Astro.props.className} title="Experience">
-  <ul class="flex flex-col">
-    {work.map((job) => (
-      <ExperienceItem {...job} />
-    ))}
+<Section id="experience" number="02" title="Where I've Worked">
+  <ul class="flex flex-col gap-2">
+    {work.map((job) => <ExperienceItem {...job} />)}
   </ul>
 </Section>
-
-<script>
-  document.querySelectorAll(".exp-toggle").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const peek = btn.previousElementSibling as HTMLElement | null;
-      if (!peek) return;
-
-      const isOpen = peek.classList.contains("exp-open");
-      const text = btn.querySelector(".exp-toggle-text") as HTMLElement;
-      const icon = btn.querySelector(".exp-toggle-icon") as HTMLElement;
-
-      if (isOpen) {
-        peek.classList.remove("exp-open");
-        peek.style.maxHeight = "";
-        text.textContent = "Show more";
-        icon.style.transform = "";
-      } else {
-        peek.classList.add("exp-open");
-        peek.style.maxHeight = peek.scrollHeight + "px";
-        text.textContent = "Show less";
-        icon.style.transform = "rotate(180deg)";
-      }
-    });
-  });
-</script>
-
