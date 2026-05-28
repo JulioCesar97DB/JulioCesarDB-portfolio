@@ -42,25 +42,32 @@
       "url": "https://consumrbuzz.com/",
       "startDate": "2025-10-07",
       "endDate": null,
-      "summary": "Built from scratch the entire frontend of Cerebro, a full-stack business intelligence dashboard for business listing management, automated publisher scanning, and analytics reporting.",
+      "summary": "Built ConsumrBuzz SaaS end to end — owning the entire frontend and contributing across the backend — a full-stack business intelligence dashboard for business listing management, automated publisher scanning, and analytics reporting.",
       "highlights": [
         "Architected and built the complete frontend from zero using Next.js 15, React 19, and TypeScript",
         "Implemented a three-layer data flow architecture (Client Components → TanStack Query Hooks → Server Actions → DAL → API) ensuring secure authentication handling",
         "Built role-based access control system supporting 7 roles across Admin, Agency, and SMB dashboards",
         "Integrated Kinde Auth with secure server-side token management, preventing client-side token exposure",
-        "Implemented full internationalization (i18n) supporting English, Spanish, and French with next-intl"
+        "Implemented full internationalization (i18n) supporting English, Spanish, and French with next-intl",
+        "Developed backend REST APIs with FastAPI (Python) for entity management, analytics, and authentication",
+        "Containerized services with Docker and deployed the platform on Google Cloud Platform (GCP)",
+        "Integrated the Google Business Profile API to synchronize and manage business listings at scale"
       ],
       "responsibilities": [
         "Lead all frontend architecture decisions and establish development standards",
         "Design and implement scalable React application with strict TypeScript patterns",
         "Build comprehensive entity management system for publishers, SMBs, and agencies",
         "Implement automated scraping job monitoring and analytics dashboards",
-        "Integrate authentication, bulk upload, billing, and document management modules"
+        "Integrate authentication, bulk upload, billing, and document management modules",
+        "Build backend REST APIs with FastAPI and a secure data-access layer",
+        "Containerize services with Docker and manage deployments on Google Cloud Platform (GCP)",
+        "Integrate the Google Business Profile API for business listing synchronization"
       ],
       "achievements": [
         "Delivered production-ready business intelligence platform from concept to deployment",
         "Established a strict three-layer architecture pattern ensuring security and maintainability",
-        "Built a modular dashboard supporting multiple user roles with dynamic navigation"
+        "Built a modular dashboard supporting multiple user roles with dynamic navigation",
+        "Delivered the full-stack platform end to end — Next.js frontend, FastAPI backend, and GCP deployment"
       ],
       "skills": [
         "Next.js",
@@ -72,7 +79,12 @@
         "next-intl",
         "TanStack Query",
         "React Hook Form",
-        "Zod"
+        "Zod",
+        "FastAPI",
+        "Python",
+        "Docker",
+        "GCP",
+        "Google Business Profile API"
       ]
     },
     {
@@ -385,19 +397,21 @@
   ],
   "projects": [
     {
-      "name": "Cerebro - Business Intelligence Dashboard",
+      "name": "ConsumrBuzz SaaS - Business Intelligence Dashboard",
       "isActive": true,
-      "description": "SaaS platform for business listing management with automated publisher scanning, analytics, and multi-tenant role-based dashboards.",
+      "description": "Full-stack SaaS platform for business listing management with automated publisher scanning, analytics, and multi-tenant role-based dashboards, powered by a FastAPI backend deployed on GCP.",
       "highlights": [
         "Built the entire frontend from scratch with Next.js 15, React 19, TypeScript, and Tailwind v4",
         "Three-layer secure architecture: Client → Server Actions → DAL → FastAPI backend",
         "Role-based dashboards for 7 user roles across Admin, Agency, and SMB tenants",
-        "Full i18n support (EN/ES/FR) with Kinde Auth and automated publisher scraping workflows"
+        "Full i18n support (EN/ES/FR) with Kinde Auth and automated publisher scraping workflows",
+        "Built backend REST APIs with FastAPI, containerized with Docker and deployed on Google Cloud Platform (GCP)",
+        "Integrated the Google Business Profile API for business listing synchronization"
       ],
       "url": "https://consumrbuzz.com/",
       "year": "2025",
       "madeAt": "ConsumrBuzz",
-      "keywords": ["Next.js", "React", "TypeScript", "Tailwind CSS", "TanStack Query", "Kinde Auth"]
+      "keywords": ["Next.js", "React", "TypeScript", "FastAPI", "Python", "Docker", "GCP", "Google Business Profile", "TanStack Query"]
     },
     {
       "name": "Cloud Infrastructure Designer",
