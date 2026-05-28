@@ -69,6 +69,34 @@ img {
   border-radius: 2px;
 }
 
+/* Frosted-glass hover for cards (jobs, projects, education) — no resting border */
+.glass-card {
+  border-radius: 0.5rem;
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.glass-card:hover {
+  background-color: rgba(255, 255, 255, 0.035);
+  box-shadow:
+    inset 0 0 0 1px rgba(148, 163, 184, 0.16),
+    0 18px 40px -16px rgba(2, 12, 27, 0.7);
+}
+
+.glass-card--lift:hover {
+  transform: translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-card,
+  .glass-card--lift:hover {
+    transition: none;
+    transform: none;
+  }
+}
+
 /* Reveal initial state — only when JS is enabled, so no-JS users still see content */
 html.js [data-reveal] {
   opacity: 0;
@@ -84,9 +112,9 @@ html.js [data-reveal] {
   --x: 50vw;
   --y: 50vh;
   background: radial-gradient(
-    600px circle at var(--x) var(--y),
-    rgba(100, 255, 218, 0.06),
-    transparent 40%
+    760px circle at var(--x) var(--y),
+    rgba(29, 78, 216, 0.11),
+    transparent 78%
   );
   opacity: 0;
   transition: opacity 0.3s ease;

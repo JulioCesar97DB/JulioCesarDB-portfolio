@@ -17,7 +17,7 @@ const { name, description, url, github, keywords = [], isActive } = Astro.props;
 
 <li
   data-reveal
-  class="group flex h-full flex-col rounded-lg border border-navy-lightest/50 bg-navy-light/40 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40"
+  class="glass-card glass-card--lift group flex h-full flex-col p-5"
 >
   <header class="mb-3 flex items-center justify-between">
     <div class="text-accent [&_svg]:size-8"><Folder /></div>
@@ -52,11 +52,11 @@ const { name, description, url, github, keywords = [], isActive } = Astro.props;
   </header>
 
   <h3
-    class="mb-2 font-semibold text-slate-lightest transition-colors group-hover:text-accent"
+    class="mb-2 text-lg font-semibold text-slate-lightest transition-colors group-hover:text-accent"
   >
     {name}
   </h3>
-  <p class="mb-4 flex-1 text-sm leading-relaxed text-slate">{description}</p>
+  <p class="mb-4 flex-1 text-base leading-relaxed text-slate">{description}</p>
 
   <footer class="flex items-center justify-between gap-2">
     {

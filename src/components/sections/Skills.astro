@@ -24,7 +24,7 @@ const groups = [
             {group.items.map((skill: Skill) => {
               const Icon = getSkillIcon(skill.name);
               return (
-                <li class="flex items-center gap-2 rounded-md border border-navy-lightest/60 bg-navy-light/40 px-3 py-2 text-sm text-slate-light transition-all duration-300 hover:border-accent/40 hover:text-accent">
+                <li class="flex items-center gap-2 rounded-md bg-navy-light/40 px-3 py-2 text-base text-slate-light transition-colors duration-300 hover:text-accent">
                   {Icon && <Icon />}
                   <span>{skill.name}</span>
                 </li>

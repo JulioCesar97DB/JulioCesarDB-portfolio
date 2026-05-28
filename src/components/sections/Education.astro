@@ -16,7 +16,7 @@ type Cert = CV["certificates"][number];
       (education as Edu[]).map((edu: Edu) => (
         <article
           data-reveal
-          class="rounded-lg border border-navy-lightest/50 bg-navy-light/40 p-5"
+          class="glass-card p-5"
         >
           <div class="flex items-start gap-3">
             <div class="mt-1 text-accent [&_svg]:size-6">
@@ -30,7 +30,7 @@ type Cert = CV["certificates"][number];
                 href={edu.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-sm text-accent hover:underline"
+                class="text-base text-accent hover:underline"
               >
                 {edu.institution}
               </a>
@@ -46,7 +46,7 @@ type Cert = CV["certificates"][number];
       (certificates as Cert[]).map((cert: Cert) => (
         <article
           data-reveal
-          class="rounded-lg border border-navy-lightest/50 bg-navy-light/40 p-5"
+          class="glass-card p-5"
         >
           <div class="flex items-start gap-3">
             <div class="mt-1 text-accent [&_svg]:size-6">
@@ -58,7 +58,7 @@ type Cert = CV["certificates"][number];
                 href={cert.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-sm text-accent hover:underline"
+                class="text-base text-accent hover:underline"
               >
                 {cert.issuer}
               </a>

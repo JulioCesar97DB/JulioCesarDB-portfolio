@@ -17,7 +17,7 @@ const { name, description, url, github, madeAt, keywords = [] } = Astro.props;
 
 <article
   data-reveal
-  class="group rounded-lg border border-navy-lightest/60 bg-navy-light/40 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40"
+  class="glass-card glass-card--lift group p-6"
 >
   <header class="mb-4 flex items-center justify-between">
     <div class="text-accent [&_svg]:size-10"><Folder /></div>
@@ -52,7 +52,7 @@ const { name, description, url, github, madeAt, keywords = [] } = Astro.props;
   </header>
 
   <h3
-    class="mb-2 text-lg font-semibold text-slate-lightest transition-colors group-hover:text-accent"
+    class="mb-2 text-xl font-semibold text-slate-lightest transition-colors group-hover:text-accent"
   >
     {
       url ? (
@@ -65,7 +65,7 @@ const { name, description, url, github, madeAt, keywords = [] } = Astro.props;
     }
   </h3>
   {madeAt && <p class="mb-2 font-mono text-xs text-slate">@ {madeAt}</p>}
-  <p class="mb-4 text-sm leading-relaxed text-slate">{description}</p>
+  <p class="mb-4 text-base leading-relaxed text-slate">{description}</p>
 
   {
     keywords.length > 0 && (

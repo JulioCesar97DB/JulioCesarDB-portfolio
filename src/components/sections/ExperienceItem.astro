@@ -38,11 +38,11 @@ const hasDetails = responsibilities.length > 0 || achievements.length > 0;
 
 <li data-reveal>
   <div
-    class="group grid gap-2 rounded-lg p-4 transition-all duration-300 hover:bg-navy-light/60 sm:grid-cols-[140px_1fr] sm:gap-6"
+    class="glass-card group grid gap-2 p-4 sm:grid-cols-[140px_1fr] sm:gap-6"
   >
     <p class="pt-1 font-mono text-xs uppercase tracking-wide text-slate">{dateRange}</p>
     <div class="space-y-3">
-      <h3 class="font-semibold text-slate-lightest">
+      <h3 class="text-lg font-semibold text-slate-lightest">
         <span>{position}</span>
         {
           url ? (
@@ -61,7 +61,7 @@ const hasDetails = responsibilities.length > 0 || achievements.length > 0;
         }
       </h3>
       {place && <p class="font-mono text-xs text-slate">{place}</p>}
-      <p class="text-sm leading-relaxed text-slate">{summary}</p>
+      <p class="text-base leading-relaxed text-slate">{summary}</p>
 
       {
         hasDetails && (
