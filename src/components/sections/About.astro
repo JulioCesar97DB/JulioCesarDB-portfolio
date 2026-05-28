@@ -1,15 +1,36 @@
 ---
-import Section from "../Section.astro";
+import Section from "@/components/Section.astro";
+import { getSkillIcon } from "@/utils/icons";
+import type { CV } from "@/cv";
+import { basics, skills } from "@cv";
 
-import { basics } from "@cv";
+type Skill = CV["skills"][number];
+
 const { summary } = basics;
+const coreSkills = (skills as Skill[]).filter((skill: Skill) => skill.level === "Expert");
 ---
 
-<Section title="About">
-	<div class="about-border relative pl-4">
-		<div class="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-accent/50 via-accent/20 to-transparent"></div>
-		<p>
-			{summary}
-		</p>
-	</div>
+<Section id="about" number="01" title="About Me">
+  <div class="space-y-4 text-slate" data-reveal>
+    <p class="leading-relaxed">{summary}</p>
+    <p class="leading-relaxed">
+      Here are a few technologies I&apos;ve been working with recently:
+    </p>
+    <ul
+      class="grid grid-cols-2 gap-2 pt-2 sm:grid-cols-3 [&_svg]:size-4 [&_svg]:text-accent"
+    >
+      {
+        coreSkills.map((skill: Skill) => {
+          const Icon = getSkillIcon(skill.name);
+          return (
+            <li class="flex items-center gap-2 font-mono text-sm text-slate-light">
+              <span class="text-accent">▹</span>
+              {Icon && <Icon />}
+              <span>{skill.name}</span>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
 </Section>
