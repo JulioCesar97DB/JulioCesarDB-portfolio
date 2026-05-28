@@ -1,0 +1,22 @@
+---
+import Section from "@/components/Section.astro";
+import { basics } from "@cv";
+
+const { email } = basics;
+---
+
+<Section id="contact" title="Get In Touch">
+  <div class="mx-auto max-w-xl space-y-6 text-center" data-reveal>
+    <p class="text-lg leading-relaxed text-slate">
+      I&apos;m currently open to new opportunities and interesting projects. Whether you
+      have a question, a role to fill, or just want to say hi, my inbox is always open —
+      I&apos;ll do my best to get back to you.
+    </p>
+    <a
+      href={`mailto:${email}`}
+      class="inline-flex items-center gap-2 rounded border border-accent px-8 py-4 font-mono text-base text-accent transition-colors hover:bg-accent/10"
+    >
+      Say Hello
+    </a>
+  </div>
+</Section>

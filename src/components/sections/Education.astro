@@ -1,54 +1,72 @@
 ---
-import Section from "../Section.astro";
+import Section from "@/components/Section.astro";
 import GraduationCap from "@/icons/GraduationCap.astro";
-import CertificateIcon from "@/icons/Certificate.astro";
+import Certificate from "@/icons/Certificate.astro";
 import { formatDateRange, getYear } from "@/utils/dates";
+import type { CV } from "@/cv";
 import { education, certificates } from "@cv";
+
+type Edu = CV["education"][number];
+type Cert = CV["certificates"][number];
 ---
 
-<Section className={Astro.props.className} title="Education">
-	<div class="flex flex-col gap-4">
-		{
-			education.map(({ institution, startDate, endDate, area, url }) => (
-				<div class="group flex gap-3 rounded-md border border-accent/10 bg-skin-button-muted/50 p-4 transition-all duration-300 hover:border-accent/20">
-					<div class="flex items-start pt-0.5">
-						<GraduationCap />
-					</div>
-					<div class="flex flex-1 flex-col gap-0.5 min-w-0">
-						<h3 class="font-medium leading-tight">
-							<a target="_blank" rel="noopener noreferrer" class="hover:text-accent decoration-dotted underline-offset-[5px] hover:underline transition-colors" href={url}>
-								{institution}
-							</a>
-						</h3>
-						<span class="font-mono text-sm text-skin-muted">{area}</span>
-						<time class="font-mono text-xs text-skin-muted">{formatDateRange(startDate, endDate)}</time>
-					</div>
-				</div>
-			))
-		}
-	</div>
-
-	{
-		certificates.length > 0 && (
-			<div class="mt-4 flex flex-col gap-3">
-				<h4 class="text-xs font-semibold uppercase tracking-wider text-accent/70">Certificates</h4>
-				{certificates.map(({ name, date, issuer, url }) => (
-					<div class="group flex gap-3 rounded-md border border-accent/10 bg-skin-button-muted/50 p-4 transition-all duration-300 hover:border-accent/20">
-						<div class="flex items-start pt-0.5">
-							<CertificateIcon />
-						</div>
-						<div class="flex flex-1 flex-col gap-0.5 min-w-0">
-							<h3 class="font-medium leading-tight">
-								<a class="hover:text-accent text-skin-base decoration-dotted underline-offset-[5px] hover:underline transition-colors" href={url} target="_blank" rel="noopener noreferrer">
-									{name}
-								</a>
-							</h3>
-							<span class="font-mono text-sm text-skin-muted">{issuer}</span>
-							<time class="font-mono text-xs text-skin-muted">{getYear(date)}</time>
-						</div>
-					</div>
-				))}
-			</div>
-		)
-	}
+<Section id="education" title="Education & Certifications">
+  <div class="group/list space-y-6">
+    {
+      (education as Edu[]).map((edu: Edu) => (
+        <article
+          data-reveal
+          class="glass-card p-5 lg:group-hover/list:opacity-[0.35] lg:hover:!opacity-100"
+        >
+          <div class="flex items-start gap-3">
+            <div class="mt-1 text-accent [&_svg]:size-6">
+              <GraduationCap />
+            </div>
+            <div class="space-y-1">
+              <h3 class="font-semibold text-slate-lightest">
+                {edu.studyType} in {edu.area}
+              </h3>
+              <a
+                href={edu.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-base text-accent hover:underline"
+              >
+                {edu.institution}
+              </a>
+              <p class="font-mono text-xs text-slate">
+                {formatDateRange(edu.startDate, edu.endDate)} · GPA {edu.score}
+              </p>
+            </div>
+          </div>
+        </article>
+      ))
+    }
+    {
+      (certificates as Cert[]).map((cert: Cert) => (
+        <article
+          data-reveal
+          class="glass-card p-5 lg:group-hover/list:opacity-[0.35] lg:hover:!opacity-100"
+        >
+          <div class="flex items-start gap-3">
+            <div class="mt-1 text-accent [&_svg]:size-6">
+              <Certificate />
+            </div>
+            <div class="space-y-1">
+              <h3 class="font-semibold text-slate-lightest">{cert.name}</h3>
+              <a
+                href={cert.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-base text-accent hover:underline"
+              >
+                {cert.issuer}
+              </a>
+              <p class="font-mono text-xs text-slate">{getYear(cert.date)}</p>
+            </div>
+          </div>
+        </article>
+      ))
+    }
+  </div>
 </Section>

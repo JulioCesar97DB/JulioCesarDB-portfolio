@@ -1,0 +1,78 @@
+---
+import Folder from "@/icons/Folder.astro";
+import ExternalLink from "@/icons/ExternalLink.astro";
+import GitHub from "@/icons/GitHub.astro";
+
+interface Props {
+  name: string;
+  description: string;
+  url: string;
+  github?: string;
+  keywords?: string[];
+  isActive: boolean;
+}
+
+const { name, description, url, github, keywords = [], isActive } = Astro.props;
+---
+
+<li
+  data-reveal
+  class="glass-card glass-card--lift group flex h-full flex-col p-5 lg:group-hover/list:opacity-[0.35] lg:hover:!opacity-100"
+>
+  <header class="mb-3 flex items-center justify-between">
+    <div class="text-accent [&_svg]:size-8"><Folder /></div>
+    <div class="flex items-center gap-3 text-slate-light [&_svg]:size-4">
+      {
+        github && (
+          <a
+            href={github}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${name} GitHub repository`}
+            class="transition-colors hover:text-accent"
+          >
+            <GitHub />
+          </a>
+        )
+      }
+      {
+        url && (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${name} live site`}
+            class="transition-colors hover:text-accent"
+          >
+            <ExternalLink />
+          </a>
+        )
+      }
+    </div>
+  </header>
+
+  <h3
+    class="mb-2 text-lg font-semibold text-slate-lightest transition-colors group-hover:text-accent"
+  >
+    {name}
+  </h3>
+  <p class="mb-4 flex-1 text-base leading-relaxed text-slate">{description}</p>
+
+  {
+    keywords.length > 0 && (
+      <ul class="mb-3 flex flex-wrap gap-2">
+        {keywords.slice(0, 4).map((keyword) => (
+          <li class="tag-badge">{keyword}</li>
+        ))}
+      </ul>
+    )
+  }
+  <span
+    class:list={[
+      "font-mono text-[11px]",
+      isActive ? "text-accent" : "text-slate",
+    ]}
+  >
+    {isActive ? "Active" : "Archived"}
+  </span>
+</li>

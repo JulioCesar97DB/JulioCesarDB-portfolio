@@ -1,0 +1,161 @@
+:root {
+  /* Brittany Chiang v4 palette (Tailwind slate + teal), in OKLCH. */
+  --navy: oklch(0.208 0.042 265.755); /* slate-900 #0f172a */
+  --navy-light: oklch(0.279 0.041 260.031); /* slate-800 #1e293b */
+  --navy-lightest: oklch(0.372 0.044 257.287); /* slate-700 #334155 */
+  --slate: oklch(0.704 0.04 256.788); /* slate-400 #94a3b8 */
+  --slate-light: oklch(0.869 0.022 252.894); /* slate-300 #cbd5e1 */
+  --slate-lightest: oklch(0.929 0.013 255.508); /* slate-200 #e2e8f0 */
+  --accent: oklch(0.855 0.138 181.071); /* teal-300 #5eead4 */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--navy);
+  color: var(--slate);
+  font-family: "Inter Variable", Inter, system-ui, -apple-system, sans-serif;
+  font-weight: 440;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  color: var(--slate-lightest);
+  font-weight: 600;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+::selection {
+  background: oklch(0.855 0.138 181.071 / 0.2);
+  color: var(--slate-lightest);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Brittany-style tech badge: pill, no icon, teal text on translucent teal */
+.tag-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  background-color: oklch(0.777 0.152 181.912 / 0.1); /* teal-400/10 */
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  color: var(--accent); /* teal-300 */
+}
+
+/* Frosted-glass hover for cards (jobs, projects, education) — no resting border */
+.glass-card {
+  border-radius: 0.5rem;
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.glass-card:hover {
+  background-color: oklch(0.32 0.06 263 / 0.32); /* translucent, slightly bluer slate */
+  box-shadow:
+    inset 0 1px 0 0 oklch(0.704 0.04 256.788 / 0.1), /* slate-400/10 top edge highlight */
+    0 14px 30px -12px oklch(0.129 0.042 264.695 / 0.55); /* soft lift shadow */
+}
+
+.glass-card--lift:hover {
+  transform: translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-card,
+  .glass-card--lift:hover {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* Reveal initial state — only when JS is enabled, so no-JS users still see content */
+html.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+/* Cursor spotlight */
+#spotlight {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  --x: 50vw;
+  --y: 50vh;
+  /* blue-700 #1d4ed8 glow, heavily diffused */
+  background: radial-gradient(
+    760px circle at var(--x) var(--y),
+    oklch(0.488 0.243 264.376 / 0.12),
+    transparent 78%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+html.js #spotlight {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  html.js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+  #spotlight {
+    display: none;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  #spotlight {
+    display: none;
+  }
+}

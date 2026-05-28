@@ -1,0 +1,36 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import ArchiveTable from "@/components/ArchiveTable.astro";
+import { basics } from "@cv";
+
+const { name } = basics;
+---
+
+<Layout title={`Project Archive — ${name}`}>
+  <main
+    id="main-content"
+    class="relative z-10 mx-auto max-w-screen-lg px-6 py-16 sm:px-10 lg:py-24"
+  >
+    <a
+      href="/"
+      class="group inline-flex items-center gap-2 font-mono text-sm text-accent transition-colors hover:underline"
+    >
+      <span class="transition-transform group-hover:-translate-x-1" aria-hidden="true"
+        >&larr;</span
+      >
+      {name}
+    </a>
+
+    <header class="mt-8" data-reveal>
+      <h1 class="text-3xl font-bold text-slate-lightest sm:text-4xl">All Projects</h1>
+      <p class="mt-2 text-slate">A big list of things I&apos;ve built.</p>
+    </header>
+
+    <div class="mt-10 overflow-x-auto" data-reveal>
+      <ArchiveTable />
+    </div>
+  </main>
+  <footer class="relative z-10 pb-10 text-center font-mono text-xs text-slate">
+    Designed &amp; built by {name}
+  </footer>
+</Layout>

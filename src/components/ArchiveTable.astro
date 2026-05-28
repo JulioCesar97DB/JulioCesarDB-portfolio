@@ -1,0 +1,115 @@
+---
+import ExternalLink from "@/icons/ExternalLink.astro";
+import GitHub from "@/icons/GitHub.astro";
+import { projects } from "@cv";
+
+const sorted = [...projects].sort(
+  (a, b) => Number(b.year ?? 0) - Number(a.year ?? 0),
+);
+---
+
+<table class="w-full border-collapse text-left">
+  <thead
+    class="hidden border-b border-navy-lightest font-mono text-xs uppercase tracking-wider text-slate md:table-header-group"
+  >
+    <tr>
+      <th class="py-4 pr-4 font-medium">Year</th>
+      <th class="py-4 pr-4 font-medium">Project</th>
+      <th class="py-4 pr-4 font-medium">Made at</th>
+      <th class="py-4 pr-4 font-medium">Built with</th>
+      <th class="py-4 font-medium">Links</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      sorted.map((project) => (
+        <tr
+          data-reveal
+          class="group block border-b border-navy-lightest/40 py-4 transition-colors hover:bg-navy-light/40 md:table-row md:py-0"
+        >
+          <td
+            data-label="Year"
+            class="archive-cell font-mono text-sm text-accent md:py-4 md:pr-4 md:align-top"
+          >
+            {project.year ?? "—"}
+          </td>
+          <td
+            data-label="Project"
+            class="archive-cell font-semibold text-slate-lightest md:py-4 md:pr-4 md:align-top"
+          >
+            {project.name}
+          </td>
+          <td
+            data-label="Made at"
+            class="archive-cell text-sm text-slate md:py-4 md:pr-4 md:align-top"
+          >
+            {project.madeAt ?? "—"}
+          </td>
+          <td
+            data-label="Built with"
+            class="archive-cell md:py-4 md:pr-4 md:align-top"
+          >
+            {project.keywords && project.keywords.length > 0 ? (
+              <ul class="flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-slate">
+                {project.keywords.map((keyword) => (
+                  <li>{keyword}</li>
+                ))}
+              </ul>
+            ) : (
+              <span class="text-slate">—</span>
+            )}
+          </td>
+          <td data-label="Links" class="archive-cell md:py-4 md:align-top">
+            <div class="flex items-center gap-4 text-slate-light [&_svg]:size-4">
+              {project.github && (
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${project.name} GitHub repository`}
+                  class="transition-colors hover:text-accent"
+                >
+                  <GitHub />
+                </a>
+              )}
+              {project.url && (
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${project.name} live site`}
+                  class="transition-colors hover:text-accent"
+                >
+                  <ExternalLink />
+                </a>
+              )}
+              {!project.github && !project.url && (
+                <span class="text-slate">—</span>
+              )}
+            </div>
+          </td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>
+
+<style>
+  /* Responsive: stack each row into a labelled card below the md breakpoint */
+  @media (max-width: 767px) {
+    .archive-cell {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.25rem 0;
+    }
+    .archive-cell::before {
+      content: attr(data-label);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--slate);
+    }
+  }
+</style>
