@@ -43,7 +43,10 @@ function formatUrl(url: string): string {
           >
             <td
               data-label="Year"
-              class="archive-cell font-mono text-sm text-accent md:py-4 md:pr-8 md:align-top"
+              class:list={[
+                "archive-cell font-mono text-sm text-accent md:py-4 md:pr-8 md:align-top",
+                !project.year && "archive-cell--empty",
+              ]}
             >
               {project.year ?? ""}
             </td>
@@ -66,13 +69,20 @@ function formatUrl(url: string): string {
             </td>
             <td
               data-label="Made at"
-              class="archive-cell text-sm text-slate md:py-4 md:pr-8 md:align-top"
+              class:list={[
+                "archive-cell text-sm text-slate md:py-4 md:pr-8 md:align-top",
+                !project.madeAt && "archive-cell--empty",
+              ]}
             >
               {project.madeAt ?? ""}
             </td>
             <td
               data-label="Built with"
-              class="archive-cell md:py-4 md:pr-8 md:align-top"
+              class:list={[
+                "archive-cell md:py-4 md:pr-8 md:align-top",
+                !(project.keywords && project.keywords.length > 0) &&
+                  "archive-cell--empty",
+              ]}
             >
               {project.keywords && project.keywords.length > 0 && (
                 <ul class="flex flex-wrap gap-1.5">
