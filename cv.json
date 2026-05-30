@@ -486,6 +486,34 @@
   ],
   "projects": [
     {
+      "name": "ConsumrBuzz SaaS - Business Intelligence Dashboard",
+      "image": "/projects/consumrbuzz.webp",
+      "isActive": true,
+      "description": "Full-stack SaaS platform for business listing management with automated publisher scanning, analytics, and multi-tenant role-based dashboards, powered by a FastAPI backend deployed on GCP.",
+      "highlights": [
+        "Built the entire frontend from scratch with Next.js 15, React 19, TypeScript, and Tailwind v4",
+        "Three-layer secure architecture: Client → Server Actions → DAL → FastAPI backend",
+        "Role-based dashboards for 7 user roles across Admin, Agency, and SMB tenants",
+        "Full i18n support (EN/ES/FR) with Kinde Auth and automated publisher scraping workflows",
+        "Built backend REST APIs with FastAPI, containerized with Docker and deployed on Google Cloud Platform (GCP)",
+        "Integrated the Google Business Profile API for business listing synchronization"
+      ],
+      "url": "https://app.consumrbuzz.com/en",
+      "year": "2025",
+      "madeAt": "ConsumrBuzz",
+      "keywords": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "FastAPI",
+        "Python",
+        "Docker",
+        "GCP",
+        "Google Business Profile",
+        "TanStack Query"
+      ]
+    },
+    {
       "name": "BookEasely",
       "image": "/projects/bookeasely.webp",
       "isActive": true,
@@ -538,34 +566,6 @@
         "OpenAI",
         "Tailwind CSS",
         "shadcn/ui"
-      ]
-    },
-    {
-      "name": "ConsumrBuzz SaaS - Business Intelligence Dashboard",
-      "image": "/projects/consumrbuzz.webp",
-      "isActive": true,
-      "description": "Full-stack SaaS platform for business listing management with automated publisher scanning, analytics, and multi-tenant role-based dashboards, powered by a FastAPI backend deployed on GCP.",
-      "highlights": [
-        "Built the entire frontend from scratch with Next.js 15, React 19, TypeScript, and Tailwind v4",
-        "Three-layer secure architecture: Client → Server Actions → DAL → FastAPI backend",
-        "Role-based dashboards for 7 user roles across Admin, Agency, and SMB tenants",
-        "Full i18n support (EN/ES/FR) with Kinde Auth and automated publisher scraping workflows",
-        "Built backend REST APIs with FastAPI, containerized with Docker and deployed on Google Cloud Platform (GCP)",
-        "Integrated the Google Business Profile API for business listing synchronization"
-      ],
-      "url": "https://app.consumrbuzz.com/en",
-      "year": "2025",
-      "madeAt": "ConsumrBuzz",
-      "keywords": [
-        "Next.js",
-        "React",
-        "TypeScript",
-        "FastAPI",
-        "Python",
-        "Docker",
-        "GCP",
-        "Google Business Profile",
-        "TanStack Query"
       ]
     },
     {
