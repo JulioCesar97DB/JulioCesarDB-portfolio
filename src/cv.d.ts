@@ -16,11 +16,15 @@ export interface CV {
 interface Basics {
   name: string;
   label: string;
+  tagline?: string;
   image: string;
   email: string;
   phone: string;
   url: string;
   summary: string;
+  summaryHighlights?: Array<string>;
+  aboutParagraphs?: Array<string>;
+  recentTech?: Array<string>;
   location: Location;
   profiles: Array<Profiles>;
 }
@@ -130,6 +134,7 @@ type Language =
 
 interface Projects {
   name: string;
+  image?: string;
   isActive: boolean;
   description: string;
   highlights: Highlight;

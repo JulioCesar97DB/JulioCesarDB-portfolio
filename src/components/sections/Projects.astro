@@ -7,12 +7,12 @@ import { projects } from "@cv";
 
 type Project = CV["projects"][number];
 
-const featured = (projects as Project[]).filter((project: Project) => project.isActive).slice(0, 3);
+const featured = (projects as Project[]).filter((project: Project) => project.isActive).slice(0, 5);
 const noteworthy = (projects as Project[]).filter((project: Project) => !featured.includes(project));
 ---
 
 <Section id="projects" title="Some Things I've Built">
-  <div class="group/list space-y-6">
+  <div class="group/list space-y-4">
     {featured.map((project: Project) => <FeaturedProject {...project} />)}
   </div>
 
@@ -20,7 +20,7 @@ const noteworthy = (projects as Project[]).filter((project: Project) => !feature
     noteworthy.length > 0 && (
       <>
         <h3
-          class="mb-6 mt-16 text-center font-mono text-lg text-slate-lightest"
+          class="mb-6 mt-12 text-center font-mono text-base text-slate-lightest"
           data-reveal
         >
           Other Noteworthy Projects

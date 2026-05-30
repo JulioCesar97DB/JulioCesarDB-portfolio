@@ -71,17 +71,34 @@ img {
   border-radius: 2px;
 }
 
+/* Brittany-style inline emphasis: near-white keywords against muted body copy */
+.text-highlight {
+  color: var(--slate-lightest);
+  font-weight: 500;
+}
+
 /* Brittany-style tech badge: pill, no icon, teal text on translucent teal */
 .tag-badge {
   display: inline-flex;
   align-items: center;
   border-radius: 9999px;
   background-color: oklch(0.777 0.152 181.912 / 0.1); /* teal-400/10 */
-  padding: 0.25rem 0.75rem;
-  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.72rem;
   font-weight: 500;
-  line-height: 1.25rem;
+  line-height: 1.1rem;
   color: var(--accent); /* teal-300 */
+}
+
+/* Sibling-dim: inside a `group/list`, hovering one item fades the rest (desktop only).
+   Shared by featured projects, project cards, experience, and education. */
+@media (min-width: 1024px) {
+  .group\/list:hover .sibling-dim {
+    opacity: 0.35;
+  }
+  .sibling-dim:hover {
+    opacity: 1 !important;
+  }
 }
 
 /* Frosted-glass hover for cards (jobs, projects, education) — no resting border */

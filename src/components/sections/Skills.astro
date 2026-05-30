@@ -12,14 +12,14 @@ const groups = [
 ---
 
 <Section id="skills" title="Skills & Technologies">
-  <div class="space-y-8">
+  <div class="space-y-6">
     {
       groups.map((group) => (
         <div data-reveal>
-          <h3 class="mb-4 font-mono text-sm uppercase tracking-widest text-accent">
+          <h3 class="mb-3 font-mono text-xs uppercase tracking-widest text-accent">
             {group.label}
           </h3>
-          <ul class="flex flex-wrap gap-2">
+          <ul class="flex flex-wrap gap-1.5">
             {group.items.map((skill: Skill) => (
               <li class="tag-badge">{skill.name}</li>
             ))}

@@ -11,26 +11,26 @@ type Cert = CV["certificates"][number];
 ---
 
 <Section id="education" title="Education & Certifications">
-  <div class="group/list space-y-6">
+  <div class="group/list space-y-4">
     {
       (education as Edu[]).map((edu: Edu) => (
         <article
           data-reveal
-          class="glass-card p-5 lg:group-hover/list:opacity-[0.35] lg:hover:!opacity-100"
+          class="glass-card sibling-dim p-4"
         >
           <div class="flex items-start gap-3">
-            <div class="mt-1 text-accent [&_svg]:size-6">
+            <div class="mt-0.5 text-accent [&_svg]:size-5">
               <GraduationCap />
             </div>
             <div class="space-y-1">
-              <h3 class="font-semibold text-slate-lightest">
+              <h3 class="text-base font-semibold text-slate-lightest">
                 {edu.studyType} in {edu.area}
               </h3>
               <a
                 href={edu.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-base text-accent hover:underline"
+                class="text-sm text-accent hover:underline"
               >
                 {edu.institution}
               </a>
@@ -46,19 +46,19 @@ type Cert = CV["certificates"][number];
       (certificates as Cert[]).map((cert: Cert) => (
         <article
           data-reveal
-          class="glass-card p-5 lg:group-hover/list:opacity-[0.35] lg:hover:!opacity-100"
+          class="glass-card sibling-dim p-4"
         >
           <div class="flex items-start gap-3">
-            <div class="mt-1 text-accent [&_svg]:size-6">
+            <div class="mt-0.5 text-accent [&_svg]:size-5">
               <Certificate />
             </div>
             <div class="space-y-1">
-              <h3 class="font-semibold text-slate-lightest">{cert.name}</h3>
+              <h3 class="text-base font-semibold text-slate-lightest">{cert.name}</h3>
               <a
                 href={cert.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-base text-accent hover:underline"
+                class="text-sm text-accent hover:underline"
               >
                 {cert.issuer}
               </a>
