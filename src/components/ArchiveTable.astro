@@ -51,7 +51,7 @@ const sorted = [...projects].sort(
           >
             {project.keywords && project.keywords.length > 0 ? (
               <ul class="flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-slate">
-                {project.keywords.map((keyword) => (
+                {project.keywords.map((keyword: string) => (
                   <li>{keyword}</li>
                 ))}
               </ul>
