@@ -7,6 +7,18 @@
     "phone": "+34 695-434-378",
     "url": "https://www.juliocesardb.com",
     "summary": "Frontend Developer with 5+ years of experience architecting and delivering production-grade web applications using React, Next.js, and TypeScript. Proven track record building complex platforms from scratch — from business intelligence dashboards to cloud infrastructure tools. Specialized in scalable frontend architectures, secure authentication patterns, and high-performance responsive interfaces.",
+    "summaryHighlights": [
+      "5+ years",
+      "production-grade web applications",
+      "React",
+      "Next.js",
+      "TypeScript",
+      "business intelligence dashboards",
+      "cloud infrastructure tools",
+      "scalable frontend architectures",
+      "secure authentication patterns",
+      "high-performance responsive interfaces"
+    ],
     "theme": "default",
     "location": {
       "address": "",
@@ -36,7 +48,7 @@
         "username": "juliocesardb97",
         "url": "https://www.instagram.com/juliocesardb97/"
       }
-    ] 
+    ]
   },
   "work": [
     {

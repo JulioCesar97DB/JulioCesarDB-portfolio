@@ -5,13 +5,32 @@ import { basics, skills } from "@cv";
 
 type Skill = CV["skills"][number];
 
-const { summary } = basics;
+const { summary, summaryHighlights = [] } = basics;
 const coreSkills = (skills as Skill[]).filter((skill: Skill) => skill.level === "Expert");
+
+// Brittany-style emphasis: split the summary into plain text and highlighted
+// keywords (rendered near-white) so the important terms stand out.
+const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const ordered = [...summaryHighlights].sort((a, b) => b.length - a.length);
+const highlightSet = new Set(summaryHighlights);
+const summaryParts = ordered.length
+  ? summary.split(new RegExp(`(${ordered.map(escapeRegExp).join("|")})`, "g"))
+  : [summary];
 ---
 
 <Section id="about" title="About Me">
   <div class="space-y-4 text-slate" data-reveal>
-    <p class="text-lg leading-relaxed">{summary}</p>
+    <p class="text-lg leading-relaxed">
+      {
+        summaryParts.map((part: string) =>
+          highlightSet.has(part) ? (
+            <strong class="text-highlight">{part}</strong>
+          ) : (
+            part
+          ),
+        )
+      }
+    </p>
     <p class="text-base leading-relaxed">
       Here are a few technologies I&apos;ve been working with recently:
     </p>

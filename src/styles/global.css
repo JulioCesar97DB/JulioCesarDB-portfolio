@@ -71,6 +71,12 @@ img {
   border-radius: 2px;
 }
 
+/* Brittany-style inline emphasis: near-white keywords against muted body copy */
+.text-highlight {
+  color: var(--slate-lightest);
+  font-weight: 500;
+}
+
 /* Brittany-style tech badge: pill, no icon, teal text on translucent teal */
 .tag-badge {
   display: inline-flex;
