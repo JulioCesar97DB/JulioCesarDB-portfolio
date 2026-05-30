@@ -6,110 +6,159 @@ import { projects } from "@cv";
 const sorted = [...projects].sort(
   (a, b) => Number(b.year ?? 0) - Number(a.year ?? 0),
 );
+
+// Show the live link the way Brittany does: "domain.com/path" without the
+// protocol or a trailing slash. Falls back to the raw value if it can't parse.
+function formatUrl(url: string): string {
+  try {
+    const { hostname, pathname } = new URL(url);
+    const path = pathname.replace(/\/$/, "");
+    return hostname.replace(/^www\./, "") + path;
+  } catch {
+    return url;
+  }
+}
 ---
 
 <table class="w-full border-collapse text-left">
   <thead
-    class="hidden border-b border-navy-lightest font-mono text-xs uppercase tracking-wider text-slate md:table-header-group"
+    class="hidden border-b border-navy-lightest text-sm text-slate md:table-header-group"
   >
     <tr>
-      <th class="py-4 pr-4 font-medium">Year</th>
-      <th class="py-4 pr-4 font-medium">Project</th>
-      <th class="py-4 pr-4 font-medium">Made at</th>
-      <th class="py-4 pr-4 font-medium">Built with</th>
-      <th class="py-4 font-medium">Links</th>
+      <th scope="col" class="py-4 pr-8 font-medium">Year</th>
+      <th scope="col" class="py-4 pr-8 font-medium">Project</th>
+      <th scope="col" class="py-4 pr-8 font-medium">Made at</th>
+      <th scope="col" class="py-4 pr-8 font-medium">Built with</th>
+      <th scope="col" class="py-4 font-medium">Link</th>
     </tr>
   </thead>
   <tbody>
     {
-      sorted.map((project) => (
-        <tr
-          data-reveal
-          class="group block border-b border-navy-lightest/40 py-4 transition-colors hover:bg-navy-light/40 md:table-row md:py-0"
-        >
-          <td
-            data-label="Year"
-            class="archive-cell font-mono text-sm text-accent md:py-4 md:pr-4 md:align-top"
+      sorted.map((project) => {
+        const hasLink = Boolean(project.url || project.github);
+        return (
+          <tr
+            data-reveal
+            class="group block border-b border-navy-lightest/40 py-3 transition-colors hover:bg-navy-light/40 md:table-row md:py-0"
           >
-            {project.year ?? "—"}
-          </td>
-          <td
-            data-label="Project"
-            class="archive-cell font-semibold text-slate-lightest md:py-4 md:pr-4 md:align-top"
-          >
-            {project.name}
-          </td>
-          <td
-            data-label="Made at"
-            class="archive-cell text-sm text-slate md:py-4 md:pr-4 md:align-top"
-          >
-            {project.madeAt ?? "—"}
-          </td>
-          <td
-            data-label="Built with"
-            class="archive-cell md:py-4 md:pr-4 md:align-top"
-          >
-            {project.keywords && project.keywords.length > 0 ? (
-              <ul class="flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-slate">
-                {project.keywords.map((keyword: string) => (
-                  <li>{keyword}</li>
-                ))}
-              </ul>
-            ) : (
-              <span class="text-slate">—</span>
-            )}
-          </td>
-          <td data-label="Links" class="archive-cell md:py-4 md:align-top">
-            <div class="flex items-center gap-4 text-slate-light [&_svg]:size-4">
-              {project.github && (
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${project.name} GitHub repository`}
-                  class="transition-colors hover:text-accent"
-                >
-                  <GitHub />
-                </a>
-              )}
-              {project.url && (
+            <td
+              data-label="Year"
+              class="archive-cell font-mono text-sm text-accent md:py-4 md:pr-8 md:align-top"
+            >
+              {project.year ?? ""}
+            </td>
+            <td
+              data-label="Project"
+              class="archive-cell archive-cell--title font-semibold text-slate-lightest md:py-4 md:pr-8 md:align-top"
+            >
+              {project.url ? (
                 <a
                   href={project.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`${project.name} live site`}
-                  class="transition-colors hover:text-accent"
+                  class="transition-colors hover:text-accent group-hover:text-accent"
                 >
-                  <ExternalLink />
+                  {project.name}
                 </a>
+              ) : (
+                project.name
               )}
-              {!project.github && !project.url && (
-                <span class="text-slate">—</span>
+            </td>
+            <td
+              data-label="Made at"
+              class="archive-cell text-sm text-slate md:py-4 md:pr-8 md:align-top"
+            >
+              {project.madeAt ?? ""}
+            </td>
+            <td
+              data-label="Built with"
+              class="archive-cell md:py-4 md:pr-8 md:align-top"
+            >
+              {project.keywords && project.keywords.length > 0 && (
+                <ul class="flex flex-wrap gap-1.5">
+                  {project.keywords.map((keyword: string) => (
+                    <li class="tag-badge">{keyword}</li>
+                  ))}
+                </ul>
               )}
-            </div>
-          </td>
-        </tr>
-      ))
+            </td>
+            <td
+              data-label="Link"
+              class:list={[
+                "archive-cell text-sm md:py-4 md:align-top",
+                !hasLink && "archive-cell--empty",
+              ]}
+            >
+              <div class="flex items-center gap-4">
+                {project.url && (
+                  <a
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1 text-slate-light transition-colors hover:text-accent"
+                  >
+                    <span>{formatUrl(project.url)}</span>
+                    <ExternalLink class="size-3.5" />
+                  </a>
+                )}
+                {project.github && (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${project.name} GitHub repository`}
+                    class="text-slate-light transition-colors hover:text-accent [&_svg]:size-4"
+                  >
+                    <GitHub />
+                  </a>
+                )}
+              </div>
+            </td>
+          </tr>
+        );
+      })
     }
   </tbody>
 </table>
 
 <style>
-  /* Responsive: stack each row into a labelled card below the md breakpoint */
+  /* Responsive: below md, stack each row into a labelled card.
+     Force the table parts to block so flex-wrap can wrap to viewport width. */
   @media (max-width: 767px) {
+    table,
+    tbody,
+    tr {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+    }
     .archive-cell {
       display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 0.25rem 0;
+      flex-direction: column;
+      gap: 0.3rem;
+      padding: 0.3rem 0;
+      min-width: 0;
+      overflow-wrap: anywhere;
     }
     .archive-cell::before {
       content: attr(data-label);
       font-family: "JetBrains Mono", monospace;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
       color: var(--slate);
+    }
+    /* The project title is the row heading — no label, slightly larger */
+    .archive-cell--title {
+      padding-top: 0.2rem;
+      font-size: 1.05rem;
+    }
+    .archive-cell--title::before {
+      display: none;
+    }
+    /* Hide cells with no content so empty labels don't show */
+    .archive-cell--empty {
+      display: none;
     }
   }
 </style>

@@ -9,7 +9,7 @@ const { name } = basics;
 <Layout title={`Project Archive — ${name}`}>
   <main
     id="main-content"
-    class="relative z-10 mx-auto max-w-screen-lg px-6 py-16 sm:px-10 lg:py-24"
+    class="relative z-10 mx-auto max-w-screen-xl px-6 py-16 sm:px-10 lg:py-24"
   >
     <a
       href="/"
@@ -26,7 +26,7 @@ const { name } = basics;
       <p class="mt-2 text-slate">A big list of things I&apos;ve built.</p>
     </header>
 
-    <div class="mt-10 overflow-x-auto" data-reveal>
+    <div class="mt-10 md:overflow-x-auto" data-reveal>
       <ArchiveTable />
     </div>
   </main>
