@@ -17,10 +17,10 @@ const { name, description, url, github, keywords = [], isActive } = Astro.props;
 
 <li
   data-reveal
-  class="glass-card glass-card--lift group flex h-full flex-col p-5 lg:group-hover/list:opacity-[0.35] lg:hover:!opacity-100"
+  class="glass-card glass-card--lift sibling-dim group flex h-full flex-col p-4"
 >
   <header class="mb-3 flex items-center justify-between">
-    <div class="text-accent [&_svg]:size-8"><Folder /></div>
+    <div class="text-accent [&_svg]:size-7"><Folder /></div>
     <div class="flex items-center gap-3 text-slate-light [&_svg]:size-4">
       {
         github && (
@@ -52,15 +52,15 @@ const { name, description, url, github, keywords = [], isActive } = Astro.props;
   </header>
 
   <h3
-    class="mb-2 text-lg font-semibold text-slate-lightest transition-colors group-hover:text-accent"
+    class="mb-2 text-base font-semibold text-slate-lightest transition-colors group-hover:text-accent"
   >
     {name}
   </h3>
-  <p class="mb-4 flex-1 text-base leading-relaxed text-slate">{description}</p>
+  <p class="mb-4 flex-1 text-sm leading-normal text-slate">{description}</p>
 
   {
     keywords.length > 0 && (
-      <ul class="mb-3 flex flex-wrap gap-2">
+      <ul class="mb-3 flex flex-wrap gap-1.5">
         {keywords.slice(0, 4).map((keyword) => (
           <li class="tag-badge">{keyword}</li>
         ))}

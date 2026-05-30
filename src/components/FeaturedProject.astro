@@ -5,6 +5,7 @@ import GitHub from "@/icons/GitHub.astro";
 
 interface Props {
   name: string;
+  image?: string;
   description: string;
   url: string;
   github?: string;
@@ -12,16 +13,63 @@ interface Props {
   keywords?: string[];
 }
 
-const { name, description, url, github, madeAt, keywords = [] } = Astro.props;
+const { name, image, description, url, github, madeAt, keywords = [] } = Astro.props;
 ---
 
 <article
   data-reveal
-  class="glass-card glass-card--lift group p-6 lg:group-hover/list:opacity-[0.35] lg:hover:!opacity-100"
+  class="glass-card glass-card--lift sibling-dim group flex flex-col gap-4 p-4 sm:flex-row sm:items-start"
 >
-  <header class="mb-4 flex items-center justify-between">
-    <div class="text-accent [&_svg]:size-10"><Folder /></div>
-    <div class="flex items-center gap-4 text-slate-light [&_svg]:size-5">
+  {/* Thumbnail — Brittany-style project preview, replaces the folder icon */}
+  <div
+    class="relative aspect-[16/10] w-full shrink-0 overflow-hidden rounded-md border border-navy-lightest/60 transition-colors duration-300 group-hover:border-accent/50 sm:w-40 lg:w-44"
+  >
+    {
+      image ? (
+        <img
+          src={image}
+          alt={`${name} preview`}
+          width="900"
+          height="560"
+          loading="lazy"
+          decoding="async"
+          class="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+        />
+      ) : (
+        <div class="flex size-full items-center justify-center bg-gradient-to-br from-navy-light to-navy text-accent [&_svg]:size-9">
+          <Folder />
+        </div>
+      )
+    }
+    {/* subtle teal wash on hover, matching the accent system */}
+    <div
+      class="pointer-events-none absolute inset-0 bg-accent/0 transition-colors duration-300 group-hover:bg-accent/[0.06]"
+    >
+    </div>
+  </div>
+
+  {/* Content */}
+  <div class="min-w-0 flex-1">
+    <header class="mb-1 flex items-start justify-between gap-4">
+      <h3 class="text-base font-semibold text-slate-lightest">
+        {
+          url ? (
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 transition-colors group-hover:text-accent"
+            >
+              {name}
+              <span class="text-accent [&_svg]:size-4 [&_svg]:transition-transform [&_svg]:duration-300 group-hover:[&_svg]:-translate-y-0.5 group-hover:[&_svg]:translate-x-0.5">
+                <ExternalLink />
+              </span>
+            </a>
+          ) : (
+            name
+          )
+        }
+      </h3>
       {
         github && (
           <a
@@ -29,51 +77,25 @@ const { name, description, url, github, madeAt, keywords = [] } = Astro.props;
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${name} GitHub repository`}
-            class="transition-colors hover:text-accent"
+            class="mt-0.5 shrink-0 text-slate-light transition-colors hover:text-accent [&_svg]:size-5"
           >
             <GitHub />
           </a>
         )
       }
-      {
-        url && (
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${name} live site`}
-            class="transition-colors hover:text-accent"
-          >
-            <ExternalLink />
-          </a>
-        )
-      }
-    </div>
-  </header>
+    </header>
 
-  <h3
-    class="mb-2 text-xl font-semibold text-slate-lightest transition-colors group-hover:text-accent"
-  >
+    {madeAt && <p class="mb-2 font-mono text-xs text-slate">@ {madeAt}</p>}
+    <p class="mb-3 text-sm leading-normal text-slate">{description}</p>
+
     {
-      url ? (
-        <a href={url} target="_blank" rel="noopener noreferrer">
-          {name}
-        </a>
-      ) : (
-        name
+      keywords.length > 0 && (
+        <ul class="flex flex-wrap gap-1.5">
+          {keywords.map((keyword) => (
+            <li class="tag-badge">{keyword}</li>
+          ))}
+        </ul>
       )
     }
-  </h3>
-  {madeAt && <p class="mb-2 font-mono text-xs text-slate">@ {madeAt}</p>}
-  <p class="mb-4 text-base leading-relaxed text-slate">{description}</p>
-
-  {
-    keywords.length > 0 && (
-      <ul class="flex flex-wrap gap-2">
-        {keywords.map((keyword) => (
-          <li class="tag-badge">{keyword}</li>
-        ))}
-      </ul>
-    )
-  }
+  </div>
 </article>

@@ -5,37 +5,42 @@ import { basics, skills } from "@cv";
 
 type Skill = CV["skills"][number];
 
-const { summary, summaryHighlights = [] } = basics;
-const coreSkills = (skills as Skill[]).filter((skill: Skill) => skill.level === "Expert");
+const { summary, summaryHighlights = [], aboutParagraphs, recentTech } = basics;
+const expertSkills = (skills as Skill[])
+  .filter((skill: Skill) => skill.level === "Expert")
+  .map((skill: Skill) => skill.name);
+// Technologies I've been working with recently — explicit list wins, else Expert skills.
+const techList = recentTech && recentTech.length > 0 ? recentTech : expertSkills;
 
-// Brittany-style emphasis: split the summary into plain text and highlighted
+// Paragraphs to render — fall back to the single summary string.
+const paragraphs = aboutParagraphs && aboutParagraphs.length > 0 ? aboutParagraphs : [summary];
+
+// Brittany-style emphasis: split each paragraph into plain text and highlighted
 // keywords (rendered near-white) so the important terms stand out.
 const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const ordered = [...summaryHighlights].sort((a, b) => b.length - a.length);
 const highlightSet = new Set(summaryHighlights);
-const summaryParts = ordered.length
-  ? summary.split(new RegExp(`(${ordered.map(escapeRegExp).join("|")})`, "g"))
-  : [summary];
+const splitter = ordered.length ? new RegExp(`(${ordered.map(escapeRegExp).join("|")})`, "g") : null;
+const toParts = (text: string): string[] => (splitter ? text.split(splitter) : [text]);
 ---
 
 <Section id="about" title="About Me">
   <div class="space-y-4 text-slate" data-reveal>
-    <p class="text-lg leading-relaxed">
-      {
-        summaryParts.map((part: string) =>
-          highlightSet.has(part) ? (
-            <strong class="text-highlight">{part}</strong>
-          ) : (
-            part
-          ),
-        )
-      }
-    </p>
-    <p class="text-base leading-relaxed">
+    {
+      paragraphs.map((paragraph: string) => (
+        <p class="text-sm leading-relaxed sm:text-base">
+          {toParts(paragraph).map((part: string) =>
+            highlightSet.has(part) ? <strong class="text-highlight">{part}</strong> : part,
+          )}
+        </p>
+      ))
+    }
+
+    <p class="pt-2 text-sm leading-relaxed sm:text-base">
       Here are a few technologies I&apos;ve been working with recently:
     </p>
-    <ul class="flex flex-wrap gap-2 pt-2">
-      {coreSkills.map((skill: Skill) => <li class="tag-badge">{skill.name}</li>)}
+    <ul class="flex flex-wrap gap-1.5 pt-1">
+      {techList.map((tech: string) => <li class="tag-badge">{tech}</li>)}
     </ul>
   </div>
 </Section>

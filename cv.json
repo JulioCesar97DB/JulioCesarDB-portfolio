@@ -2,22 +2,43 @@
   "basics": {
     "name": "Julio César Díaz",
     "label": "Front-End Developer",
+    "tagline": "I build accessible, high-performance web applications with React, Next.js, and TypeScript.",
     "image": "/JULIOCESAR.jpg",
     "email": "juliocesar97db@gmail.com",
     "phone": "+34 695-434-378",
     "url": "https://www.juliocesardb.com",
     "summary": "Frontend Developer with 5+ years of experience architecting and delivering production-grade web applications using React, Next.js, and TypeScript. Proven track record building complex platforms from scratch — from business intelligence dashboards to cloud infrastructure tools. Specialized in scalable frontend architectures, secure authentication patterns, and high-performance responsive interfaces.",
     "summaryHighlights": [
-      "5+ years",
-      "production-grade web applications",
+      "accessible, high-performance products",
+      "scalable frontends",
       "React",
       "Next.js",
       "TypeScript",
-      "business intelligence dashboards",
-      "cloud infrastructure tools",
-      "scalable frontend architectures",
-      "secure authentication patterns",
-      "high-performance responsive interfaces"
+      "FastAPI",
+      "Node.js",
+      "Supabase",
+      "secure authentication",
+      "production",
+      "end to end",
+      "empty repo to launch",
+      "design systems",
+      "role-based dashboards",
+      "internationalization"
+    ],
+    "aboutParagraphs": [
+      "I'm a frontend developer who turns ambitious ideas into accessible, high-performance products that people genuinely enjoy using. I obsess over the details most people skip — the micro-interactions, the empty states, the keyboard flows — because that polish is what separates a quick demo from something a team can confidently ship.",
+      "What I bring to a team is range. I architect scalable frontends in React, Next.js, and TypeScript, and I'm just as comfortable across the stack — building APIs and backends with FastAPI, Node.js, and Supabase, designing secure authentication, and shipping all the way to production. That means fewer handoffs, faster iteration, and someone who can own a feature end to end.",
+      "I specialize in taking complex products from an empty repo to launch — design systems, role-based dashboards, internationalization, and the performance work that keeps everything feeling instant. I move fast without cutting corners, communicate clearly, and love partnering with designers and engineers to build things that are both beautifully crafted and genuinely useful. If you're building something hard, I'd love to help."
+    ],
+    "recentTech": [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "JavaScript",
+      "Tailwind CSS",
+      "Supabase",
+      "FastAPI",
+      "Google Business Profile API"
     ],
     "theme": "default",
     "location": {
@@ -280,7 +301,12 @@
     {
       "name": "React",
       "level": "Expert",
-      "keywords": ["Web Development", "Frontend", "JavaScript Library", "UI"]
+      "keywords": [
+        "Web Development",
+        "Frontend",
+        "JavaScript Library",
+        "UI"
+      ]
     },
     {
       "name": "Next.js",
@@ -306,7 +332,12 @@
     {
       "name": "JavaScript",
       "level": "Expert",
-      "keywords": ["Web Development", "Frontend", "Backend", "Fullstack"]
+      "keywords": [
+        "Web Development",
+        "Frontend",
+        "Backend",
+        "Fullstack"
+      ]
     },
     {
       "name": "TypeScript",
@@ -352,42 +383,78 @@
     {
       "name": "HTML",
       "level": "Intermediate",
-      "keywords": ["Web Development", "Frontend"]
+      "keywords": [
+        "Web Development",
+        "Frontend"
+      ]
     },
     {
       "name": "CSS",
       "level": "Intermediate",
-      "keywords": ["Web Development", "Frontend", "Responsive Design"]
+      "keywords": [
+        "Web Development",
+        "Frontend",
+        "Responsive Design"
+      ]
     },
     {
       "name": "Git",
       "level": "Intermediate",
-      "keywords": ["Version Control", "Collaboration", "Source Code"]
+      "keywords": [
+        "Version Control",
+        "Collaboration",
+        "Source Code"
+      ]
     },
     {
       "name": "GitHub",
       "level": "Intermediate",
-      "keywords": ["Version Control", "Collaboration", "Source Code", "Git"]
+      "keywords": [
+        "Version Control",
+        "Collaboration",
+        "Source Code",
+        "Git"
+      ]
     },
     {
       "name": "Docker",
       "level": "Intermediate",
-      "keywords": ["Containerization", "DevOps", "Deployment", "Backend"]
+      "keywords": [
+        "Containerization",
+        "DevOps",
+        "Deployment",
+        "Backend"
+      ]
     },
     {
       "name": "MariaDB",
       "level": "Intermediate",
-      "keywords": ["Databases", "SQL", "Data Storage", "Backend"]
+      "keywords": [
+        "Databases",
+        "SQL",
+        "Data Storage",
+        "Backend"
+      ]
     },
     {
       "name": "MongoDB",
       "level": "Intermediate",
-      "keywords": ["Databases", "NoSQL", "Data Storage", "Backend"]
+      "keywords": [
+        "Databases",
+        "NoSQL",
+        "Data Storage",
+        "Backend"
+      ]
     },
     {
       "name": "Django",
       "level": "Intermediate",
-      "keywords": ["Web Development", "Backend", "Python", "Framework"]
+      "keywords": [
+        "Web Development",
+        "Backend",
+        "Python",
+        "Framework"
+      ]
     }
   ],
   "languages": [
@@ -403,7 +470,12 @@
   "interests": [
     {
       "name": "Technology",
-      "keywords": ["AI", "Blockchain", "Astro", "Backend"]
+      "keywords": [
+        "AI",
+        "Blockchain",
+        "Astro",
+        "Backend"
+      ]
     }
   ],
   "references": [
@@ -414,7 +486,63 @@
   ],
   "projects": [
     {
+      "name": "BookEasely",
+      "image": "/projects/bookeasely.webp",
+      "isActive": true,
+      "description": "Cross-platform appointment-booking SaaS for small and medium businesses. Clients discover businesses, browse services, pick a worker, and book online, while owners manage their profile, services, staff, and schedule from both web and mobile.",
+      "highlights": [
+        "Built a full-stack product: a Next.js 16 / React 19 web app and an Expo SDK 54 / React Native mobile app sharing one Supabase backend",
+        "Implemented phone OTP authentication via Twilio plus Google OAuth, with role-based access for clients, business owners, and workers",
+        "Designed a real-time availability and time-slot booking engine on Supabase (Postgres, RLS, Realtime, Edge Functions)",
+        "Automated SMS reminders and push notifications through Twilio and Expo Push via scheduled Edge Functions to cut no-shows"
+      ],
+      "url": "https://bookeasely.com/",
+      "github": "",
+      "year": "2025",
+      "madeAt": "Personal",
+      "keywords": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Expo",
+        "React Native",
+        "Supabase",
+        "Twilio",
+        "Tailwind CSS",
+        "shadcn/ui"
+      ]
+    },
+    {
+      "name": "ReviewBoost",
+      "image": "/projects/reviewboost.webp",
+      "isActive": true,
+      "description": "Review-management platform for local businesses — collect more Google reviews through QR codes and trackable request links, reply with AI-assisted responses, and monitor reputation from a single dashboard across web and mobile.",
+      "highlights": [
+        "Built a Next.js 16 full-stack web app and an Expo React Native mobile app on a shared Supabase backend with a 12-table RLS-secured schema",
+        "Integrated Google Business Profile OAuth to sync reviews and post replies directly to Google",
+        "Generated trackable review-request links and QR codes that route customers straight to the business's Google review page",
+        "Added AI-assisted reply suggestions (OpenAI) and a pg_cron job that auto-syncs reviews every 30 minutes"
+      ],
+      "url": "https://review-boost.app/",
+      "github": "",
+      "year": "2025",
+      "madeAt": "Personal",
+      "keywords": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Expo",
+        "React Native",
+        "Supabase",
+        "Google Business Profile API",
+        "OpenAI",
+        "Tailwind CSS",
+        "shadcn/ui"
+      ]
+    },
+    {
       "name": "ConsumrBuzz SaaS - Business Intelligence Dashboard",
+      "image": "/projects/consumrbuzz.webp",
       "isActive": true,
       "description": "Full-stack SaaS platform for business listing management with automated publisher scanning, analytics, and multi-tenant role-based dashboards, powered by a FastAPI backend deployed on GCP.",
       "highlights": [
@@ -425,13 +553,72 @@
         "Built backend REST APIs with FastAPI, containerized with Docker and deployed on Google Cloud Platform (GCP)",
         "Integrated the Google Business Profile API for business listing synchronization"
       ],
-      "url": "https://consumrbuzz.com/",
+      "url": "https://app.consumrbuzz.com/en",
       "year": "2025",
       "madeAt": "ConsumrBuzz",
-      "keywords": ["Next.js", "React", "TypeScript", "FastAPI", "Python", "Docker", "GCP", "Google Business Profile", "TanStack Query"]
+      "keywords": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "FastAPI",
+        "Python",
+        "Docker",
+        "GCP",
+        "Google Business Profile",
+        "TanStack Query"
+      ]
+    },
+    {
+      "name": "Turing Dream",
+      "image": "/projects/turingdream.webp",
+      "isActive": true,
+      "description": "AI-powered educational services platform built as two production web apps — a public-facing product and an internal admin panel — with multi-role access and subscription billing.",
+      "highlights": [
+        "Built two production React applications — a public platform and an admin panel — for AI-driven educational services",
+        "Implemented multi-role authentication with Azure AD and Stripe subscription billing with account/user linkage",
+        "Led all UI/UX development, API integration, and frontend architecture decisions",
+        "Delivered a scalable, maintainable codebase backed by React Testing Library coverage"
+      ],
+      "url": "https://www.turingdream.com/",
+      "github": "",
+      "year": "2025",
+      "madeAt": "Second Window",
+      "keywords": [
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "shadcn/ui",
+        "Zustand",
+        "React Router",
+        "Azure AD",
+        "Stripe",
+        "React Testing Library"
+      ]
+    },
+    {
+      "name": "Professional Portfolio",
+      "image": "/projects/portfolio.webp",
+      "isActive": true,
+      "description": "Personal portfolio and CV website built for performance, accessibility, and SEO.",
+      "highlights": [
+        "Built with Astro achieving 100 Lighthouse performance score and fast static page loads",
+        "Dark/light mode toggle with multiple customizable themes",
+        "Fully responsive design with print-optimized CV export for PDF generation"
+      ],
+      "url": "https://juliocesardb.com",
+      "github": "https://github.com/JulioCesar97DB/JulioCesarDB-portfolio",
+      "year": "2024",
+      "madeAt": "Personal",
+      "keywords": [
+        "Astro",
+        "TypeScript",
+        "Tailwind CSS",
+        "GSAP"
+      ]
     },
     {
       "name": "Cloud Infrastructure Designer",
+      "image": "/projects/cloud-infra.webp",
       "isActive": true,
       "description": "Interactive visual tool for designing, estimating costs, and deploying cloud architectures across AWS, Azure, and GCP.",
       "highlights": [
@@ -443,10 +630,18 @@
       "url": "",
       "year": "2025",
       "madeAt": "Second Window",
-      "keywords": ["React", "TypeScript", "XYFlow", "Zustand", "Azure AD", "Stripe API"]
+      "keywords": [
+        "React",
+        "TypeScript",
+        "XYFlow",
+        "Zustand",
+        "Azure AD",
+        "Stripe API"
+      ]
     },
     {
       "name": "BetHomeWeb",
+      "image": "/projects/bethomeweb.webp",
       "isActive": true,
       "description": "Full-featured sports betting platform with real-time odds, live match tracking, and secure user authentication.",
       "highlights": [
@@ -459,25 +654,18 @@
       "github": "https://github.com/BlindersBetHome/bethome-web",
       "year": "2024",
       "madeAt": "Freelance",
-      "keywords": ["React", "TypeScript", "Tailwind CSS", "AWS Cognito", "AWS Amplify", "Jest"]
-    },
-    {
-      "name": "Professional Portfolio",
-      "isActive": true,
-      "description": "Personal portfolio and CV website built for performance, accessibility, and SEO.",
-      "highlights": [
-        "Built with Astro achieving 100 Lighthouse performance score and fast static page loads",
-        "Dark/light mode toggle with multiple customizable themes",
-        "Fully responsive design with print-optimized CV export for PDF generation"
-      ],
-      "url": "https://juliocesardb.com",
-      "github": "https://github.com/JulioCesar97DB/JulioCesarDB-portfolio",
-      "year": "2024",
-      "madeAt": "Personal",
-      "keywords": ["Astro", "TypeScript", "Tailwind CSS", "GSAP"]
+      "keywords": [
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "AWS Cognito",
+        "AWS Amplify",
+        "Jest"
+      ]
     },
     {
       "name": "Employee Management Suite",
+      "image": "/projects/employee-mgmt.webp",
       "isActive": false,
       "description": "Enterprise HR platform for certification tracking, vacation scheduling, and employee onboarding across multiple healthcare facilities.",
       "highlights": [
@@ -488,10 +676,16 @@
       "url": "",
       "year": "2023",
       "madeAt": "Legacy BHC",
-      "keywords": ["Next.js", "TypeScript", "MongoDB", "Tailwind CSS"]
+      "keywords": [
+        "Next.js",
+        "TypeScript",
+        "MongoDB",
+        "Tailwind CSS"
+      ]
     },
     {
       "name": "Telecommunications Management System",
+      "image": "/projects/telecom.webp",
       "isActive": false,
       "description": "Internal platform for managing phone line transfers and employee evaluations for Cuba's national telecom provider.",
       "highlights": [
@@ -502,7 +696,12 @@
       "url": "",
       "year": "2020",
       "madeAt": "ETECSA",
-      "keywords": ["React", "JavaScript", "Django", "MongoDB"]
+      "keywords": [
+        "React",
+        "JavaScript",
+        "Django",
+        "MongoDB"
+      ]
     }
   ]
 }
