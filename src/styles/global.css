@@ -130,12 +130,6 @@ img {
   }
 }
 
-/* Reveal initial state — only when JS is enabled, so no-JS users still see content */
-html.js [data-reveal] {
-  opacity: 0;
-  transform: translateY(24px);
-}
-
 /* Cursor spotlight */
 #spotlight {
   position: fixed;
@@ -161,10 +155,6 @@ html.js #spotlight {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-  html.js [data-reveal] {
-    opacity: 1;
-    transform: none;
   }
   #spotlight {
     display: none;
