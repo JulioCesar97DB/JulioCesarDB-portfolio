@@ -2,12 +2,12 @@
   "basics": {
     "name": "Julio César Díaz",
     "label": "Software Developer, Frontend-Focused",
-    "tagline": "I build fast, accessible products end to end — React & Next.js frontends, Python & Node backends, AI built in.",
+    "tagline": "I build fast, accessible products end to end — React & Next.js frontends, Python & Node backends, shipped and maintained.",
     "image": "/og.png",
     "email": "juliocesar97db@gmail.com",
-    "phone": "+34 695-434-378",
+    "phone": "+1 561-543-5788",
     "url": "https://www.juliocesardb.com",
-    "summary": "Frontend-leaning full-stack developer with 5+ years architecting and shipping production web apps in React, Next.js, and TypeScript — and owning features end to end across FastAPI, Node, and Supabase/Postgres backends. I take complex products from an empty repo to launch: secure authentication, role-based dashboards, internationalization, and the performance work that keeps everything instant. Recently focused on building real product features with LLMs — Claude, MCP servers, custom skills, and plugins.",
+    "summary": "Frontend-leaning full-stack developer with 5+ years architecting and shipping production web apps in React, Next.js, and TypeScript — and owning features end to end across FastAPI, Node, and Supabase/Postgres backends. I take complex products from an empty repo to launch: secure authentication, role-based dashboards, internationalization, and the performance work that keeps everything instant. I sweat the details users feel — accessibility, sub-2s loads, and clean architecture a team can extend without fear.",
     "summaryHighlights": [
       "empty repo to production",
       "5+ years",
@@ -21,12 +21,12 @@
       "row-level security",
       "Supabase",
       "end to end",
-      "Claude"
+      "sub-2s loads"
     ],
     "aboutParagraphs": [
       "I'm a developer who takes products from an empty repo to production — and owns every layer in between. Over 5+ years I've shipped business-intelligence dashboards, AI-powered platforms, booking systems, and cloud-infrastructure tools, usually building the frontend from zero while contributing across the backend.",
       "My core is the frontend — scalable architectures in React, Next.js, TypeScript, and Tailwind, built on clean-code principles a team can extend without fear. But I'm just as comfortable behind the API: REST backends with FastAPI and Node, Postgres schemas with row-level security on Supabase, secure auth, and Docker deploys on GCP and AWS. Shipping end to end means fewer handoffs and faster iteration — and it shows in the numbers: a 100/100 Lighthouse score, 95% test coverage, sub-2s loads.",
-      "I also build with LLMs day to day — Claude, MCP, and custom tooling — to ship features faster and smarter. I move fast without cutting corners, communicate clearly, and love partnering with designers and engineers on hard problems. If you're building something ambitious, I'd love to help."
+      "I move fast without cutting corners, communicate clearly, and love partnering with designers and engineers on hard problems. If you're building something ambitious, I'd love to help."
     ],
     "recentTech": [
       "React",
@@ -38,8 +38,7 @@
       "Python",
       "Supabase",
       "PostgreSQL",
-      "Docker",
-      "Claude / MCP"
+      "Docker"
     ],
     "theme": "default",
     "location": {
@@ -383,15 +382,17 @@
     },
     {
       "name": "HTML",
-      "level": "Intermediate",
+      "level": "Expert",
       "keywords": [
         "Web Development",
-        "Frontend"
+        "Frontend",
+        "Semantic HTML",
+        "Accessibility"
       ]
     },
     {
       "name": "CSS",
-      "level": "Intermediate",
+      "level": "Expert",
       "keywords": [
         "Web Development",
         "Frontend",
@@ -456,6 +457,54 @@
         "Python",
         "Framework"
       ]
+    },
+    {
+      "name": "Node.js",
+      "level": "Intermediate",
+      "keywords": [
+        "Backend",
+        "JavaScript",
+        "REST APIs",
+        "Server"
+      ]
+    },
+    {
+      "name": "Python",
+      "level": "Intermediate",
+      "keywords": [
+        "Backend",
+        "FastAPI",
+        "Scripting"
+      ]
+    },
+    {
+      "name": "FastAPI",
+      "level": "Intermediate",
+      "keywords": [
+        "Backend",
+        "Python",
+        "REST APIs"
+      ]
+    },
+    {
+      "name": "Supabase",
+      "level": "Intermediate",
+      "keywords": [
+        "Backend",
+        "PostgreSQL",
+        "Auth",
+        "Row-Level Security"
+      ]
+    },
+    {
+      "name": "PostgreSQL",
+      "level": "Intermediate",
+      "keywords": [
+        "Databases",
+        "SQL",
+        "Data Storage",
+        "Backend"
+      ]
     }
   ],
   "languages": [
@@ -479,12 +528,7 @@
       ]
     }
   ],
-  "references": [
-    {
-      "name": "Jane Smith",
-      "reference": "Reference…"
-    }
-  ],
+  "references": [],
   "projects": [
     {
       "name": "ConsumrBuzz SaaS - Business Intelligence Dashboard",
@@ -651,7 +695,7 @@
         "95% test coverage with Jest and React Testing Library",
         "90+ Lighthouse performance score with sub-2s load times"
       ],
-      "url": "https://develop.dehp9v8k4vj0v.amplifyapp.com",
+      "url": "",
       "github": "https://github.com/BlindersBetHome/bethome-web",
       "year": "2024",
       "madeAt": "Freelance",
