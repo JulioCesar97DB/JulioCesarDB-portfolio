@@ -1,5 +1,20 @@
-:root {
+@import "tailwindcss";
+
+@theme {
   /* Brittany Chiang v4 palette (Tailwind slate + teal), in OKLCH. */
+  --color-navy: oklch(0.208 0.042 265.755); /* slate-900 #0f172a */
+  --color-navy-light: oklch(0.279 0.041 260.031); /* slate-800 #1e293b */
+  --color-navy-lightest: oklch(0.372 0.044 257.287); /* slate-700 #334155 */
+  --color-slate: oklch(0.704 0.04 256.788); /* slate-400 #94a3b8 */
+  --color-slate-light: oklch(0.869 0.022 252.894); /* slate-300 #cbd5e1 */
+  --color-slate-lightest: oklch(0.929 0.013 255.508); /* slate-200 #e2e8f0 */
+  --color-accent: oklch(0.855 0.138 181.071); /* teal-300 #5eead4 */
+  --font-sans: "Inter Variable", Inter, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+:root {
+  /* Same palette as plain custom properties for non-utility CSS below. */
   --navy: oklch(0.208 0.042 265.755); /* slate-900 #0f172a */
   --navy-light: oklch(0.279 0.041 260.031); /* slate-800 #1e293b */
   --navy-lightest: oklch(0.372 0.044 257.287); /* slate-700 #334155 */
