@@ -39,12 +39,12 @@ const hasDetails = responsibilities.length > 0 || achievements.length > 0;
   class="sibling-dim transition-opacity duration-300"
 >
   <div
-    class="glass-card group grid gap-1 p-4 sm:grid-cols-[120px_1fr] sm:gap-5"
+    class="glass-card group grid gap-1 p-4 sm:grid-cols-[8rem_1fr] sm:gap-5"
   >
-    <p class="pt-1 font-mono text-xs uppercase tracking-wide text-slate">{dateRange}</p>
+    <p class="pt-1 font-mono text-meta uppercase tracking-wide text-slate">{dateRange}</p>
     <div class="space-y-2">
-      <h3 class="text-base font-semibold text-slate-lightest">
-        <span>{position}</span>
+      <h3 class="text-lg font-semibold leading-snug text-slate-lightest">
+        <span>{position}</span>{" "}
         {
           url ? (
             <a
@@ -61,20 +61,20 @@ const hasDetails = responsibilities.length > 0 || achievements.length > 0;
           )
         }
       </h3>
-      {place && <p class="font-mono text-xs text-slate">{place}</p>}
-      <p class="text-sm leading-normal text-slate">{summary}</p>
+      {place && <p class="font-mono text-meta text-slate-dim">{place}</p>}
+      <p class="text-card leading-relaxed text-slate">{summary}</p>
 
       {
         hasDetails && (
           <details>
-            <summary class="inline-flex cursor-pointer list-none items-center gap-1 font-mono text-xs text-accent hover:underline">
+            <summary class="inline-flex cursor-pointer list-none items-center gap-1 font-mono text-meta text-accent hover:underline">
               View details
             </summary>
             <div class="mt-3 space-y-3">
               {responsibilities.length > 0 && (
                 <ul class="space-y-1.5">
                   {responsibilities.map((item) => (
-                    <li class="relative pl-5 text-sm text-slate before:absolute before:left-0 before:text-accent before:content-['▹']">
+                    <li class="relative pl-5 text-card text-slate before:absolute before:left-0 before:text-accent before:content-['▹']">
                       {item}
                     </li>
                   ))}
@@ -83,7 +83,7 @@ const hasDetails = responsibilities.length > 0 || achievements.length > 0;
               {achievements.length > 0 && (
                 <ul class="space-y-1.5">
                   {achievements.map((item) => (
-                    <li class="relative pl-5 text-sm text-slate before:absolute before:left-0 before:text-accent before:content-['★']">
+                    <li class="relative pl-5 text-card text-slate before:absolute before:left-0 before:text-accent before:content-['★']">
                       {item}
                     </li>
                   ))}

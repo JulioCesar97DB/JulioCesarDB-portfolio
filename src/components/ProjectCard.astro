@@ -51,11 +51,11 @@ const { name, description, url, github, keywords = [], isActive } = Astro.props;
   </header>
 
   <h3
-    class="mb-2 text-base font-semibold text-slate-lightest transition-colors group-hover:text-accent"
+    class="mb-2 text-lg font-semibold leading-snug text-slate-lightest transition-colors group-hover:text-accent"
   >
     {name}
   </h3>
-  <p class="mb-4 flex-1 text-sm leading-normal text-slate">{description}</p>
+  <p class="mb-4 flex-1 text-card leading-relaxed text-slate">{description}</p>
 
   {
     keywords.length > 0 && (
@@ -68,7 +68,7 @@ const { name, description, url, github, keywords = [], isActive } = Astro.props;
   }
   <span
     class:list={[
-      "font-mono text-[11px]",
+      "font-mono text-xs",
       isActive ? "text-accent" : "text-slate",
     ]}
   >

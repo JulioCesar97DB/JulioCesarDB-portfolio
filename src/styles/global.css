@@ -5,12 +5,19 @@
   --color-navy: oklch(0.208 0.042 265.755); /* slate-900 #0f172a */
   --color-navy-light: oklch(0.279 0.041 260.031); /* slate-800 #1e293b */
   --color-navy-lightest: oklch(0.372 0.044 257.287); /* slate-700 #334155 */
+  --color-slate-dim: oklch(0.643 0.039 258.857); /* #7f8ea5 — secondary meta, 5.4:1 on navy */
   --color-slate: oklch(0.704 0.04 256.788); /* slate-400 #94a3b8 */
   --color-slate-light: oklch(0.869 0.022 252.894); /* slate-300 #cbd5e1 */
   --color-slate-lightest: oklch(0.929 0.013 255.508); /* slate-200 #e2e8f0 */
   --color-accent: oklch(0.855 0.138 181.071); /* teal-300 #5eead4 */
   --font-sans: "Inter Variable", Inter, system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Type steps between Tailwind's defaults (px values at a 16px root). */
+  --text-meta: 0.78125rem; /* 12.5px — dates, locations, "View details" */
+  --text-card: 0.96875rem; /* 15.5px — job, project and education copy */
+  --text-lead: 1.0625rem; /* 17px — About and Contact prose */
+  --text-section: 1.625rem; /* 26px — section titles */
 }
 
 :root {
@@ -24,124 +31,134 @@
   --accent: oklch(0.855 0.138 181.071); /* teal-300 #5eead4 */
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  margin: 0;
-  background-color: var(--navy);
-  color: var(--slate);
-  font-family: "Inter Variable", Inter, system-ui, -apple-system, sans-serif;
-  font-weight: 440;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-h1,
-h2,
-h3,
-h4 {
-  margin: 0;
-  color: var(--slate-lightest);
-  font-weight: 600;
-}
-
-p {
-  margin: 0;
-  text-wrap: pretty;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-img {
-  display: block;
-  max-width: 100%;
-}
-
-::selection {
-  background: oklch(0.855 0.138 181.071 / 0.2);
-  color: var(--slate-lightest);
-}
-
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 2px;
-}
-
-/* Brittany-style inline emphasis: near-white keywords against muted body copy */
-.text-highlight {
-  color: var(--slate-lightest);
-  font-weight: 500;
-}
-
-/* Brittany-style tech badge: pill, no icon, teal text on translucent teal */
-.tag-badge {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 9999px;
-  background-color: oklch(0.777 0.152 181.912 / 0.1); /* teal-400/10 */
-  padding: 0.2rem 0.6rem;
-  font-size: 0.72rem;
-  font-weight: 500;
-  line-height: 1.1rem;
-  color: var(--accent); /* teal-300 */
-}
-
-/* Sibling-dim: inside a `group/list`, hovering one item fades the rest (desktop only).
-   Shared by featured projects, project cards, experience, and education. */
-@media (min-width: 1024px) {
-  .group\/list:hover .sibling-dim {
-    opacity: 0.35;
+/* Base element styles live in the base layer so Tailwind v4 utilities (which are
+   layered) can override them — unlayered rules would beat every utility. */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
   }
-  .sibling-dim:hover {
-    opacity: 1 !important;
+
+  html {
+    scroll-behavior: smooth;
+    /* Fluid root: 16px up to a 1280px-wide viewport, 18px at 1920, capped at 20px
+       from 2560. Everything sized in rem (type, spacing, the max-w container) grows
+       with it, so large monitors aren't left mostly empty. */
+    font-size: clamp(1rem, 0.75rem + 0.3125vw, 1.25rem);
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--navy);
+    color: var(--slate);
+    font-family: "Inter Variable", Inter, system-ui, -apple-system, sans-serif;
+    font-weight: 440;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin: 0;
+    color: var(--slate-lightest);
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  ::selection {
+    background: oklch(0.855 0.138 181.071 / 0.2);
+    color: var(--slate-lightest);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 }
 
-/* Frosted-glass hover for cards (jobs, projects, education) — no resting border */
-.glass-card {
-  border-radius: 0.5rem;
-  transition:
-    transform 0.25s ease,
-    background-color 0.25s ease,
-    box-shadow 0.25s ease,
-    opacity 0.25s ease;
-}
+@layer components {
+  /* Brittany-style inline emphasis: near-white keywords against muted body copy */
+  .text-highlight {
+    color: var(--slate-lightest);
+    font-weight: 500;
+  }
 
-.glass-card:hover {
-  background-color: oklch(0.32 0.06 263 / 0.32); /* translucent, slightly bluer slate */
-  box-shadow:
-    inset 0 1px 0 0 oklch(0.704 0.04 256.788 / 0.1), /* slate-400/10 top edge highlight */
-    0 14px 30px -12px oklch(0.129 0.042 264.695 / 0.55); /* soft lift shadow */
-}
+  /* Brittany-style tech badge: pill, no icon, teal text on translucent teal */
+  .tag-badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    background-color: oklch(0.777 0.152 181.912 / 0.1); /* teal-400/10 */
+    padding: 0.22rem 0.65rem;
+    font-size: 0.78125rem;
+    font-weight: 500;
+    line-height: 1.1rem;
+    color: var(--accent); /* teal-300 */
+  }
 
-.glass-card--lift:hover {
-  transform: translateY(-4px);
-}
+  /* Sibling-dim: inside a `group/list`, hovering one item fades the rest (desktop only).
+     Shared by featured projects, project cards, experience, and education. */
+  @media (min-width: 1024px) {
+    .group\/list:hover .sibling-dim {
+      opacity: 0.35;
+    }
+    .sibling-dim:hover {
+      opacity: 1 !important;
+    }
+  }
 
-@media (prefers-reduced-motion: reduce) {
-  .glass-card,
+  /* Frosted-glass hover for cards (jobs, projects, education) — no resting border */
+  .glass-card {
+    border-radius: 0.5rem;
+    transition:
+      transform 0.25s ease,
+      background-color 0.25s ease,
+      box-shadow 0.25s ease,
+      opacity 0.25s ease;
+  }
+
+  .glass-card:hover {
+    background-color: oklch(0.32 0.06 263 / 0.32); /* translucent, slightly bluer slate */
+    box-shadow:
+      inset 0 1px 0 0 oklch(0.704 0.04 256.788 / 0.1), /* slate-400/10 top edge highlight */
+      0 14px 30px -12px oklch(0.129 0.042 264.695 / 0.55); /* soft lift shadow */
+  }
+
   .glass-card--lift:hover {
-    transition: none;
-    transform: none;
+    transform: translateY(-4px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glass-card,
+    .glass-card--lift:hover {
+      transition: none;
+      transform: none;
+    }
   }
 }
 

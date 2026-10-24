@@ -22,18 +22,18 @@ type Cert = CV["certificates"][number];
               <GraduationCap />
             </div>
             <div class="space-y-1">
-              <h3 class="text-base font-semibold text-slate-lightest">
+              <h3 class="text-lg font-semibold leading-snug text-slate-lightest">
                 {edu.studyType} in {edu.area}
               </h3>
               <a
                 href={edu.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-sm text-accent hover:underline"
+                class="inline-block text-card text-accent hover:underline"
               >
                 {edu.institution}
               </a>
-              <p class="font-mono text-xs text-slate">
+              <p class="font-mono text-meta text-slate-dim">
                 {formatDateRange(edu.startDate, edu.endDate)} · GPA {edu.score}
               </p>
             </div>
@@ -51,16 +51,16 @@ type Cert = CV["certificates"][number];
               <Certificate />
             </div>
             <div class="space-y-1">
-              <h3 class="text-base font-semibold text-slate-lightest">{cert.name}</h3>
+              <h3 class="text-lg font-semibold leading-snug text-slate-lightest">{cert.name}</h3>
               <a
                 href={cert.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-sm text-accent hover:underline"
+                class="inline-block text-card text-accent hover:underline"
               >
                 {cert.issuer}
               </a>
-              <p class="font-mono text-xs text-slate">{getYear(cert.date)}</p>
+              <p class="font-mono text-meta text-slate-dim">{getYear(cert.date)}</p>
             </div>
           </div>
         </article>
