@@ -28,7 +28,7 @@ const toParts = (text: string): string[] => (splitter ? text.split(splitter) : [
   <div class="space-y-4 text-slate">
     {
       paragraphs.map((paragraph: string) => (
-        <p class="text-sm leading-relaxed sm:text-base">
+        <p class="text-base leading-relaxed sm:text-lead">
           {toParts(paragraph).map((part: string) =>
             highlightSet.has(part) ? <strong class="text-highlight">{part}</strong> : part,
           )}
@@ -36,7 +36,7 @@ const toParts = (text: string): string[] => (splitter ? text.split(splitter) : [
       ))
     }
 
-    <p class="pt-2 text-sm leading-relaxed sm:text-base">
+    <p class="pt-2 text-base leading-relaxed sm:text-lead">
       Here are a few technologies I&apos;ve been working with recently:
     </p>
     <ul class="flex flex-wrap gap-1.5 pt-1">
