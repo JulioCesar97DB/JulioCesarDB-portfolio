@@ -21,7 +21,7 @@ const { name, image, description, url, github, madeAt, keywords = [] } = Astro.p
 >
   {/* Thumbnail — Brittany-style project preview, replaces the folder icon */}
   <div
-    class="relative aspect-[16/10] w-full shrink-0 overflow-hidden rounded-md border border-navy-lightest/60 transition-colors duration-300 group-hover:border-accent/50 sm:w-40 lg:w-44"
+    class="relative aspect-[16/10] w-full shrink-0 overflow-hidden rounded-md border border-navy-lightest/60 transition-colors duration-300 group-hover:border-accent/50 sm:w-44 lg:w-52"
   >
     {
       image ? (
@@ -90,7 +90,7 @@ const { name, image, description, url, github, madeAt, keywords = [] } = Astro.p
     {
       keywords.length > 0 && (
         <ul class="flex flex-wrap gap-1.5">
-          {keywords.map((keyword) => (
+          {keywords.slice(0, 4).map((keyword) => (
             <li class="tag-badge">{keyword}</li>
           ))}
         </ul>

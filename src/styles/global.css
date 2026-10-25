@@ -42,6 +42,9 @@
 
   html {
     scroll-behavior: smooth;
+    /* Native surfaces (scrollbar, form controls) follow the dark palette. */
+    color-scheme: dark;
+    scrollbar-color: var(--navy-lightest) var(--navy);
     /* Fluid root: 16px up to a 1280px-wide viewport, 18px at 1920, capped at 20px
        from 2560. Everything sized in rem (type, spacing, the max-w container) grows
        with it, so large monitors aren't left mostly empty. */
@@ -76,6 +79,7 @@
   a {
     color: inherit;
     text-decoration: none;
+    text-underline-offset: 0.2em;
   }
 
   ul {

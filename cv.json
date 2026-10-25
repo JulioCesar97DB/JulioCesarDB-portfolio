@@ -14,31 +14,15 @@
       "React",
       "Next.js",
       "TypeScript",
-      "clean-code principles",
+      "FastAPI",
       "100/100 Lighthouse",
       "95% test coverage",
-      "FastAPI",
-      "row-level security",
-      "Supabase",
-      "end to end",
       "sub-2s loads"
     ],
     "aboutParagraphs": [
       "I'm a developer who takes products from an empty repo to production — and owns every layer in between. Over 5+ years I've shipped business-intelligence dashboards, AI-powered platforms, booking systems, and cloud-infrastructure tools, usually building the frontend from zero while contributing across the backend.",
       "My core is the frontend — scalable architectures in React, Next.js, TypeScript, and Tailwind, built on clean-code principles a team can extend without fear. But I'm just as comfortable behind the API: REST backends with FastAPI and Node, Postgres schemas with row-level security on Supabase, secure auth, and Docker deploys on GCP and AWS. Shipping end to end means fewer handoffs and faster iteration — and it shows in the numbers: a 100/100 Lighthouse score, 95% test coverage, sub-2s loads.",
       "I move fast without cutting corners, communicate clearly, and love partnering with designers and engineers on hard problems. If you're building something ambitious, I'd love to help."
-    ],
-    "recentTech": [
-      "React",
-      "Next.js",
-      "TypeScript",
-      "Tailwind CSS",
-      "Node.js",
-      "FastAPI",
-      "Python",
-      "Supabase",
-      "PostgreSQL",
-      "Docker"
     ],
     "theme": "default",
     "location": {
@@ -111,6 +95,9 @@
         "Next.js",
         "React",
         "TypeScript",
+        "FastAPI",
+        "Python",
+        "GCP",
         "Tailwind CSS",
         "shadcn/ui",
         "Kinde Auth",
@@ -118,10 +105,7 @@
         "TanStack Query",
         "React Hook Form",
         "Zod",
-        "FastAPI",
-        "Python",
         "Docker",
-        "GCP",
         "Google Business Profile API"
       ]
     },
