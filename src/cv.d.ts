@@ -24,7 +24,6 @@ interface Basics {
   summary: string;
   summaryHighlights?: Array<string>;
   aboutParagraphs?: Array<string>;
-  recentTech?: Array<string>;
   location: Location;
   profiles: Array<Profiles>;
 }

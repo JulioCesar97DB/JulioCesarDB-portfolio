@@ -12,7 +12,7 @@ const noteworthy = (projects as Project[]).filter((project: Project) => !feature
 ---
 
 <Section id="projects" title="Some Things I've Built">
-  <div class="group/list space-y-4">
+  <div class="group/list -mx-4 space-y-4">
     {featured.map((project: Project) => <FeaturedProject {...project} />)}
   </div>
 
@@ -24,7 +24,7 @@ const noteworthy = (projects as Project[]).filter((project: Project) => !feature
         >
           Other Noteworthy Projects
         </h3>
-        <ul class="group/list grid gap-4 sm:grid-cols-2">
+        <ul class="group/list -mx-4 grid gap-4 sm:grid-cols-2">
           {noteworthy.map((project: Project) => (
             <ProjectCard {...project} />
           ))}

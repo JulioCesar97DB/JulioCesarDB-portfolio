@@ -1,16 +1,8 @@
 ---
 import Section from "@/components/Section.astro";
-import type { CV } from "@/cv";
-import { basics, skills } from "@cv";
+import { basics } from "@cv";
 
-type Skill = CV["skills"][number];
-
-const { summary, summaryHighlights = [], aboutParagraphs, recentTech } = basics;
-const expertSkills = (skills as Skill[])
-  .filter((skill: Skill) => skill.level === "Expert")
-  .map((skill: Skill) => skill.name);
-// Technologies I've been working with recently — explicit list wins, else Expert skills.
-const techList = recentTech && recentTech.length > 0 ? recentTech : expertSkills;
+const { summary, summaryHighlights = [], aboutParagraphs } = basics;
 
 // Paragraphs to render — fall back to the single summary string.
 const paragraphs = aboutParagraphs && aboutParagraphs.length > 0 ? aboutParagraphs : [summary];
@@ -25,22 +17,23 @@ const toParts = (text: string): string[] => (splitter ? text.split(splitter) : [
 ---
 
 <Section id="about" title="About Me">
-  <div class="space-y-4 text-slate">
+  <div class="space-y-5 text-slate">
     {
-      paragraphs.map((paragraph: string) => (
-        <p class="text-base leading-relaxed sm:text-lead">
+      paragraphs.map((paragraph: string, index: number) => (
+        <p
+          class:list={[
+            "leading-relaxed",
+            // The opening paragraph is the lead: one step larger and brighter.
+            index === 0
+              ? "text-lg text-slate-light sm:text-xl"
+              : "text-base sm:text-lead",
+          ]}
+        >
           {toParts(paragraph).map((part: string) =>
             highlightSet.has(part) ? <strong class="text-highlight">{part}</strong> : part,
           )}
         </p>
       ))
     }
-
-    <p class="pt-2 text-base leading-relaxed sm:text-lead">
-      Here are a few technologies I&apos;ve been working with recently:
-    </p>
-    <ul class="flex flex-wrap gap-1.5 pt-1">
-      {techList.map((tech: string) => <li class="tag-badge">{tech}</li>)}
-    </ul>
   </div>
 </Section>

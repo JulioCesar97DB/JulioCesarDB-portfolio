@@ -12,20 +12,23 @@ const groups = [
 ---
 
 <Section id="skills" title="Skills & Technologies">
-  <div class="space-y-6">
+  {/* Plain type instead of pills; the label column lines up with the job dates. */}
+  <dl class="space-y-6">
     {
       groups.map((group) => (
-        <div>
-          <h3 class="mb-3 font-mono text-xs uppercase tracking-widest text-accent">
+        <div class="grid gap-2 sm:grid-cols-[8rem_1fr] sm:gap-5">
+          <dt class="pt-0.5 font-mono text-meta uppercase tracking-wide text-slate">
             {group.label}
-          </h3>
-          <ul class="flex flex-wrap gap-1.5">
-            {group.items.map((skill: Skill) => (
-              <li class="tag-badge">{skill.name}</li>
-            ))}
-          </ul>
+          </dt>
+          <dd>
+            <ul class="flex flex-wrap gap-x-5 gap-y-1.5 text-card text-slate-light">
+              {group.items.map((skill: Skill) => (
+                <li>{skill.name}</li>
+              ))}
+            </ul>
+          </dd>
         </div>
       ))
     }
-  </div>
+  </dl>
 </Section>
