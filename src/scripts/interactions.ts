@@ -265,6 +265,34 @@ function initNavGlass(): void {
   }
 }
 
+/**
+ * One-shot reveals: each .reveal / .reveal-solid gets .is-in the first time it
+ * enters the viewport and keeps it, so text always ends fully opaque.
+ */
+function initReveals(): void {
+  const items = document.querySelectorAll<HTMLElement>(".reveal, .reveal-solid");
+  if (!("IntersectionObserver" in window)) {
+    items.forEach((el) => el.classList.add("is-in"));
+    return;
+  }
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add("is-in");
+        io.unobserve(entry.target);
+      }
+    },
+    // Reveal as soon as any part enters, so nothing is ever visible yet hidden.
+    { threshold: 0 },
+  );
+  items.forEach((el) => {
+    // Anything already above the fold on load shows at once, without motion.
+    if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add("is-in");
+    else io.observe(el);
+  });
+}
+
 /** Marks the nav link of the section under the top third of the viewport. */
 function initScrollSpy(): void {
   const links = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]"));
@@ -382,6 +410,7 @@ function initCopyEmail(): void {
 export function initInteractions(): void {
   initTopBar();
   initNavGlass();
+  initReveals();
   initScrollSpy();
   initFrames();
   initCopyEmail();

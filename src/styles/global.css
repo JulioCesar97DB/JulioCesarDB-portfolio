@@ -323,18 +323,7 @@
       animation-range: entry 0% cover 45%;
     }
 
-    /* Everything else arrives with a short lift: text fades in as it rises,
-       solid surfaces (.reveal-solid) only rise. */
-    .reveal {
-      animation: lift linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 70%;
-    }
-    .reveal-solid {
-      animation: lift-solid linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 70%;
-    }
+
   }
 }
 
@@ -366,22 +355,25 @@ html.name-morph .hero-name {
     transform: none;
   }
 }
-@keyframes lift-solid {
-  from {
-    translate: 0 1.75rem;
-  }
-  to {
-    translate: 0 0;
-  }
-}
-@keyframes lift {
-  from {
+/* Reveals are one-shot, not scroll-scrubbed: scroll-linked opacity left text
+   half-transparent whenever the page came to rest with it in the lower part
+   of the viewport. scripts/interactions.ts adds .is-in once an element enters
+   and the transition runs to the end. Text fades as it rises; solid surfaces
+   (.reveal-solid, product frames) only rise. Without JS, or with reduced
+   motion, nothing is ever hidden. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .reveal:not(.is-in) {
     opacity: 0;
     translate: 0 1.75rem;
   }
-  to {
-    opacity: 1;
-    translate: 0 0;
+  html.js .reveal-solid:not(.is-in) {
+    translate: 0 1.75rem;
+  }
+  html.js .reveal,
+  html.js .reveal-solid {
+    transition:
+      opacity 0.6s ease,
+      translate 0.9s cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
 
