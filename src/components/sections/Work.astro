@@ -86,7 +86,7 @@ const host = (url: string) => {
       features.map((p) => {
         const Tag = p.url ? "a" : "div";
         return (
-          <article class="reveal">
+          <article>
             <Tag
               {...(p.url
                 ? {
@@ -96,7 +96,7 @@ const host = (url: string) => {
                     "aria-label": `${p.title} (opens in a new tab)`,
                   }
                 : {})}
-              class="block rounded-2xl"
+              class="reveal-solid block rounded-2xl"
               data-frame
             >
               <div class="frame">
@@ -110,6 +110,7 @@ const host = (url: string) => {
                 />
               </div>
             </Tag>
+            <div class="reveal">
             <h3 class="mt-6 text-h3 font-semibold tracking-[-0.015em]">
               {p.url ? (
                 <a
@@ -138,6 +139,7 @@ const host = (url: string) => {
                 <li>{k}</li>
               ))}
             </ul>
+            </div>
           </article>
         );
       })

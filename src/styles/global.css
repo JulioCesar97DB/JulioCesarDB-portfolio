@@ -323,9 +323,15 @@
       animation-range: entry 0% cover 45%;
     }
 
-    /* Everything else arrives with a short lift. */
+    /* Everything else arrives with a short lift: text fades in as it rises,
+       solid surfaces (.reveal-solid) only rise. */
     .reveal {
       animation: lift linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+    .reveal-solid {
+      animation: lift-solid linear both;
       animation-timeline: view();
       animation-range: entry 0% entry 70%;
     }
@@ -349,14 +355,23 @@ html.name-morph .hero-name {
     scale: 0.96;
   }
 }
+/* Solid surfaces (product frames) only ever move; they never fade, so the
+   particle field behind them can never show through a half-transparent frame.
+   Fades are reserved for text. */
 @keyframes rise {
   from {
     transform: rotateX(18deg) scale(0.9) translateY(3rem);
-    opacity: 0.35;
   }
   to {
     transform: none;
-    opacity: 1;
+  }
+}
+@keyframes lift-solid {
+  from {
+    translate: 0 1.75rem;
+  }
+  to {
+    translate: 0 0;
   }
 }
 @keyframes lift {
