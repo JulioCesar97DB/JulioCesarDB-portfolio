@@ -2,7 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import TopBar from "@/components/TopBar.astro";
 import Hero from "@/components/Hero.astro";
-import HeroBackground from "@/components/HeroBackground.astro";
+import ParticleBackground from "@/components/ParticleBackground.astro";
 import Work from "@/components/sections/Work.astro";
 import Experience from "@/components/sections/Experience.astro";
 import About from "@/components/sections/About.astro";
@@ -16,15 +16,18 @@ const year = new Date().getFullYear();
 <Layout title={`${name} — ${label}`}>
   <TopBar />
   <main id="main-content">
-    <!-- The animated background spans the hero and Selected work, ending where
-         Experience begins. -->
+    <!-- Particle fields: one across the hero and Selected work (ending where
+         Experience begins), one behind About, between the two tinted bands. -->
     <div class="relative" data-bg-region>
-      <HeroBackground />
+      <ParticleBackground />
       <Hero />
       <Work />
     </div>
     <Experience />
-    <About />
+    <div class="relative" data-bg-region>
+      <ParticleBackground fade="both" />
+      <About />
+    </div>
     <Contact />
   </main>
   <footer class="border-t border-line">

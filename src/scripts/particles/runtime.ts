@@ -1,5 +1,5 @@
 /**
- * Shared runtime for the hero background variants: sizing for the device
+ * Shared runtime for the animated backgrounds: sizing for the device
  * pixel ratio, a pointer eased toward the cursor, theme-aware colours, and a
  * render loop that only runs while the hero is on screen and the tab is
  * visible. Under reduced motion a variant draws a single still frame.
@@ -70,7 +70,7 @@ function readPalette(canvas: HTMLCanvasElement): Palette {
   return palette;
 }
 
-export function mountHeroBackground(canvas: HTMLCanvasElement, factory: VariantFactory): void {
+export function mountBackground(canvas: HTMLCanvasElement, factory: VariantFactory): void {
   const variant = factory(canvas);
   if (!variant) return;
 
