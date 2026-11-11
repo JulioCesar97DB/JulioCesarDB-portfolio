@@ -12,13 +12,15 @@ const navItems = [
 ];
 ---
 
-<!-- The wordmark stays hidden while the hero name is on screen and takes over
-     once it scrolls away (scripts/interactions.ts toggles data-scrolled/data-named). -->
-<header class="topbar fixed inset-x-0 top-0 z-40" data-topbar>
-  <div class="container-page flex h-16 items-center gap-2">
+<!-- At the top of the page the bar is invisible chrome spanning the layout.
+     Once the page scrolls (data-scrolled) it contracts into a floating glass
+     pill; the wordmark joins it when the hero name leaves (data-named).
+     scripts/interactions.ts toggles both attributes. -->
+<header class="topbar fixed inset-x-0 top-0 z-40 px-2 sm:px-4" data-topbar>
+  <div class="bar mx-auto flex items-center gap-1">
     <a
       href="#top"
-      class="wordmark -ml-2 flex min-h-11 items-center rounded-lg px-2 font-semibold tracking-tight text-ink"
+      class="wordmark flex min-h-11 items-center rounded-full px-2 font-semibold tracking-tight whitespace-nowrap text-ink"
       aria-label={`${name}, back to top`}
     >
       <span class="hidden sm:inline">{name}</span>
@@ -33,7 +35,7 @@ const navItems = [
               <a
                 href={`#${item.id}`}
                 data-nav-link
-                class="nav-link flex min-h-11 items-center rounded-lg px-2.5 text-[0.9375rem] text-ink-3 transition-colors hover:text-ink sm:px-3"
+                class="nav-link flex min-h-11 items-center rounded-full px-2.5 text-[0.9375rem] text-ink-3 transition-colors hover:text-ink sm:px-3"
               >
                 {item.label}
               </a>
@@ -47,9 +49,14 @@ const navItems = [
 
     {
       resume && (
-        <a href={resume} class="btn ml-1 min-h-11 px-3 text-sm sm:min-h-9" download>
-          <span>Résumé</span>
-          <Icon name="arrow-down" class="hidden size-3.5 text-ink-3 sm:block" />
+        <a
+          href={resume}
+          class="btn resume-btn ml-0.5 min-h-10 w-10 justify-center rounded-full px-0 text-sm sm:w-auto sm:px-3.5"
+          aria-label="Download résumé (PDF)"
+          download
+        >
+          <span class="hidden sm:inline">Résumé</span>
+          <Icon name="arrow-down" class="size-4 text-ink-3 sm:size-3.5" />
         </a>
       )
     }
@@ -57,36 +64,96 @@ const navItems = [
 </header>
 
 <style>
-  .topbar {
-    border-bottom: 1px solid transparent;
+  .bar {
+    position: relative;
+    max-width: var(--container-page);
+    height: 4rem;
+    margin-top: 0;
+    padding-inline: clamp(0.75rem, 4vw, 2.5rem);
+    border: 1px solid transparent;
+    border-radius: 1.75rem;
+    background: transparent;
     transition:
-      background-color 0.3s ease,
-      border-color 0.3s ease;
+      max-width 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      height 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      margin-top 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      padding 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 0.4s ease,
+      border-color 0.4s ease,
+      box-shadow 0.4s ease;
   }
-  .topbar[data-scrolled] {
-    border-bottom-color: var(--line);
-    background-color: color-mix(in oklch, var(--bg) 82%, transparent);
-    -webkit-backdrop-filter: saturate(1.6) blur(14px);
-    backdrop-filter: saturate(1.6) blur(14px);
+
+  /* The glass: translucent fill over a heavy blur with saturation, a bright rim
+     where light catches the top edge, a faint specular sheen across the upper
+     half, and a soft drop shadow to lift it off the page. */
+  .topbar[data-scrolled] .bar {
+    max-width: 46rem;
+    height: 3.25rem;
+    margin-top: 0.75rem;
+    padding-inline: 0.375rem;
+    border-color: var(--glass-edge);
+    background: var(--glass-fill);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    backdrop-filter: blur(20px) saturate(1.8);
+    box-shadow:
+      inset 0 1px 0 var(--glass-rim),
+      inset 0 -1px 0 var(--glass-edge),
+      0 10px 30px -10px var(--shade-3),
+      0 2px 6px -2px var(--shade-2);
+  }
+  .bar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      to bottom,
+      light-dark(oklch(1 0 0 / 0.45), oklch(1 0 0 / 0.06)),
+      transparent 55%
+    );
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .topbar[data-scrolled] .bar::before {
+    opacity: 1;
+  }
+  .bar > * {
+    position: relative;
+  }
+
+  .topbar[data-scrolled] .resume-btn {
+    border-color: transparent;
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .topbar[data-scrolled] .resume-btn :global(svg) {
+    color: inherit;
+  }
+
+  /* Without backdrop-filter the glass would be see-through; go nearly opaque. */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .topbar[data-scrolled] .bar {
+      background: var(--raised);
+    }
   }
 
   .wordmark {
+    max-width: 0;
+    overflow: hidden;
+    padding-inline: 0;
     opacity: 0;
-    translate: 0 0.35rem;
     pointer-events: none;
     transition:
-      opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-      translate 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      max-width 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      padding 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.35s ease;
   }
-  .topbar[data-named] .wordmark {
-    opacity: 1;
-    translate: 0 0;
-    pointer-events: auto;
-  }
-  /* Without JS the wordmark is always shown. */
+  .topbar[data-named] .wordmark,
   :global(html:not(.js)) .wordmark {
+    max-width: 14rem;
+    padding-inline: 0.75rem;
     opacity: 1;
-    translate: 0 0;
     pointer-events: auto;
   }
 
