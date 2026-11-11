@@ -1,13 +1,32 @@
 ---
 // Decorative canvas behind the hero. It fades out toward the bottom so the
 // field never meets the first product frame with a hard edge.
+const isDev = import.meta.env.DEV;
+const options = ["grid", "gradient", "particles"];
 ---
 
 <canvas class="hero-bg" data-hero-bg aria-hidden="true"></canvas>
 
+{
+  isDev && (
+    <nav class="bg-switcher" aria-label="Hero background preview (development only)">
+      {options.map((o) => (
+        <a href={`?bg=${o}`} data-bg-option={o}>
+          {o}
+        </a>
+      ))}
+    </nav>
+  )
+}
+
 <script>
   import { initHeroBackground } from "@/scripts/hero-bg";
   initHeroBackground();
+
+  const current = new URLSearchParams(location.search).get("bg") ?? "grid";
+  document
+    .querySelector(`[data-bg-option="${current}"]`)
+    ?.setAttribute("aria-current", "true");
 </script>
 
 <style>
@@ -20,5 +39,37 @@
     pointer-events: none;
     -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent);
     mask-image: linear-gradient(to bottom, #000 55%, transparent);
+  }
+
+  .bg-switcher {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    z-index: 60;
+    display: flex;
+    gap: 0.125rem;
+    border-radius: 9999px;
+    border: 1px solid var(--glass-edge);
+    background: var(--glass-fill);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    backdrop-filter: blur(20px) saturate(1.8);
+    box-shadow:
+      inset 0 1px 0 var(--glass-rim),
+      0 8px 24px -8px var(--shade-3);
+    padding: 0.25rem;
+    font-size: 0.8125rem;
+  }
+  .bg-switcher a {
+    border-radius: 9999px;
+    padding: 0.35rem 0.8rem;
+    color: var(--ink-3);
+    text-transform: capitalize;
+  }
+  .bg-switcher a:hover {
+    color: var(--ink);
+  }
+  .bg-switcher a[aria-current="true"] {
+    background: var(--ink);
+    color: var(--bg);
   }
 </style>
