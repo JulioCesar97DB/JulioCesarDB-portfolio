@@ -74,7 +74,8 @@ export function mountHeroBackground(canvas: HTMLCanvasElement, factory: VariantF
   const variant = factory(canvas);
   if (!variant) return;
 
-  const host = canvas.parentElement ?? canvas;
+  // Pointer input comes from the whole region the background covers.
+  const host = canvas.closest<HTMLElement>("[data-bg-region]") ?? canvas.parentElement ?? canvas;
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
   const pointer: Pointer = { x: -9999, y: -9999, presence: 0 };
   const target = { x: -9999, y: -9999, inside: false };

@@ -2,6 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import TopBar from "@/components/TopBar.astro";
 import Hero from "@/components/Hero.astro";
+import HeroBackground from "@/components/HeroBackground.astro";
 import Work from "@/components/sections/Work.astro";
 import Experience from "@/components/sections/Experience.astro";
 import About from "@/components/sections/About.astro";
@@ -15,8 +16,13 @@ const year = new Date().getFullYear();
 <Layout title={`${name} — ${label}`}>
   <TopBar />
   <main id="main-content">
-    <Hero />
-    <Work />
+    <!-- The animated background spans the hero and Selected work, ending where
+         Experience begins. -->
+    <div class="relative" data-bg-region>
+      <HeroBackground />
+      <Hero />
+      <Work />
+    </div>
     <Experience />
     <About />
     <Contact />

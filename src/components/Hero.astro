@@ -1,6 +1,5 @@
 ---
 import EmailActions from "@/components/EmailActions.astro";
-import HeroBackground from "@/components/HeroBackground.astro";
 import Icon from "@/icons/Icon.astro";
 import type { CV } from "@/cv";
 import { basics as rawBasics, work as rawWork } from "@cv";
@@ -14,11 +13,9 @@ const firstYear = Math.min(...work.map((job) => new Date(job.startDate).getUTCFu
 const links = profiles.filter((p) => p.network === "GitHub" || p.network === "LinkedIn");
 ---
 
-<!-- No isolation here on purpose: the name must be able to render above the
-     fixed top bar while it flies into it, so the canvas sits at z-index -1 in
-     the root stacking context instead. -->
+<!-- No isolation or z-index here on purpose: the name must be able to render
+     above the fixed top bar while it flies into it. -->
 <section id="top" class="relative">
-  <HeroBackground />
   <div class="container-page pt-32 pb-16 sm:pt-40 lg:pt-48 lg:pb-24">
   <h1 class="hero-name" data-hero-name>{name}</h1>
 

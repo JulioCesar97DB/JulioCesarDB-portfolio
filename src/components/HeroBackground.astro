@@ -1,11 +1,15 @@
 ---
-// Decorative canvas behind the hero. It fades out toward the bottom so the
-// field never meets the first product frame with a hard edge.
+// Decorative background for the hero and Selected work. The layer spans the
+// whole region, but the canvas inside is only one viewport tall and sticky, so
+// it stays behind whatever is on screen and leaves with the region at
+// Experience. Rendering cost is one screen, not the region's full height.
 const isDev = import.meta.env.DEV;
 const options = ["gradient", "particles"];
 ---
 
-<canvas class="hero-bg" data-hero-bg aria-hidden="true"></canvas>
+<div class="bg-layer" aria-hidden="true">
+  <canvas class="bg-canvas" data-hero-bg></canvas>
+</div>
 
 {
   isDev && (
@@ -30,15 +34,25 @@ const options = ["gradient", "particles"];
 </script>
 
 <style>
-  .hero-bg {
+  /* z-index -1 in the root stacking context: behind the content, above the
+     page background, without isolating the hero (the name must fly above the
+     top bar). The bottom edge fades so the field hands over softly to the
+     Experience band. */
+  .bg-layer {
     position: absolute;
     inset: 0;
     z-index: -1;
-    width: 100%;
-    height: 100%;
     pointer-events: none;
-    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent);
-    mask-image: linear-gradient(to bottom, #000 55%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 14rem), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 14rem), transparent);
+  }
+  .bg-canvas {
+    position: sticky;
+    top: 0;
+    display: block;
+    width: 100%;
+    height: 100vh;
+    height: 100lvh;
   }
 
   .bg-switcher {
