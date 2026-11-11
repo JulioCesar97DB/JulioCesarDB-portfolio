@@ -1,9 +1,14 @@
-import type { Palette, Pointer, Variant } from "./runtime";
+import type { Palette, Pointer, RGB, Variant } from "./runtime";
 
 /**
  * Drifting particles joined by hairlines when they come close (a
  * constellation). The pointer gathers nearby particles and its links light up
- * in the accent. Particle count scales with area so density stays constant.
+ * in the accent. Density scales with area so it stays constant across sizes.
+ *
+ * Cost notes: links are bucketed into a few opacity levels and each bucket is
+ * stroked as one path, so a frame issues a handful of draw calls instead of
+ * one per line; dots are one path too. The runtime caps this at 30fps and
+ * stops it when idle.
  */
 interface Particle {
   x: number;
@@ -12,12 +17,16 @@ interface Particle {
   vy: number;
 }
 
+const LINK = 120; // px: max distance for a link between particles
+const POINTER_LINK = 170; // px: max distance for a link to the pointer
+const MAX_PARTICLES = 70;
+const AREA_PER_PARTICLE = 16000; // px² per particle
+const BUCKETS = 5; // opacity levels for batched strokes
+
 export function createParticles(canvas: HTMLCanvasElement): Variant | null {
   const ctx = canvas.getContext("2d");
   if (!ctx) return null;
 
-  const LINK = 120; // px: max distance for a link
-  const POINTER_LINK = 170;
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   let w = 0;
@@ -28,14 +37,22 @@ export function createParticles(canvas: HTMLCanvasElement): Variant | null {
   let particles: Particle[] = [];
   let last = 0;
 
-  const rgba = ([r, g, b]: [number, number, number], a: number) => `rgba(${r},${g},${b},${a.toFixed(3)})`;
+  const rgba = ([r, g, b]: RGB, a: number) => `rgba(${r},${g},${b},${a.toFixed(3)})`;
+  // One reusable path per opacity bucket.
+  const linkPaths: Path2D[] = [];
+  const pointerPaths: Path2D[] = [];
 
   const seed = () => {
-    const count = Math.round(Math.min(110, (w * h) / 11000));
+    const count = Math.round(Math.min(MAX_PARTICLES, (w * h) / AREA_PER_PARTICLE));
     particles = Array.from({ length: count }, () => {
       const angle = Math.random() * Math.PI * 2;
-      const speed = 0.08 + Math.random() * 0.12;
-      return { x: Math.random() * w, y: Math.random() * h, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed };
+      const speed = 0.05 + Math.random() * 0.08;
+      return {
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+      };
     });
   };
 
@@ -53,40 +70,45 @@ export function createParticles(canvas: HTMLCanvasElement): Variant | null {
     },
     draw(time, pointer: Pointer) {
       if (!palette) return false;
-      const dt = last ? Math.min(48, time - last) / 16.67 : 1;
+      // Elapsed time in 60fps frames; a long gap (resuming from idle) counts as one frame.
+      const gap = last ? time - last : 16.67;
+      const dt = gap > 200 ? 1 : Math.min(3, gap / 16.67);
       last = time;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, w, h);
 
       const moving = !reduced.matches;
-      for (const p of particles) {
-        if (moving) {
+      if (moving) {
+        for (const p of particles) {
           if (pointer.presence > 0) {
             const dx = pointer.x - p.x;
             const dy = pointer.y - p.y;
             const d2 = dx * dx + dy * dy;
             if (d2 < POINTER_LINK * POINTER_LINK) {
-              const f = (1 - Math.sqrt(d2) / POINTER_LINK) * 0.012 * pointer.presence;
-              p.vx += dx * f * 0.05;
-              p.vy += dy * f * 0.05;
+              const f = (1 - Math.sqrt(d2) / POINTER_LINK) * 0.0006 * pointer.presence;
+              p.vx += dx * f * dt;
+              p.vy += dy * f * dt;
             }
           }
           // Gentle damping back toward cruising speed.
-          const speed = Math.hypot(p.vx, p.vy);
-          if (speed > 0.35) {
-            p.vx *= 0.96;
-            p.vy *= 0.96;
+          if (Math.hypot(p.vx, p.vy) > 0.3) {
+            p.vx *= 0.95;
+            p.vy *= 0.95;
           }
           p.x += p.vx * dt;
           p.y += p.vy * dt;
           if (p.x < -10) p.x = w + 10;
-          if (p.x > w + 10) p.x = -10;
+          else if (p.x > w + 10) p.x = -10;
           if (p.y < -10) p.y = h + 10;
-          if (p.y > h + 10) p.y = -10;
+          else if (p.y > h + 10) p.y = -10;
         }
       }
 
-      ctx.lineWidth = 1;
+      for (let b = 0; b < BUCKETS; b++) {
+        linkPaths[b] = new Path2D();
+        pointerPaths[b] = new Path2D();
+      }
+      const dots = new Path2D();
+      const link2 = LINK * LINK;
+
       for (let i = 0; i < particles.length; i++) {
         const a = particles[i];
         for (let j = i + 1; j < particles.length; j++) {
@@ -94,30 +116,39 @@ export function createParticles(canvas: HTMLCanvasElement): Variant | null {
           const dx = a.x - b.x;
           const dy = a.y - b.y;
           const d2 = dx * dx + dy * dy;
-          if (d2 < LINK * LINK) {
-            const alpha = (1 - Math.sqrt(d2) / LINK) * 0.22 * boost;
-            ctx.strokeStyle = rgba(palette.mark, alpha);
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.stroke();
+          if (d2 < link2) {
+            const strength = 1 - Math.sqrt(d2) / LINK; // 0..1
+            const bucket = Math.min(BUCKETS - 1, Math.floor(strength * BUCKETS));
+            linkPaths[bucket].moveTo(a.x, a.y);
+            linkPaths[bucket].lineTo(b.x, b.y);
           }
         }
         if (pointer.presence > 0) {
-          const dx = a.x - pointer.x;
-          const dy = a.y - pointer.y;
-          const d = Math.hypot(dx, dy);
+          const d = Math.hypot(a.x - pointer.x, a.y - pointer.y);
           if (d < POINTER_LINK) {
-            ctx.strokeStyle = rgba(palette.accent, (1 - d / POINTER_LINK) * 0.55 * boost * pointer.presence);
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(pointer.x, pointer.y);
-            ctx.stroke();
+            const bucket = Math.min(BUCKETS - 1, Math.floor((1 - d / POINTER_LINK) * BUCKETS));
+            pointerPaths[bucket].moveTo(a.x, a.y);
+            pointerPaths[bucket].lineTo(pointer.x, pointer.y);
           }
         }
-        ctx.fillStyle = rgba(palette.mark, Math.min(1, 0.5 * boost));
-        ctx.fillRect(a.x - 1, a.y - 1, 2, 2);
+        dots.rect(a.x - 0.75, a.y - 0.75, 1.5, 1.5);
       }
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+      ctx.lineWidth = 1;
+      for (let b = 0; b < BUCKETS; b++) {
+        const level = (b + 1) / BUCKETS; // bucket's upper strength
+        ctx.strokeStyle = rgba(palette.mark, level * 0.2 * boost);
+        ctx.stroke(linkPaths[b]);
+        if (pointer.presence > 0) {
+          ctx.strokeStyle = rgba(palette.accent, level * 0.5 * boost * pointer.presence);
+          ctx.stroke(pointerPaths[b]);
+        }
+      }
+      ctx.fillStyle = rgba(palette.mark, Math.min(1, 0.38 * boost));
+      ctx.fill(dots);
+
       return moving;
     },
   };

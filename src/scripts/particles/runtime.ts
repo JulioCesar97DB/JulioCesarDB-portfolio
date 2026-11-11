@@ -83,10 +83,17 @@ export function mountBackground(canvas: HTMLCanvasElement, factory: VariantFacto
   let visible = true;
   let raf = 0;
 
+  // Budget: draw at most 30 times a second, and stop entirely after a spell
+  // with no pointer or scroll activity. Any activity starts it again.
+  const FRAME_MS = 1000 / 30;
+  const IDLE_MS = 8000;
+  let timer = 0;
+  let lastActivity = performance.now();
+
   const loop = (time: number) => {
     raf = 0;
-    // Ease the pointer: quick but never snappy.
-    const k = 0.14;
+    // Ease the pointer: quick but never snappy (tuned for 30fps).
+    const k = 0.28;
     if (target.inside) {
       if (pointer.presence === 0) {
         pointer.x = target.x;
@@ -95,18 +102,23 @@ export function mountBackground(canvas: HTMLCanvasElement, factory: VariantFacto
       pointer.x += (target.x - pointer.x) * k;
       pointer.y += (target.y - pointer.y) * k;
     }
-    pointer.presence += ((target.inside ? 1 : 0) - pointer.presence) * 0.08;
+    pointer.presence += ((target.inside ? 1 : 0) - pointer.presence) * 0.16;
     if (pointer.presence < 0.002) pointer.presence = 0;
 
     const animating = variant.draw(time, pointer) !== false;
     const settling = pointer.presence > 0 && pointer.presence < 0.998;
-    if (!reduced.matches && visible && !document.hidden && (animating || settling || target.inside)) {
-      raf = requestAnimationFrame(loop);
+    const awake = performance.now() - lastActivity < IDLE_MS;
+    if (!reduced.matches && visible && !document.hidden && animating && (awake || settling)) {
+      timer = window.setTimeout(() => {
+        timer = 0;
+        raf = requestAnimationFrame(loop);
+      }, FRAME_MS);
     }
   };
 
   const kick = () => {
-    if (!raf && visible && !document.hidden) raf = requestAnimationFrame(loop);
+    lastActivity = performance.now();
+    if (!raf && !timer && visible && !document.hidden) raf = requestAnimationFrame(loop);
   };
 
   const resize = () => {
@@ -129,6 +141,7 @@ export function mountBackground(canvas: HTMLCanvasElement, factory: VariantFacto
     if (visible) kick();
   }).observe(canvas);
   document.addEventListener("visibilitychange", kick);
+  window.addEventListener("scroll", () => visible && kick(), { passive: true });
   reduced.addEventListener("change", kick);
 
   // Theme: the menu flips data-theme; "System" follows the OS.
