@@ -288,6 +288,77 @@
   }
 }
 
+/* Frame tilt: rotation comes from --rx/--ry (scripts/interactions.ts). While the
+   pointer moves the transition is short so it tracks; on leave it eases home. */
+.frame {
+  transform: perspective(1200px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+.frame[data-tilting] {
+  transition-duration: 0.12s;
+}
+
+/* Scroll-linked motion, CSS only. Content is fully visible by default; these
+   run only where view timelines exist and motion is welcome. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* The hero name recedes as you scroll past it. */
+    .hero-name {
+      animation: recede linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+
+    /* The lead product rises out of the page and settles flat, like a device
+       lifting off a table as it comes into view. */
+    .lead-stage {
+      perspective: 1600px;
+    }
+    .lead-rise {
+      transform-origin: 50% 100%;
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 45%;
+    }
+
+    /* Everything else arrives with a short lift. */
+    .reveal {
+      animation: lift linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+  }
+}
+
+@keyframes recede {
+  to {
+    opacity: 0.15;
+    translate: 0 -2rem;
+    scale: 0.96;
+  }
+}
+@keyframes rise {
+  from {
+    transform: rotateX(18deg) scale(0.9) translateY(3rem);
+    opacity: 0.35;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+@keyframes lift {
+  from {
+    opacity: 0;
+    translate: 0 1.75rem;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
 /* Disclosures open with a height ease where the browser supports animating to
    auto; elsewhere they simply open. */
 @supports (interpolate-size: allow-keywords) {

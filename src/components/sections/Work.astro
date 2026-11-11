@@ -27,11 +27,12 @@ const host = (url: string) => {
   {
     lead && (
       <article class="mt-10 grid gap-8 lg:mt-14 lg:grid-cols-12 lg:items-start lg:gap-12 [&>*]:min-w-0">
+        <div class="lead-stage lg:col-span-7">
         <a
           href={lead.url}
           target="_blank"
           rel="noopener noreferrer"
-          class="block rounded-2xl lg:col-span-7"
+          class="lead-rise block rounded-2xl"
           aria-label={`${lead.title} (opens in a new tab)`}
           data-frame
         >
@@ -46,8 +47,9 @@ const host = (url: string) => {
             />
           </div>
         </a>
+        </div>
 
-        <div class="lg:col-span-5">
+        <div class="reveal lg:col-span-5">
           <h3 class="text-[clamp(1.75rem,1.4rem+1.2vw,2.5rem)] leading-tight font-semibold tracking-[-0.03em] [font-stretch:110%]">
             {lead.title}
           </h3>
@@ -84,7 +86,7 @@ const host = (url: string) => {
       features.map((p) => {
         const Tag = p.url ? "a" : "div";
         return (
-          <article>
+          <article class="reveal">
             <Tag
               {...(p.url
                 ? {
@@ -148,7 +150,7 @@ const host = (url: string) => {
         <h3 class="text-h3 font-semibold tracking-[-0.015em]">More work</h3>
         <ul class="mt-6 border-t border-line">
           {more.map((p) => (
-            <li class="grid gap-x-8 gap-y-1 border-b border-line py-5 sm:grid-cols-[4rem_minmax(0,16rem)_1fr_auto] sm:items-baseline">
+            <li class="reveal grid gap-x-8 gap-y-1 border-b border-line py-5 sm:grid-cols-[4rem_minmax(0,16rem)_1fr_auto] sm:items-baseline">
               <span class="meta">{p.year}</span>
               <span class="font-medium text-ink">
                 {p.name}

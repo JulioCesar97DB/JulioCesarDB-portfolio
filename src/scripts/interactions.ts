@@ -51,21 +51,52 @@ function initScrollSpy(): void {
   update();
 }
 
-/** Product frames: the border highlight follows the pointer. */
+/**
+ * Product frames: the border highlight follows the pointer, and the frame tilts
+ * a few degrees toward it in perspective. Writes are batched to one per frame.
+ */
 function initFrames(): void {
   if (!window.matchMedia("(pointer: fine)").matches) return;
+  const tilt = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const MAX_TILT = 4; // degrees
+
   for (const host of document.querySelectorAll<HTMLElement>("[data-frame]")) {
     const frame = host.querySelector<HTMLElement>(".frame");
     if (!frame) continue;
+    let raf = 0;
+    let x = 0;
+    let y = 0;
+
+    const paint = () => {
+      raf = 0;
+      const r = frame.getBoundingClientRect();
+      const px = (x - r.left) / r.width; // 0..1
+      const py = (y - r.top) / r.height;
+      frame.style.setProperty("--mx", `${x - r.left}px`);
+      frame.style.setProperty("--my", `${y - r.top}px`);
+      if (tilt) {
+        frame.style.setProperty("--ry", `${((px - 0.5) * 2 * MAX_TILT).toFixed(2)}deg`);
+        frame.style.setProperty("--rx", `${((0.5 - py) * 2 * MAX_TILT).toFixed(2)}deg`);
+      }
+    };
+
     host.addEventListener(
       "pointermove",
       (e) => {
-        const r = frame.getBoundingClientRect();
-        frame.style.setProperty("--mx", `${e.clientX - r.left}px`);
-        frame.style.setProperty("--my", `${e.clientY - r.top}px`);
+        x = e.clientX;
+        y = e.clientY;
+        frame.dataset.tilting = "";
+        if (!raf) raf = requestAnimationFrame(paint);
       },
       { passive: true },
     );
+    host.addEventListener("pointerleave", () => {
+      cancelAnimationFrame(raf);
+      raf = 0;
+      delete frame.dataset.tilting;
+      frame.style.setProperty("--rx", "0deg");
+      frame.style.setProperty("--ry", "0deg");
+    });
   }
 }
 
