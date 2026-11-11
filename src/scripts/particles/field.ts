@@ -18,7 +18,7 @@ interface Particle {
 }
 
 const LINK = 120; // px: max distance for a link between particles
-const POINTER_LINK = 170; // px: max distance for a link to the pointer
+const POINTER_LINK = 140; // px: max distance for a link to the pointer
 const MAX_PARTICLES = 70;
 const AREA_PER_PARTICLE = 16000; // px² per particle
 const BUCKETS = 5; // opacity levels for batched strokes
@@ -142,7 +142,7 @@ export function createParticles(canvas: HTMLCanvasElement): Variant | null {
         ctx.strokeStyle = rgba(palette.mark, level * 0.2 * boost);
         ctx.stroke(linkPaths[b]);
         if (pointer.presence > 0) {
-          ctx.strokeStyle = rgba(palette.accent, level * 0.5 * boost * pointer.presence);
+          ctx.strokeStyle = rgba(palette.accent, level * 0.32 * boost * pointer.presence);
           ctx.stroke(pointerPaths[b]);
         }
       }

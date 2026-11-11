@@ -72,7 +72,7 @@ const host = (url: string) => {
             ))}
           </ul>
           <ul class="stack mt-6">
-            {lead.keywords?.slice(0, 6).map((k) => (
+            {lead.keywords?.slice(0, 5).map((k) => (
               <li>{k}</li>
             ))}
           </ul>
@@ -146,7 +146,7 @@ const host = (url: string) => {
               ))}
             </ul>
             <ul class="stack mt-4">
-              {p.keywords?.slice(0, 4).map((k) => (
+              {p.keywords?.slice(0, 3).map((k) => (
                 <li>{k}</li>
               ))}
             </ul>
@@ -170,7 +170,7 @@ const host = (url: string) => {
                 {p.madeAt && <span class="block text-sm font-normal text-ink-3">{p.madeAt}</span>}
               </span>
               <span class="text-[0.9375rem]">{p.description}</span>
-              <span class="flex gap-1 sm:justify-end">
+              <span class="-ml-3 flex gap-1 sm:ml-0 sm:justify-end">
                 {p.github && (
                   <a
                     href={p.github}

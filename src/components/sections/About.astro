@@ -6,7 +6,7 @@ const basics = rawBasics as CV["basics"];
 const education = rawEducation as CV["education"];
 const languages = rawLanguages as CV["languages"];
 
-const { aboutParagraphs = [], summary, location, toolkit = [] } = basics;
+const { aboutParagraphs = [], summary, toolkit = [] } = basics;
 const paragraphs = aboutParagraphs.length > 0 ? aboutParagraphs : [summary];
 const degree = education[0];
 const years = degree
@@ -23,11 +23,7 @@ const langs = [...languages]
     <div class="lg:col-span-4">
       <div class="lg:sticky lg:top-28">
         <h2 class="section-title">About</h2>
-          <dl class="mt-8 grid gap-x-8 gap-y-5 sm:grid-cols-3 lg:grid-cols-1">
-            <div>
-              <dt class="text-sm text-ink-3">Based in</dt>
-              <dd class="mt-1.5 text-[0.9375rem] text-ink">{location.city}, {location.region}</dd>
-            </div>
+          <dl class="mt-8 grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-1">
             <div>
               <dt class="text-sm text-ink-3">Languages</dt>
               <dd class="mt-1.5 text-[0.9375rem] text-ink">{langs}</dd>
