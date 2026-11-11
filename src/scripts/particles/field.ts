@@ -20,6 +20,7 @@ interface Particle {
 const LINK = 120; // px: max distance for a link between particles
 const POINTER_LINK = 140; // px: max distance for a link to the pointer
 const MAX_PARTICLES = 70;
+const MIN_PARTICLES = 40; // phones: area alone would give ~20, too sparse to link
 const AREA_PER_PARTICLE = 16000; // px² per particle
 const BUCKETS = 5; // opacity levels for batched strokes
 
@@ -36,6 +37,8 @@ export function createParticles(canvas: HTMLCanvasElement): Variant | null {
   let boost = 1;
   let particles: Particle[] = [];
   let last = 0;
+  // Slightly larger points on touch screens, where they are seen at arm's length.
+  const dot = window.matchMedia("(pointer: fine)").matches ? 1.5 : 2;
 
   const rgba = ([r, g, b]: RGB, a: number) => `rgba(${r},${g},${b},${a.toFixed(3)})`;
   // One reusable path per opacity bucket.
@@ -43,7 +46,8 @@ export function createParticles(canvas: HTMLCanvasElement): Variant | null {
   const pointerPaths: Path2D[] = [];
 
   const seed = () => {
-    const count = Math.round(Math.min(MAX_PARTICLES, (w * h) / AREA_PER_PARTICLE));
+    const byArea = (w * h) / AREA_PER_PARTICLE;
+    const count = Math.round(Math.min(MAX_PARTICLES, Math.max(MIN_PARTICLES, byArea)));
     particles = Array.from({ length: count }, () => {
       const angle = Math.random() * Math.PI * 2;
       const speed = 0.05 + Math.random() * 0.08;
@@ -131,7 +135,7 @@ export function createParticles(canvas: HTMLCanvasElement): Variant | null {
             pointerPaths[bucket].lineTo(pointer.x, pointer.y);
           }
         }
-        dots.rect(a.x - 0.75, a.y - 0.75, 1.5, 1.5);
+        dots.rect(a.x - dot / 2, a.y - dot / 2, dot, dot);
       }
 
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);

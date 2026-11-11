@@ -39,6 +39,68 @@
   color-scheme: dark;
 }
 
+/* Fallback for browsers without light-dark() (Safari before 17.5, i.e. iOS
+   16.4-17.4; Chrome before 123; Firefox before 120). Generated from the pairs
+   above: the same values, chosen by media query and data-theme instead. */
+@supports not (color: light-dark(#000, #fff)) {
+  :root {
+    --bg: oklch(0.992 0.002 270);
+    --surface: oklch(0.972 0.003 270);
+    --raised: oklch(1 0 0);
+    --ink: oklch(0.205 0.012 270);
+    --ink-2: oklch(0.42 0.014 270);
+    --ink-3: oklch(0.53 0.014 270);
+    --line: oklch(0.905 0.005 270);
+    --line-strong: oklch(0.84 0.006 270);
+    --accent: oklch(0.5 0.21 276);
+    --accent-soft: oklch(0.5 0.21 276 / 0.09);
+    --shade-1: oklch(0.25 0.02 270 / 0.04);
+    --shade-2: oklch(0.25 0.02 270 / 0.06);
+    --shade-3: oklch(0.25 0.02 270 / 0.16);
+    --glass-fill: oklch(1 0 0 / 0.72);
+    --glass-rim: oklch(1 0 0 / 0.9);
+    --glass-edge: oklch(0.25 0.02 270 / 0.1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: oklch(0.155 0.006 270);
+      --surface: oklch(0.19 0.007 270);
+      --raised: oklch(0.215 0.008 270);
+      --ink: oklch(0.965 0.003 270);
+      --ink-2: oklch(0.77 0.01 270);
+      --ink-3: oklch(0.66 0.012 270);
+      --line: oklch(0.27 0.008 270);
+      --line-strong: oklch(0.34 0.009 270);
+      --accent: oklch(0.76 0.135 278);
+      --accent-soft: oklch(0.76 0.135 278 / 0.12);
+      --shade-1: oklch(0.05 0.01 270 / 0.3);
+      --shade-2: oklch(0.05 0.01 270 / 0.4);
+      --shade-3: oklch(0.05 0.01 270 / 0.7);
+      --glass-fill: oklch(0.2 0.008 270 / 0.74);
+      --glass-rim: oklch(1 0 0 / 0.14);
+      --glass-edge: oklch(1 0 0 / 0.08);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: oklch(0.155 0.006 270);
+    --surface: oklch(0.19 0.007 270);
+    --raised: oklch(0.215 0.008 270);
+    --ink: oklch(0.965 0.003 270);
+    --ink-2: oklch(0.77 0.01 270);
+    --ink-3: oklch(0.66 0.012 270);
+    --line: oklch(0.27 0.008 270);
+    --line-strong: oklch(0.34 0.009 270);
+    --accent: oklch(0.76 0.135 278);
+    --accent-soft: oklch(0.76 0.135 278 / 0.12);
+    --shade-1: oklch(0.05 0.01 270 / 0.3);
+    --shade-2: oklch(0.05 0.01 270 / 0.4);
+    --shade-3: oklch(0.05 0.01 270 / 0.7);
+    --glass-fill: oklch(0.2 0.008 270 / 0.74);
+    --glass-rim: oklch(1 0 0 / 0.14);
+    --glass-edge: oklch(1 0 0 / 0.08);
+  }
+}
+
 @theme {
   --color-bg: var(--bg);
   --color-surface: var(--surface);

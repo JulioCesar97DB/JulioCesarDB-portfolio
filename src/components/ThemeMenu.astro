@@ -74,7 +74,14 @@ const options = [
       overlay 0.25s allow-discrete,
       display 0.25s allow-discrete;
   }
+  /* Hidden unless the browser opens it as a popover. Browsers without the
+     Popover API (Safari before 17) never match :popover-open, so the menu
+     stays hidden there instead of rendering inline in the bar. */
+  .theme-popover {
+    display: none;
+  }
   .theme-popover:popover-open {
+    display: block;
     opacity: 1;
     translate: 0 0;
     scale: 1;

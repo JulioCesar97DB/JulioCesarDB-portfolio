@@ -43,6 +43,13 @@ function applyTheme(theme: Theme): void {
 export function initTheme(): void {
   applyTheme(readTheme());
 
+  // Without the Popover API the menu cannot open; hide its trigger and let
+  // the theme follow the system (or a choice saved on another browser).
+  if (!("popover" in HTMLElement.prototype)) {
+    document.querySelector<HTMLElement>(".theme-menu")?.setAttribute("hidden", "");
+    return;
+  }
+
   const popover = document.getElementById("theme-popover");
   for (const option of document.querySelectorAll<HTMLElement>("[data-theme-option]")) {
     option.addEventListener("click", () => {
