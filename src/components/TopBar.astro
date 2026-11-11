@@ -17,9 +17,17 @@ const navItems = [
      floating pill (scroll-linked, see the style block); the wordmark joins it
      when the hero name leaves (data-named). scripts/interactions.ts drives both. -->
 <header class="topbar fixed inset-x-0 top-0 z-40 px-2 sm:px-4" data-topbar>
-  <div class="bar mx-auto flex items-center gap-1">
+  <div class="bar mx-auto flex items-center gap-1" data-bar>
+    <!-- Liquid glass layers: a light-catching rim, a specular highlight that
+         follows the pointer, and a capsule that slides under the hovered or
+         focused control. Purely decorative. -->
+    <span class="bar-rim" aria-hidden="true"></span>
+    <span class="bar-specular" aria-hidden="true"></span>
+    <span class="nav-glass" aria-hidden="true" data-nav-glass></span>
+
     <a
       href="#top"
+      data-glass-target
       class="wordmark flex min-h-11 items-center rounded-full px-2 font-semibold tracking-tight whitespace-nowrap text-ink"
       aria-label={`${name}, back to top`}
     >
@@ -35,6 +43,7 @@ const navItems = [
               <a
                 href={`#${item.id}`}
                 data-nav-link
+                data-glass-target
                 class="nav-link flex min-h-11 items-center rounded-full px-2.5 text-[0.9375rem] text-ink-3 transition-colors hover:text-ink sm:px-3"
               >
                 {item.label}
@@ -120,6 +129,126 @@ const navItems = [
   }
   .bar > * {
     position: relative;
+  }
+
+  /* Liquid glass, layer 1: the rim. A 1px gradient ring, bright at the top
+     left where light enters, fading along the sides, catching a little light
+     again at the bottom right, like the bevel of a thick glass edge. */
+  .bar-rim {
+    position: absolute !important;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      light-dark(oklch(1 0 0 / 0.95), oklch(1 0 0 / 0.28)),
+      transparent 38%,
+      transparent 62%,
+      light-dark(oklch(1 0 0 / 0.6), oklch(1 0 0 / 0.12))
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+    opacity: var(--glass);
+    pointer-events: none;
+  }
+
+  /* Layer 2: a specular highlight that follows the pointer across the glass. */
+  .bar-specular {
+    position: absolute !important;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      9rem 4rem at var(--sx, 50%) var(--sy, 0%),
+      light-dark(oklch(1 0 0 / 0.75), oklch(1 0 0 / 0.1)),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .topbar[data-hovering] .bar-specular {
+    opacity: var(--glass);
+  }
+
+  /* Layer 3: the hover capsule. A small lens of glass that appears under the
+     hovered or focused control and slides between controls with a slight
+     overshoot, as if the liquid flowed from one to the next. Position and
+     size come from scripts/interactions.ts (--gx, --gw). */
+  .nav-glass {
+    position: absolute !important;
+    top: 50%;
+    left: 0;
+    width: var(--gw, 0px);
+    height: 2.5rem;
+    border-radius: 9999px;
+    background: light-dark(oklch(1 0 0 / 0.6), oklch(1 0 0 / 0.09));
+    -webkit-backdrop-filter: blur(8px) saturate(1.8) brightness(1.05);
+    backdrop-filter: blur(8px) saturate(1.8) brightness(1.05);
+    box-shadow:
+      inset 0 1px 0 light-dark(oklch(1 0 0 / 1), oklch(1 0 0 / 0.2)),
+      inset 0 -1px 0 light-dark(oklch(0.25 0.02 270 / 0.07), oklch(0 0 0 / 0.35)),
+      inset 0 0 0 1px light-dark(oklch(0.25 0.02 270 / 0.05), oklch(1 0 0 / 0.06)),
+      0 1px 2px var(--shade-1),
+      0 6px 16px -6px var(--shade-2);
+    transform: translate(var(--gx, 0px), -50%) scale(0.92);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      transform 0.5s cubic-bezier(0.34, 1.45, 0.5, 1),
+      width 0.5s cubic-bezier(0.34, 1.45, 0.5, 1),
+      opacity 0.22s ease;
+  }
+  .nav-glass[data-active] {
+    transform: translate(var(--gx, 0px), -50%) scale(1);
+    opacity: 1;
+  }
+  /* First appearance: no slide in from the previous spot, just bloom in place. */
+  .nav-glass[data-instant] {
+    transition:
+      transform 0.3s cubic-bezier(0.34, 1.45, 0.5, 1),
+      width 0s,
+      opacity 0.22s ease;
+  }
+  /* The capsule replaces the plain hover fill on bar controls. */
+  .bar :global(.icon-btn:hover) {
+    background: transparent;
+  }
+
+  /* Résumé: a sheen sweeps across the button on hover. */
+  .resume-btn {
+    position: relative;
+    overflow: hidden;
+  }
+  .resume-btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 30%,
+      light-dark(oklch(1 0 0 / 0.5), oklch(1 0 0 / 0.35)) 50%,
+      transparent 70%
+    );
+    translate: -120% 0;
+    pointer-events: none;
+  }
+  .resume-btn:hover::after {
+    translate: 120% 0;
+    transition: translate 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-glass {
+      transition: opacity 0.2s ease;
+    }
+    .resume-btn:hover::after {
+      transition: none;
+    }
   }
 
   /* Without backdrop-filter the glass would be see-through; fill with the plate. */

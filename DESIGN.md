@@ -212,6 +212,12 @@ Flat by default. Depth is carried by tonal steps (page, band, raised plate) and 
 ### Glass
 The one place the page uses glass, because the bar genuinely floats over moving content. Fill `--glass-fill` (white 72% / ink 74%), `backdrop-filter: blur(20px) saturate(1.8)`, a 1px edge `--glass-edge`, a bright inset top rim `--glass-rim` (light catching the edge), a faint specular gradient over the upper half, and a soft drop (`0 10px 30px -10px` + `0 2px 6px -2px`). Without backdrop-filter support it falls back to the opaque raised plate. The theme menu uses the same recipe at blur 24px.
 
+Three liquid-glass layers sit inside the bar, all scaled by `--glass`:
+- **Rim:** a 1px gradient ring (masked to the border) bright at the top left, fading along the sides and catching light again at the bottom right, like the bevel of thick glass.
+- **Specular:** a soft 9×4rem radial highlight that follows a fine pointer across the bar while it is hovered.
+- **Hover capsule:** a small lens of glass (white 60% / white 9%, blur 8px, saturate 1.8, bright inset top rim, faint inner ring, soft drop) that appears under the hovered or keyboard-focused control (wordmark, nav links, theme button) and slides between controls with a slight overshoot (0.5s, cubic-bezier(0.34, 1.45, 0.5, 1)). It blooms in place on first appearance and tracks its control while the bar contracts. It replaces the plain hover fill of bar icon buttons.
+- **Résumé sheen:** on hover a diagonal highlight sweeps across the button (0.7s, expo-out).
+
 ### Shadow Vocabulary
 - **Frame lift, light** (`box-shadow: 0 1px 1px hsl(270 20% 20% / 0.04), 0 4px 10px -2px hsl(270 20% 20% / 0.06), 0 24px 48px -16px hsl(270 20% 20% / 0.16)`): product frames only.
 - **Frame lift, dark** (`box-shadow: 0 1px 1px hsl(270 30% 2% / 0.3), 0 6px 14px -4px hsl(270 30% 2% / 0.4), 0 30px 60px -20px hsl(270 30% 2% / 0.7)`): the same frames in dark mode.

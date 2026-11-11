@@ -192,6 +192,75 @@ function createNameMorph(bar: HTMLElement, name: HTMLElement) {
   };
 }
 
+/**
+ * Liquid glass in the top bar: a capsule of glass that slides under whichever
+ * control is hovered or keyboard-focused, and a specular highlight that
+ * follows the pointer across the bar. Positions are written as CSS custom
+ * properties; the motion itself is CSS.
+ */
+function initNavGlass(): void {
+  const bar = document.querySelector<HTMLElement>("[data-bar]");
+  const header = document.querySelector<HTMLElement>("[data-topbar]");
+  const glass = bar?.querySelector<HTMLElement>("[data-nav-glass]");
+  if (!bar || !header || !glass) return;
+
+  let current: HTMLElement | null = null;
+
+  const moveTo = (el: HTMLElement) => {
+    if (el.offsetWidth === 0) return; // e.g. the wordmark before it appears
+    const b = bar.getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    const appearing = !glass.hasAttribute("data-active");
+    // First appearance blooms in place instead of sliding from the last spot.
+    glass.toggleAttribute("data-instant", appearing);
+    glass.style.setProperty("--gx", `${(r.left - b.left).toFixed(1)}px`);
+    glass.style.setProperty("--gw", `${r.width.toFixed(1)}px`);
+    glass.setAttribute("data-active", "");
+    current = el;
+  };
+  const hide = () => {
+    glass.removeAttribute("data-active");
+    current = null;
+  };
+
+  for (const el of bar.querySelectorAll<HTMLElement>("[data-glass-target]")) {
+    el.addEventListener("pointerenter", () => moveTo(el));
+    el.addEventListener("focus", () => {
+      if (el.matches(":focus-visible")) moveTo(el);
+    });
+    el.addEventListener("blur", () => {
+      if (current === el) hide();
+    });
+  }
+  bar.addEventListener("pointerleave", hide);
+
+  // The bar contracts while scrolling; keep the capsule under its control.
+  header.addEventListener("topbar:frame", () => {
+    if (current) {
+      const b = bar.getBoundingClientRect();
+      const r = current.getBoundingClientRect();
+      glass.setAttribute("data-instant", "");
+      glass.style.setProperty("--gx", `${(r.left - b.left).toFixed(1)}px`);
+      glass.style.setProperty("--gw", `${r.width.toFixed(1)}px`);
+    }
+  });
+
+  // Specular highlight follows the pointer.
+  if (window.matchMedia("(pointer: fine)").matches) {
+    bar.addEventListener(
+      "pointermove",
+      (e) => {
+        const b = bar.getBoundingClientRect();
+        bar.style.setProperty("--sx", `${(e.clientX - b.left).toFixed(0)}px`);
+        bar.style.setProperty("--sy", `${(e.clientY - b.top).toFixed(0)}px`);
+        header.setAttribute("data-hovering", "");
+      },
+      { passive: true },
+    );
+    bar.addEventListener("pointerleave", () => header.removeAttribute("data-hovering"));
+  }
+}
+
 /** Marks the nav link of the section under the top third of the viewport. */
 function initScrollSpy(): void {
   const links = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]"));
@@ -308,6 +377,7 @@ function initCopyEmail(): void {
 
 export function initInteractions(): void {
   initTopBar();
+  initNavGlass();
   initScrollSpy();
   initFrames();
   initCopyEmail();
