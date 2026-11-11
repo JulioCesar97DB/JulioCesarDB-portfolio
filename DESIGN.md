@@ -273,7 +273,8 @@ An icon button in the bar (sun, moon or monitor for the current choice) opens a 
 
 ### Scroll motion
 CSS scroll-driven animations only (`animation-timeline: view()`), inside `@supports` and `prefers-reduced-motion: no-preference`, so content is fully visible everywhere else.
-- **Recede:** the hero name fades to 15%, rises 2rem and scales to 0.96 as it exits.
+- **Name handoff (large screens):** the hero name itself flies into the top bar. It keeps its natural vertical scroll until its centre meets the wordmark's centre; along that distance it slides to the wordmark, scales to its size and eases width (118% → 100%), weight (640 → 600) and tracking to the wordmark's values (ease-in-out cubic), then hides as the real wordmark appears in the same place. Scroll-linked and reversible, rendered above the glass bar while in flight; measured with `getBoundingClientRect`, one write per animation frame.
+- **Recede (small screens):** where the handoff is off, the hero name fades to 15%, rises 2rem and scales to 0.96 as it exits, and the wordmark (initials on phones) fades in.
 - **Rise:** the lead product frame lifts from `rotateX(18deg) scale(0.9)` to flat as it enters (range entry 0% to cover 45%), like a device lifting off a table.
 - **Lift:** project text, feature projects, More work rows and Experience roles arrive with a 1.75rem rise and fade (entry 0% to 70%).
 

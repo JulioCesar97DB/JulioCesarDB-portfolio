@@ -303,8 +303,9 @@
    run only where view timelines exist and motion is welcome. */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    /* The hero name recedes as you scroll past it. */
-    .hero-name {
+    /* The hero name recedes as you scroll past it, where it does not instead
+       fly into the top bar (html.name-morph, large screens). */
+    html:not(.name-morph) .hero-name {
       animation: recede linear both;
       animation-timeline: view();
       animation-range: exit 0% exit 100%;
@@ -329,6 +330,16 @@
       animation-range: entry 0% entry 70%;
     }
   }
+}
+
+/* Name morph: the hero name renders above the glass bar while it flies in,
+   scaling from its left edge, on one line. */
+html.name-morph .hero-name {
+  position: relative;
+  z-index: 50;
+  white-space: nowrap;
+  transform-origin: left center;
+  will-change: transform;
 }
 
 @keyframes recede {

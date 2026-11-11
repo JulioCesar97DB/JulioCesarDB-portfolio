@@ -23,7 +23,7 @@ const navItems = [
       class="wordmark flex min-h-11 items-center rounded-full px-2 font-semibold tracking-tight whitespace-nowrap text-ink"
       aria-label={`${name}, back to top`}
     >
-      <span class="hidden sm:inline">{name}</span>
+      <span class="wordmark-text hidden sm:inline" data-wordmark-full>{name}</span>
       <span class="sm:hidden">JCD</span>
     </a>
 
@@ -155,6 +155,23 @@ const navItems = [
     padding-inline: 0.75rem;
     opacity: 1;
     pointer-events: auto;
+  }
+
+  /* Name morph (large screens, scripts/interactions.ts adds html.name-morph):
+     the hero name itself flies into this slot, so the slot opens as soon as
+     the bar turns to glass and its own text only appears once the flying name
+     has landed on it (data-named). */
+  :global(html.name-morph) .topbar[data-scrolled] .wordmark {
+    max-width: 14rem;
+    padding-inline: 0.75rem;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  :global(html.name-morph) .wordmark-text {
+    opacity: 0;
+  }
+  :global(html.name-morph) .topbar[data-named] .wordmark-text {
+    opacity: 1;
   }
 
   .nav-link[aria-current="true"] {

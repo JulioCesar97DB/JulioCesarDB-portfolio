@@ -1,4 +1,4 @@
-/** Top bar: hairline + blur once the page scrolls; wordmark once the hero name leaves. */
+/** Top bar: glass once the page scrolls; wordmark once the hero name is gone. */
 function initTopBar(): void {
   const bar = document.querySelector<HTMLElement>("[data-topbar]");
   if (!bar) return;
@@ -7,15 +7,155 @@ function initTopBar(): void {
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  const name = document.querySelector("[data-hero-name]");
+  const name = document.querySelector<HTMLElement>("[data-hero-name]");
   if (!name) {
     bar.setAttribute("data-named", "");
     return;
   }
+
+  // Small screens / reduced motion: the wordmark simply fades in once the
+  // hero name has scrolled under the bar.
+  let named = false;
   new IntersectionObserver(
-    ([entry]) => bar.toggleAttribute("data-named", !entry.isIntersecting),
+    ([entry]) => {
+      named = !entry.isIntersecting;
+      if (!morphing) bar.toggleAttribute("data-named", named);
+    },
     { rootMargin: "-64px 0px 0px 0px" },
   ).observe(name);
+
+  // Large screens: the hero name itself flies into the bar.
+  let morphing = false;
+  const query = window.matchMedia("(min-width: 1024px) and (prefers-reduced-motion: no-preference)");
+  const morph = createNameMorph(bar, name);
+  const sync = () => {
+    morphing = query.matches && !!morph;
+    if (morphing) morph?.enable();
+    else {
+      morph?.disable();
+      bar.toggleAttribute("data-named", named);
+    }
+  };
+  query.addEventListener("change", sync);
+  sync();
+}
+
+/**
+ * Scroll-linked handoff of the hero name into the top bar's wordmark.
+ *
+ * The name keeps its natural vertical scroll until its centre meets the
+ * wordmark's centre; along that same distance it slides left, shrinks to the
+ * wordmark's size and eases its width axis, weight and tracking down to the
+ * wordmark's values. When it lands it hides and the real wordmark shows, so
+ * the swap is invisible. Scrolling back up reverses it.
+ */
+function createNameMorph(bar: HTMLElement, name: HTMLElement) {
+  const target = bar.querySelector<HTMLElement>("[data-wordmark-full]");
+  if (!target) return null;
+
+  const root = document.documentElement;
+  const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+  const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+  // Hero name at rest, measured without any morph styles applied.
+  let base = { left: 0, centerY: 0, size: 1, stretch: 118, weight: 640, tracking: -0.04 };
+  let active = false;
+  let raf = 0;
+  let settleUntil = 0;
+
+  const clear = () => {
+    name.style.transform = "";
+    name.style.fontStretch = "";
+    name.style.fontWeight = "";
+    name.style.letterSpacing = "";
+    name.style.opacity = "";
+  };
+
+  const measure = () => {
+    clear();
+    const r = name.getBoundingClientRect();
+    const cs = getComputedStyle(name);
+    const size = parseFloat(cs.fontSize);
+    base = {
+      left: r.left,
+      centerY: r.top + window.scrollY + r.height / 2,
+      size,
+      stretch: parseFloat(cs.fontStretch) || 118,
+      weight: parseFloat(cs.fontWeight) || 640,
+      tracking: (parseFloat(cs.letterSpacing) || -0.04 * size) / size,
+    };
+  };
+
+  const frame = () => {
+    raf = 0;
+    if (!active) return;
+    const t = target.getBoundingClientRect();
+    const ts = getComputedStyle(target);
+    const targetSize = parseFloat(ts.fontSize);
+    const targetCenterY = t.top + t.height / 2;
+    const targetTracking = (parseFloat(ts.letterSpacing) || 0) / targetSize;
+
+    const distance = Math.max(1, base.centerY - targetCenterY);
+    const progress = Math.min(1, Math.max(0, window.scrollY / distance));
+    const e = ease(progress);
+
+    // Vertical: follow the page until landing, then hold on the wordmark.
+    const naturalCenterY = base.centerY - window.scrollY;
+    const dy = progress >= 1 ? targetCenterY - naturalCenterY : 0;
+    const dx = (t.left - base.left) * e;
+    const scale = lerp(1, targetSize / base.size, e);
+
+    name.style.transform = `translate3d(${dx.toFixed(2)}px, ${dy.toFixed(2)}px, 0) scale(${scale.toFixed(4)})`;
+    name.style.fontStretch = `${lerp(base.stretch, 100, e).toFixed(1)}%`;
+    name.style.fontWeight = lerp(base.weight, 600, e).toFixed(0);
+    name.style.letterSpacing = `${lerp(base.tracking, targetTracking, e).toFixed(4)}em`;
+
+    const landed = progress >= 1;
+    name.style.opacity = landed ? "0" : "";
+    bar.toggleAttribute("data-named", landed);
+
+    // While the bar is mid-transition into the pill its wordmark moves;
+    // keep tracking it for that window even if the page is not scrolling.
+    if (performance.now() < settleUntil) raf = requestAnimationFrame(frame);
+  };
+
+  const schedule = () => {
+    if (!raf) raf = requestAnimationFrame(frame);
+  };
+  const onBarChange = () => {
+    settleUntil = performance.now() + 700;
+    schedule();
+  };
+  const onResize = () => {
+    measure();
+    schedule();
+  };
+  const observer = new MutationObserver(onBarChange);
+
+  return {
+    enable() {
+      if (active) return;
+      active = true;
+      root.classList.add("name-morph");
+      measure();
+      window.addEventListener("scroll", schedule, { passive: true });
+      window.addEventListener("resize", onResize, { passive: true });
+      observer.observe(bar, { attributes: true, attributeFilter: ["data-scrolled"] });
+      document.fonts?.ready.then(onResize);
+      onBarChange();
+    },
+    disable() {
+      if (!active) return;
+      active = false;
+      root.classList.remove("name-morph");
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", onResize);
+      observer.disconnect();
+      cancelAnimationFrame(raf);
+      raf = 0;
+      clear();
+    },
+  };
 }
 
 /** Marks the nav link of the section under the top third of the viewport. */
