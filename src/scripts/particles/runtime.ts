@@ -167,6 +167,27 @@ export function mountBackground(canvas: HTMLCanvasElement, factory: VariantFacto
       target.inside = false;
       kick();
     });
+  } else {
+    // Touch: the finger plays the pointer's role while it is on the screen,
+    // including while it scrolls the page. Listeners are passive so they never
+    // delay scrolling.
+    const follow = (e: TouchEvent) => {
+      const t = e.touches[0];
+      if (!t) return;
+      const r = canvas.getBoundingClientRect();
+      target.x = t.clientX - r.left;
+      target.y = t.clientY - r.top;
+      target.inside = true;
+      kick();
+    };
+    const release = () => {
+      target.inside = false;
+      kick();
+    };
+    host.addEventListener("touchstart", follow, { passive: true });
+    host.addEventListener("touchmove", follow, { passive: true });
+    host.addEventListener("touchend", release, { passive: true });
+    host.addEventListener("touchcancel", release, { passive: true });
   }
 
   variant.setPalette(readPalette(canvas));
