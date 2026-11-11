@@ -48,7 +48,15 @@ const metaDescription = description ?? summary;
     <meta name="twitter:image:alt" content={title} />
 
     <script is:inline>
-      document.documentElement.classList.add("js");
+      // Runs before first paint: apply a saved theme so there is no flash.
+      (() => {
+        const root = document.documentElement;
+        root.classList.add("js");
+        try {
+          const saved = localStorage.getItem("theme");
+          if (saved === "light" || saved === "dark") root.dataset.theme = saved;
+        } catch {}
+      })();
     </script>
   </head>
   <body>

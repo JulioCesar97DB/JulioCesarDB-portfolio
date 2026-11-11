@@ -1,45 +1,42 @@
 @import "tailwindcss";
 
-/* Light is the base; dark follows the OS. Neutrals are a cool grey (hue 270)
-   with one ultramarine-violet accent reserved for links and actions. */
+/* Every token is a light-dark() pair, so the theme is decided by one property:
+   color-scheme. It follows the OS by default; data-theme on <html> (set by the
+   theme menu and an inline head script) pins it to light or dark.
+   Neutrals are a cool grey (hue 270); one ultramarine-violet accent is reserved
+   for links and actions. */
 :root {
-  color-scheme: light;
-  --bg: oklch(0.992 0.002 270);
-  --surface: oklch(0.972 0.003 270);
-  --raised: oklch(1 0 0);
-  --ink: oklch(0.205 0.012 270);
-  --ink-2: oklch(0.42 0.014 270);
-  --ink-3: oklch(0.53 0.014 270);
-  --line: oklch(0.905 0.005 270);
-  --line-strong: oklch(0.84 0.006 270);
-  --accent: oklch(0.5 0.21 276);
-  --accent-soft: oklch(0.5 0.21 276 / 0.09);
-  --shadow-color: 270 20% 20%;
+  color-scheme: light dark;
+  --bg: light-dark(oklch(0.992 0.002 270), oklch(0.155 0.006 270));
+  --surface: light-dark(oklch(0.972 0.003 270), oklch(0.19 0.007 270));
+  --raised: light-dark(oklch(1 0 0), oklch(0.215 0.008 270));
+  --ink: light-dark(oklch(0.205 0.012 270), oklch(0.965 0.003 270));
+  --ink-2: light-dark(oklch(0.42 0.014 270), oklch(0.77 0.01 270));
+  --ink-3: light-dark(oklch(0.53 0.014 270), oklch(0.66 0.012 270));
+  --line: light-dark(oklch(0.905 0.005 270), oklch(0.27 0.008 270));
+  --line-strong: light-dark(oklch(0.84 0.006 270), oklch(0.34 0.009 270));
+  --accent: light-dark(oklch(0.5 0.21 276), oklch(0.76 0.135 278));
+  --accent-soft: light-dark(oklch(0.5 0.21 276 / 0.09), oklch(0.76 0.135 278 / 0.12));
+  --shade-1: light-dark(oklch(0.25 0.02 270 / 0.04), oklch(0.05 0.01 270 / 0.3));
+  --shade-2: light-dark(oklch(0.25 0.02 270 / 0.06), oklch(0.05 0.01 270 / 0.4));
+  --shade-3: light-dark(oklch(0.25 0.02 270 / 0.16), oklch(0.05 0.01 270 / 0.7));
   --frame-shadow:
-    0 1px 1px hsl(var(--shadow-color) / 0.04),
-    0 4px 10px -2px hsl(var(--shadow-color) / 0.06),
-    0 24px 48px -16px hsl(var(--shadow-color) / 0.16);
+    0 1px 1px var(--shade-1),
+    0 4px 10px -2px var(--shade-2),
+    0 24px 48px -16px var(--shade-3);
+
+  /* Glass: the floating top bar. A translucent fill over a heavy blur, a bright
+     top edge (light catching the rim) and a soft drop. */
+  --glass-fill: light-dark(oklch(1 0 0 / 0.72), oklch(0.2 0.008 270 / 0.74));
+  --glass-rim: light-dark(oklch(1 0 0 / 0.9), oklch(1 0 0 / 0.14));
+  --glass-edge: light-dark(oklch(0.25 0.02 270 / 0.1), oklch(1 0 0 / 0.08));
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --bg: oklch(0.155 0.006 270);
-    --surface: oklch(0.19 0.007 270);
-    --raised: oklch(0.215 0.008 270);
-    --ink: oklch(0.965 0.003 270);
-    --ink-2: oklch(0.77 0.01 270);
-    --ink-3: oklch(0.66 0.012 270);
-    --line: oklch(0.27 0.008 270);
-    --line-strong: oklch(0.34 0.009 270);
-    --accent: oklch(0.76 0.135 278);
-    --accent-soft: oklch(0.76 0.135 278 / 0.12);
-    --shadow-color: 270 30% 2%;
-    --frame-shadow:
-      0 1px 1px hsl(var(--shadow-color) / 0.3),
-      0 6px 14px -4px hsl(var(--shadow-color) / 0.4),
-      0 30px 60px -20px hsl(var(--shadow-color) / 0.7);
-  }
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 @theme {

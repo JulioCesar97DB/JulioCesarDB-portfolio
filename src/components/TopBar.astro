@@ -1,5 +1,6 @@
 ---
 import Icon from "@/icons/Icon.astro";
+import ThemeMenu from "@/components/ThemeMenu.astro";
 import { basics } from "@cv";
 
 const { name, resume } = basics;
@@ -41,6 +42,8 @@ const navItems = [
         }
       </ul>
     </nav>
+
+    <ThemeMenu />
 
     {
       resume && (
