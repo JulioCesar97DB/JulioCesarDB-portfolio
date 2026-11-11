@@ -28,7 +28,7 @@ const navItems = [
     <a
       href="#top"
       data-glass-target
-      class="wordmark flex min-h-11 items-center rounded-full px-2 font-semibold tracking-tight whitespace-nowrap text-ink"
+      class="wordmark flex min-h-11 flex-none items-center rounded-full px-2 font-semibold tracking-tight whitespace-nowrap text-ink max-[399px]:hidden"
       aria-label={`${name}, back to top`}
     >
       <span class="wordmark-text hidden sm:inline" data-wordmark-full>{name}</span>
@@ -44,7 +44,7 @@ const navItems = [
                 href={`#${item.id}`}
                 data-nav-link
                 data-glass-target
-                class="nav-link flex min-h-11 items-center rounded-full px-2.5 text-[0.9375rem] text-ink-3 transition-colors hover:text-ink sm:px-3"
+                class="nav-link flex min-h-11 items-center rounded-full px-2 text-sm whitespace-nowrap text-ink-3 transition-colors hover:text-ink min-[400px]:px-2.5 min-[400px]:text-[0.9375rem] sm:px-3"
               >
                 {item.label}
               </a>
@@ -60,12 +60,13 @@ const navItems = [
       resume && (
         <a
           href={resume}
-          class="btn resume-btn ml-0.5 min-h-10 w-10 justify-center rounded-full px-0 text-sm sm:w-auto sm:px-3.5"
+          class="btn resume-btn ml-0.5 min-h-10 w-10 flex-none justify-center rounded-full px-0 text-sm sm:w-auto sm:px-3.5"
           aria-label="Download résumé (PDF)"
           download
         >
           <span class="hidden sm:inline">Résumé</span>
-          <Icon name="arrow-down" class="size-4 text-ink-3 sm:size-3.5" />
+          <Icon name="file" class="size-4 sm:hidden" />
+          <Icon name="arrow-down" class="hidden size-3.5 text-ink-3 sm:block" />
         </a>
       )
     }
