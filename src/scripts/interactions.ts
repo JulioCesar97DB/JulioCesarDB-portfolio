@@ -1,6 +1,6 @@
 /** Scroll range over which the bar turns into the glass pill (px). */
-const BAR_START = 40;
-const BAR_END = 360;
+const BAR_START = 24;
+const BAR_END = 260;
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const smoothstep = (a: number, b: number, v: number) => {
@@ -41,7 +41,7 @@ function initTopBar(): void {
     // Frame-rate independent easing toward the real scroll position.
     const dt = last ? Math.min(64, time - last) : 16.67;
     last = time;
-    const k = reduced.matches ? 1 : 1 - Math.pow(1 - 0.1, dt / 16.67);
+    const k = reduced.matches ? 1 : 1 - Math.pow(1 - 0.14, dt / 16.67);
     smoothY += (target - smoothY) * k;
     if (Math.abs(target - smoothY) < 0.25) smoothY = target;
     apply();
@@ -141,7 +141,9 @@ function createNameMorph(bar: HTMLElement, name: HTMLElement) {
     const targetCenterY = t.top + t.height / 2;
     const targetTracking = (parseFloat(ts.letterSpacing) || 0) / targetSize;
 
-    const progress = clamp01(smoothY / BAR_END);
+    // Finish with the bar, but never before the name has risen to the bar.
+    const meet = base.centerY - targetCenterY;
+    const progress = clamp01(smoothY / Math.max(BAR_END, meet));
     const e = easeInOut(progress);
 
     // Vertical: follow the page, then ride inside the bar once it gets there.
