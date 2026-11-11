@@ -303,7 +303,7 @@ Text selection is accent on paper. The scrollbar is hairline-strong on the page 
 - **Do** set dates and years in Geist Mono with tabular figures, and nothing else.
 - **Do** separate sections with hairlines and surface-tone bands rather than cards.
 - **Do** raise only product screenshots, in the frame with its layered soft shadow.
-- **Do** define every new colour as a `light-dark()` pair so the OS setting and the theme menu both drive it.
+- **Do** define every new colour as a `light-dark()` pair so the OS setting and the theme menu both drive it, and mirror the pair in the `@supports not (color: light-dark(...))` fallback block in global.css (Safari before 17.5 / iOS 16.4-17.4).
 - **Do** keep every interactive target at least 2.75rem and honour reduced motion.
 
 ### Don't:
