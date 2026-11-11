@@ -33,7 +33,7 @@ const links = profiles.filter((p) => p.network === "GitHub" || p.network === "Li
   <div class="mt-10 flex flex-wrap items-center gap-3">
     {
       resume && (
-        <a href={resume} class="btn btn-primary" download>
+        <a href={resume} class="btn btn-primary" download data-hero-resume>
           <Icon name="file" class="size-4" />
           Résumé
         </a>

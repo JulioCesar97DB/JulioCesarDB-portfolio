@@ -15,7 +15,9 @@ const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 
  * mapped onto three overlapping phases written as CSS custom properties:
  *   --glass   0 -> 1 over the first half of the range (material appears)
  *   --shrink  0 -> 1 from 12% to the end (contraction into the pill)
- *   --fill    0 -> 1 over the last third (Résumé fills with ink)
+ * The Résumé button fills with ink (data-filled, an animated --fill) only
+ * once the hero's own Résumé button has left the viewport, so two black
+ * Résumé buttons are never on screen together.
  * Each frame also emits "topbar:frame" so the name morph can stay in step.
  */
 function initTopBar(): void {
@@ -31,7 +33,6 @@ function initTopBar(): void {
     const p = clamp01((smoothY - BAR_START) / (BAR_END - BAR_START));
     bar.style.setProperty("--glass", smoothstep(0, 0.5, p).toFixed(4));
     bar.style.setProperty("--shrink", smoothstep(0.12, 1, p).toFixed(4));
-    bar.style.setProperty("--fill", smoothstep(0.65, 1, p).toFixed(4));
     bar.dispatchEvent(new CustomEvent("topbar:frame", { detail: { smoothY } }));
   };
 
@@ -54,6 +55,15 @@ function initTopBar(): void {
 
   window.addEventListener("scroll", kick, { passive: true });
   apply();
+
+  const heroResume = document.querySelector("[data-hero-resume]");
+  if (heroResume) {
+    new IntersectionObserver(([entry]) => bar.toggleAttribute("data-filled", !entry.isIntersecting), {
+      rootMargin: "-72px 0px 0px 0px",
+    }).observe(heroResume);
+  } else {
+    bar.setAttribute("data-filled", "");
+  }
 
   const name = document.querySelector<HTMLElement>("[data-hero-name]");
   if (!name) {

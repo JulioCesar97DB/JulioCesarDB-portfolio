@@ -74,17 +74,28 @@ const navItems = [
 </header>
 
 <style>
+  /* Registered so --fill can transition (the Résumé ink fill). */
+  @property --fill {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 0;
+  }
+
   /* The bar's shape is driven by scroll, not toggled. scripts/interactions.ts
      writes three eased 0..1 phases on the header as the page scrolls:
        --glass   the glass material fades in (fill, blur, rim, edge, shadow)
        --shrink  the bar contracts from the layout width into the pill
-       --fill    the Résumé button fills with ink
+       --fill    the Résumé button fills with ink (toggled, then animated)
      Every property below interpolates from those, so the change is spread
      over the whole scroll range instead of firing at one threshold. */
   .topbar {
     --glass: 0;
     --shrink: 0;
     --fill: 0;
+    transition: --fill 0.45s ease;
+  }
+  .topbar[data-filled] {
+    --fill: 1;
   }
   /* Without JS the bar is simply the finished pill. */
   :global(html:not(.js)) .topbar {
