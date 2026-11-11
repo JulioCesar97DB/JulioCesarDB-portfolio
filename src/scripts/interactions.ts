@@ -206,15 +206,23 @@ function initNavGlass(): void {
 
   let current: HTMLElement | null = null;
 
-  const moveTo = (el: HTMLElement) => {
-    if (el.offsetWidth === 0) return; // e.g. the wordmark before it appears
+  let lastLeft = 0;
+  const place = (el: HTMLElement, instant: boolean) => {
     const b = bar.getBoundingClientRect();
     const r = el.getBoundingClientRect();
-    const appearing = !glass.hasAttribute("data-active");
-    // First appearance blooms in place instead of sliding from the last spot.
-    glass.toggleAttribute("data-instant", appearing);
-    glass.style.setProperty("--gx", `${(r.left - b.left).toFixed(1)}px`);
-    glass.style.setProperty("--gw", `${r.width.toFixed(1)}px`);
+    const left = r.left - b.left;
+    const right = b.right - r.right;
+    glass.toggleAttribute("data-instant", instant);
+    if (!instant) glass.dataset.dir = left < lastLeft ? "left" : "right";
+    glass.style.setProperty("--gl", `${left.toFixed(1)}px`);
+    glass.style.setProperty("--gr", `${right.toFixed(1)}px`);
+    lastLeft = left;
+  };
+
+  const moveTo = (el: HTMLElement) => {
+    if (el.offsetWidth === 0) return; // e.g. the wordmark before it appears
+    // First appearance blooms in place instead of travelling from the last spot.
+    place(el, !glass.hasAttribute("data-active"));
     glass.setAttribute("data-active", "");
     current = el;
   };
@@ -236,13 +244,7 @@ function initNavGlass(): void {
 
   // The bar contracts while scrolling; keep the capsule under its control.
   header.addEventListener("topbar:frame", () => {
-    if (current) {
-      const b = bar.getBoundingClientRect();
-      const r = current.getBoundingClientRect();
-      glass.setAttribute("data-instant", "");
-      glass.style.setProperty("--gx", `${(r.left - b.left).toFixed(1)}px`);
-      glass.style.setProperty("--gw", `${r.width.toFixed(1)}px`);
-    }
+    if (current) place(current, true);
   });
 
   // Specular highlight follows the pointer.

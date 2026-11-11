@@ -215,7 +215,7 @@ The one place the page uses glass, because the bar genuinely floats over moving 
 Three liquid-glass layers sit inside the bar, all scaled by `--glass`:
 - **Rim:** a 1px gradient ring (masked to the border) bright at the top left, fading along the sides and catching light again at the bottom right, like the bevel of thick glass.
 - **Specular:** a soft 9×4rem radial highlight that follows a fine pointer across the bar while it is hovered.
-- **Hover capsule:** a small lens of glass (white 60% / white 9%, blur 8px, saturate 1.8, bright inset top rim, faint inner ring, soft drop) that appears under the hovered or keyboard-focused control (wordmark, nav links, theme button) and slides between controls with a slight overshoot (0.5s, cubic-bezier(0.34, 1.45, 0.5, 1)). It blooms in place on first appearance and tracks its control while the bar contracts. It replaces the plain hover fill of bar icon buttons.
+- **Hover capsule:** a small lens of glass (white 60% / white 9%, blur 8px, saturate 1.8, bright inset top rim, faint inner ring, soft drop) that appears under the hovered or keyboard-focused control (wordmark, nav links, theme button) and flows between controls: its two edges animate separately on an exponential ease-out, the leading edge in the direction of travel at 0.35s and the trailing edge at 0.7s, so it stretches as it travels and draws back in on arrival, with no overshoot. It blooms in place on first appearance and tracks its control while the bar contracts. It replaces the plain hover fill of bar icon buttons.
 - **Résumé sheen:** on hover a diagonal highlight sweeps across the button (0.7s, expo-out).
 
 ### Shadow Vocabulary

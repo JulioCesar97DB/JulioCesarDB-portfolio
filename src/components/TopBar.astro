@@ -176,14 +176,16 @@ const navItems = [
   }
 
   /* Layer 3: the hover capsule. A small lens of glass that appears under the
-     hovered or focused control and slides between controls with a slight
-     overshoot, as if the liquid flowed from one to the next. Position and
-     size come from scripts/interactions.ts (--gx, --gw). */
+     hovered or focused control and flows between controls. Its two edges are
+     positioned separately (--gl, --gr, from scripts/interactions.ts) and the
+     leading edge in the direction of travel moves faster than the trailing
+     one, so the capsule stretches as it travels and draws back in when it
+     arrives, like a drop of liquid. Both use an exponential ease-out. */
   .nav-glass {
     position: absolute !important;
     top: 50%;
-    left: 0;
-    width: var(--gw, 0px);
+    left: var(--gl, 0px);
+    right: var(--gr, 100%);
     height: 2.5rem;
     border-radius: 9999px;
     background: light-dark(oklch(1 0 0 / 0.6), oklch(1 0 0 / 0.09));
@@ -195,23 +197,33 @@ const navItems = [
       inset 0 0 0 1px light-dark(oklch(0.25 0.02 270 / 0.05), oklch(1 0 0 / 0.06)),
       0 1px 2px var(--shade-1),
       0 6px 16px -6px var(--shade-2);
-    transform: translate(var(--gx, 0px), -50%) scale(0.92);
+    transform: translateY(-50%) scale(0.92);
     opacity: 0;
     pointer-events: none;
+    --lead: 0.35s;
+    --trail: 0.7s;
     transition:
-      transform 0.5s cubic-bezier(0.34, 1.45, 0.5, 1),
-      width 0.5s cubic-bezier(0.34, 1.45, 0.5, 1),
+      left var(--trail) cubic-bezier(0.16, 1, 0.3, 1),
+      right var(--lead) cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.22s ease;
+  }
+  /* Travelling left: the left edge leads. */
+  .nav-glass[data-dir="left"] {
+    transition:
+      left var(--lead) cubic-bezier(0.16, 1, 0.3, 1),
+      right var(--trail) cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
       opacity 0.22s ease;
   }
   .nav-glass[data-active] {
-    transform: translate(var(--gx, 0px), -50%) scale(1);
+    transform: translateY(-50%) scale(1);
     opacity: 1;
   }
-  /* First appearance: no slide in from the previous spot, just bloom in place. */
+  /* First appearance, or following the bar while it contracts: no travel. */
   .nav-glass[data-instant] {
     transition:
-      transform 0.3s cubic-bezier(0.34, 1.45, 0.5, 1),
-      width 0s,
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
       opacity 0.22s ease;
   }
   /* The capsule replaces the plain hover fill on bar controls. */
@@ -243,7 +255,8 @@ const navItems = [
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .nav-glass {
+    .nav-glass,
+    .nav-glass[data-dir="left"] {
       transition: opacity 0.2s ease;
     }
     .resume-btn:hover::after {
