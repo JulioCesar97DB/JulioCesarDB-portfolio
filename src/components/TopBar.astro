@@ -17,7 +17,7 @@ const navItems = [
      floating pill (scroll-linked, see the style block); the wordmark joins it
      when the hero name leaves (data-named). scripts/interactions.ts drives both. -->
 <header class="topbar fixed inset-x-0 top-0 z-40 px-2 sm:px-4" data-topbar>
-  <div class="bar mx-auto flex items-center gap-1" data-bar>
+  <div class="bar mx-auto flex items-center gap-0.5 min-[400px]:gap-1" data-bar>
     <!-- Liquid glass layers: a light-catching rim, a specular highlight that
          follows the pointer, and a capsule that slides under the hovered or
          focused control. Purely decorative. -->
@@ -28,7 +28,7 @@ const navItems = [
     <a
       href="#top"
       data-glass-target
-      class="wordmark flex min-h-11 flex-none items-center rounded-full px-2 font-semibold tracking-tight whitespace-nowrap text-ink max-[399px]:hidden"
+      class="wordmark flex min-h-11 flex-none items-center rounded-full px-2 font-semibold tracking-tight whitespace-nowrap text-ink max-[359px]:hidden"
       aria-label={`${name}, back to top`}
     >
       <span class="wordmark-text hidden sm:inline" data-wordmark-full>{name}</span>
@@ -44,7 +44,7 @@ const navItems = [
                 href={`#${item.id}`}
                 data-nav-link
                 data-glass-target
-                class="nav-link flex min-h-11 items-center rounded-full px-2 text-sm whitespace-nowrap text-ink-3 transition-colors hover:text-ink min-[400px]:px-2.5 min-[400px]:text-[0.9375rem] sm:px-3"
+                class="nav-link flex min-h-11 items-center rounded-full px-1.5 text-sm whitespace-nowrap text-ink-3 transition-colors hover:text-ink min-[400px]:px-2.5 min-[400px]:text-[0.9375rem] sm:px-3"
               >
                 {item.label}
               </a>
@@ -60,7 +60,7 @@ const navItems = [
       resume && (
         <a
           href={resume}
-          class="btn resume-btn ml-0.5 min-h-10 w-10 flex-none justify-center rounded-full px-0 text-sm sm:w-auto sm:px-3.5"
+          class="btn resume-btn ml-0.5 min-h-11 w-11 flex-none justify-center rounded-full px-0 text-sm sm:min-h-10 sm:w-auto sm:px-3.5"
           aria-label="Download résumé (PDF)"
           download
         >
@@ -318,6 +318,13 @@ const navItems = [
       opacity 0.35s ease,
       translate 0.4s cubic-bezier(0.16, 1, 0.3, 1),
       visibility 0s;
+  }
+
+  /* Narrow phones: a tighter wordmark so "JCD" fits down to 360px. */
+  @media (max-width: 399px) {
+    .wordmark {
+      padding-inline: 0.5rem;
+    }
   }
 
   /* Name morph (large screens, html.name-morph): the hero name itself flies
