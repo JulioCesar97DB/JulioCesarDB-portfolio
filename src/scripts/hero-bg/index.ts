@@ -1,13 +1,11 @@
 import { mountHeroBackground, type VariantFactory } from "./runtime";
-import { createGrid } from "./grid";
 
 /**
- * The dot grid is the shipped background. The gradient and particle variants
- * stay loadable for comparison via ?bg=gradient|particles and are fetched
- * only when asked for, so they add nothing to the default page.
+ * The gradient is the default background; the particle variant stays
+ * available for comparison via ?bg=particles. Each variant is code-split and
+ * fetched only when used.
  */
 const variants: Record<string, () => Promise<VariantFactory>> = {
-  grid: async () => createGrid,
   gradient: async () => (await import("./gradient")).createGradient,
   particles: async () => (await import("./particles")).createParticles,
 };
@@ -15,8 +13,8 @@ const variants: Record<string, () => Promise<VariantFactory>> = {
 export async function initHeroBackground(): Promise<void> {
   const canvas = document.querySelector<HTMLCanvasElement>("[data-hero-bg]");
   if (!canvas) return;
-  const requested = new URLSearchParams(location.search).get("bg") ?? "grid";
-  const key = requested in variants ? requested : "grid";
+  const requested = new URLSearchParams(location.search).get("bg") ?? "gradient";
+  const key = requested in variants ? requested : "gradient";
   canvas.dataset.variant = key;
   mountHeroBackground(canvas, await variants[key]());
 }

@@ -279,7 +279,7 @@ CSS scroll-driven animations only (`animation-timeline: view()`), inside `@suppo
 - **Lift:** project text, feature projects, More work rows and Experience roles arrive with a 1.75rem rise and fade (entry 0% to 70%).
 
 ### Hero background
-A fine dot grid (22px pitch, ink tertiary at 22% light / 42% dark) drawn on a 2D canvas behind the hero, masked to fade out by the bottom of the hero. Near a fine pointer the dots within ~160px brighten toward the accent, grow slightly and are pushed up to 7px outward, like a soft lens; the pointer is eased and its presence fades in and out. On touch devices a very slow diagonal swell keeps the field faintly alive; under reduced motion it is a still grid. It renders only while the hero is on screen and the tab is visible, follows the theme (tokens resolved through computed style, since canvas cannot parse light-dark()), and is capped at 2x device pixel ratio.
+A slow mesh gradient rendered by a WebGL fragment shader behind the hero: domain-warped noise mixes the page colour, a lifted neutral and a low-strength accent (20% light, 38% dark), with fine grain against banding; the pointer gently pulls the flow toward itself. A particle constellation variant (`?bg=particles`) is kept for comparison. Both are code-split, render only while on screen and the tab is visible, follow the theme (tokens resolved through computed style, since canvas cannot parse light-dark()), cap the pixel ratio at 2x, and hold still under reduced motion.
 
 ### Global states
 Text selection is accent on paper. The scrollbar is hairline-strong on the page colour. Reduced-motion collapses every transition and disables smooth scrolling.

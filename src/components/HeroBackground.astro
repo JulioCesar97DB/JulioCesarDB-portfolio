@@ -2,7 +2,7 @@
 // Decorative canvas behind the hero. It fades out toward the bottom so the
 // field never meets the first product frame with a hard edge.
 const isDev = import.meta.env.DEV;
-const options = ["grid", "gradient", "particles"];
+const options = ["gradient", "particles"];
 ---
 
 <canvas class="hero-bg" data-hero-bg aria-hidden="true"></canvas>
@@ -23,7 +23,7 @@ const options = ["grid", "gradient", "particles"];
   import { initHeroBackground } from "@/scripts/hero-bg";
   initHeroBackground();
 
-  const current = new URLSearchParams(location.search).get("bg") ?? "grid";
+  const current = new URLSearchParams(location.search).get("bg") ?? "gradient";
   document
     .querySelector(`[data-bg-option="${current}"]`)
     ?.setAttribute("aria-current", "true");
