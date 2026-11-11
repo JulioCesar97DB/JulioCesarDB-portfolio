@@ -33,7 +33,8 @@ const host = (url: string) => {
           target="_blank"
           rel="noopener noreferrer"
           class="lead-rise block rounded-2xl"
-          aria-label={`${lead.title} (opens in a new tab)`}
+          tabindex="-1"
+          aria-hidden="true"
           data-frame
         >
           <div class="frame">
@@ -56,10 +57,10 @@ const host = (url: string) => {
               target="_blank"
               rel="noopener noreferrer"
               class="inline-flex items-center gap-1.5 hover:text-accent"
+              aria-describedby="new-tab-hint"
             >
               {lead.title}
               <Icon name="arrow-up-right" class="size-5 text-ink-3" />
-              <span class="sr-only">(opens in a new tab)</span>
             </a>
           </h3>
           <p class="mt-2 text-[0.9375rem] text-ink">{lead.kind}</p>
@@ -102,7 +103,8 @@ const host = (url: string) => {
                     href: p.url,
                     target: "_blank",
                     rel: "noopener noreferrer",
-                    "aria-label": `${p.title} (opens in a new tab)`,
+                    tabindex: "-1",
+                    "aria-hidden": "true",
                   }
                 : {})}
               class="reveal-solid block rounded-2xl"
@@ -127,10 +129,10 @@ const host = (url: string) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   class="inline-flex items-center gap-1 hover:text-accent"
+                  aria-describedby="new-tab-hint"
                 >
                   {p.title}
                   <Icon name="arrow-up-right" class="size-4 text-ink-3" />
-                  <span class="sr-only">(opens in a new tab)</span>
                 </a>
               ) : (
                 p.title

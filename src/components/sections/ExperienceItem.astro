@@ -43,10 +43,10 @@ const place = [location, location_type].filter(Boolean).join(" · ");
             target="_blank"
             rel="noopener noreferrer"
             class="inline-flex items-center gap-1 hover:text-accent"
+            aria-describedby="new-tab-hint"
           >
             {name}
             <Icon name="arrow-up-right" class="size-4 text-ink-3" />
-            <span class="sr-only">(opens in a new tab)</span>
           </a>
         ) : (
           name

@@ -67,5 +67,9 @@ const metaDescription = description ?? summary;
       Skip to content
     </a>
     <slot />
+    <!-- Shared description for links inside headings that open a new tab:
+         referenced with aria-describedby so it is announced without
+         becoming part of the heading's name. -->
+    <p id="new-tab-hint" hidden>Opens in a new tab</p>
   </body>
 </html>
