@@ -1,16 +1,17 @@
 ---
-import "@fontsource-variable/inter/wght.css";
-import "@fontsource/jetbrains-mono/400.css";
-import "@fontsource/jetbrains-mono/500.css";
+import "@fontsource-variable/mona-sans/standard.css";
+import "@fontsource-variable/geist-mono/wght.css";
 import "@/styles/global.css";
 import { basics } from "@cv";
 
 interface Props {
   title: string;
+  description?: string;
 }
 
-const { title } = Astro.props;
+const { title, description } = Astro.props;
 const { image, summary, url } = basics;
+const metaDescription = description ?? summary;
 ---
 
 <!doctype html>
@@ -18,21 +19,22 @@ const { image, summary, url } = basics;
   <head>
     <meta charset="UTF-8" />
     <title>{title}</title>
-    <meta name="description" content={summary} />
+    <meta name="description" content={metaDescription} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#0f172a" />
+    <meta name="theme-color" content="#fcfcfd" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0e0e11" media="(prefers-color-scheme: dark)" />
     <link rel="canonical" href={url} />
 
     <meta property="og:url" content={url} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={title} />
     <meta property="og:title" content={title} />
-    <meta property="og:description" content={summary} />
+    <meta property="og:description" content={metaDescription} />
     <meta property="og:image" content={`${url}${image}`} />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
@@ -41,26 +43,33 @@ const { image, summary, url } = basics;
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={summary} />
+    <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={`${url}${image}`} />
     <meta name="twitter:image:alt" content={title} />
 
     <script is:inline>
-      document.documentElement.classList.add("js");
+      // Runs before first paint: apply a saved theme so there is no flash.
+      (() => {
+        const root = document.documentElement;
+        root.classList.add("js");
+        try {
+          const saved = localStorage.getItem("theme");
+          if (saved === "light" || saved === "dark") root.dataset.theme = saved;
+        } catch {}
+      })();
     </script>
   </head>
   <body>
-    <div id="spotlight" aria-hidden="true"></div>
     <a
       href="#main-content"
-      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:text-navy"
+      class="sr-only z-50 rounded-lg bg-ink px-4 py-2 text-sm text-bg focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
     >
       Skip to content
     </a>
     <slot />
-    <script>
-      import { initSpotlight } from "@/scripts/spotlight";
-      initSpotlight();
-    </script>
+    <!-- Shared description for links inside headings that open a new tab:
+         referenced with aria-describedby so it is announced without
+         becoming part of the heading's name. -->
+    <p id="new-tab-hint" hidden>Opens in a new tab</p>
   </body>
 </html>

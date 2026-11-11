@@ -1,8 +1,8 @@
 {
   "basics": {
     "name": "Julio César Díaz",
-    "label": "Software Developer, Frontend-Focused",
-    "tagline": "I build fast, accessible products end to end — React & Next.js frontends, Python & Node backends, shipped and maintained.",
+    "label": "Full-stack engineer",
+    "tagline": "I take web products from an empty repo to production. The frontend is where I go deepest.",
     "image": "/og.png",
     "email": "juliocesar97db@gmail.com",
     "phone": "+1 561-543-5788",
@@ -20,9 +20,9 @@
       "sub-2s loads"
     ],
     "aboutParagraphs": [
-      "I'm a developer who takes products from an empty repo to production — and owns every layer in between. Over 5+ years I've shipped business-intelligence dashboards, AI-powered platforms, booking systems, and cloud-infrastructure tools, usually building the frontend from zero while contributing across the backend.",
-      "My core is the frontend — scalable architectures in React, Next.js, TypeScript, and Tailwind, built on clean-code principles a team can extend without fear. But I'm just as comfortable behind the API: REST backends with FastAPI and Node, Postgres schemas with row-level security on Supabase, secure auth, and Docker deploys on GCP and AWS. Shipping end to end means fewer handoffs and faster iteration — and it shows in the numbers: a 100/100 Lighthouse score, 95% test coverage, sub-2s loads.",
-      "I move fast without cutting corners, communicate clearly, and love partnering with designers and engineers on hard problems. If you're building something ambitious, I'd love to help."
+      "I studied Software Engineering at UCLV in Santa Clara, Cuba, and wrote my first production code there, building internal tools for ETECSA, the national telecom. Since then I've worked from Alicante, Spain, and now West Palm Beach, Florida. The job has stayed the same at its core: take a product from an empty repo to something people use every day.",
+      "Most of my time goes into the frontend: React, Next.js and TypeScript, structured so a team can keep extending it. I'm just as comfortable on the other side of the API, with FastAPI and Node services, Postgres with row-level security on Supabase, and Docker deploys on GCP and AWS. Owning both sides means fewer handoffs and fewer surprises.",
+      "I care about the details people feel without noticing: fast loads, accessible interfaces, and code that is pleasant to come back to."
     ],
     "theme": "default",
     "location": {
@@ -52,6 +52,54 @@
         "network": "Instagram",
         "username": "juliocesardb97",
         "url": "https://www.instagram.com/juliocesardb97/"
+      }
+    ],
+    "resume": "/resume.pdf",
+    "toolkit": [
+      {
+        "group": "Frontend",
+        "items": [
+          "React",
+          "Next.js",
+          "TypeScript",
+          "JavaScript",
+          "Tailwind CSS",
+          "HTML & CSS",
+          "TanStack Query",
+          "Zustand",
+          "Redux"
+        ]
+      },
+      {
+        "group": "Backend",
+        "items": [
+          "Python",
+          "FastAPI",
+          "Node.js",
+          "Django",
+          "PostgreSQL",
+          "Supabase",
+          "MongoDB",
+          "GraphQL"
+        ]
+      },
+      {
+        "group": "Infrastructure",
+        "items": [
+          "Docker",
+          "GCP",
+          "AWS",
+          "Azure",
+          "CI/CD",
+          "Git & GitHub"
+        ]
+      },
+      {
+        "group": "Testing",
+        "items": [
+          "Jest",
+          "React Testing Library"
+        ]
       }
     ]
   },
@@ -107,7 +155,8 @@
         "Zod",
         "Docker",
         "Google Business Profile API"
-      ]
+      ],
+      "metric": "Sole frontend engineer, from first commit to production on GCP"
     },
     {
       "name": "Second Window",
@@ -146,13 +195,14 @@
         "Azure AD",
         "Stripe API",
         "Jest"
-      ]
+      ],
+      "metric": "Component library that improved team velocity by 40%"
     },
     {
       "name": "Freelancer",
       "position": "Web Developer",
       "location_type": "Remote",
-      "location": "Alacant, Spain",
+      "location": "Alicante, Spain",
       "url": "",
       "startDate": "2024-03-01",
       "endDate": "2024-10-20",
@@ -183,13 +233,14 @@
         "AWS Cognito",
         "Jest",
         "Shadcn"
-      ]
+      ],
+      "metric": "Shipped solo in 6 months with 95% test coverage and sub-2s LCP"
     },
     {
       "name": "Legacy BHC",
       "position": "Web Developer / IT Specialist",
       "location_type": "On-site",
-      "location": "West Palm Beach, United States",
+      "location": "West Palm Beach, Florida",
       "url": "https://legacybhc.com",
       "startDate": "2023-01-15",
       "endDate": "2024-03-04",
@@ -219,7 +270,8 @@
         "AWS",
         "Jest",
         "Figma"
-      ]
+      ],
+      "metric": "Cut administrative overhead by 60% for 200+ employees"
     },
     {
       "name": "ETECSA",
@@ -255,7 +307,8 @@
         "MongoDB",
         "Jest",
         "Git"
-      ]
+      ],
+      "metric": "Served 10,000+ daily users across regional offices"
     }
   ],
   "education": [
@@ -540,7 +593,17 @@
         "GCP",
         "Google Business Profile",
         "TanStack Query"
-      ]
+      ],
+      "tier": "lead",
+      "title": "ConsumrBuzz",
+      "kind": "Business intelligence SaaS",
+      "role": "Sole frontend engineer, backend contributor",
+      "facts": [
+        "Role-based dashboards for 7 roles across Admin, Agency and SMB tenants",
+        "English, Spanish and French with next-intl",
+        "FastAPI services in Docker, deployed on GCP"
+      ],
+      "imageAlt": "ConsumrBuzz sign-in screen beside the product's marketing page with platform, uptime and ranking stats"
     },
     {
       "name": "BookEasely",
@@ -567,7 +630,16 @@
         "Twilio",
         "Tailwind CSS",
         "shadcn/ui"
-      ]
+      ],
+      "tier": "feature",
+      "title": "BookEasely",
+      "kind": "Appointment booking, web and mobile",
+      "role": "Personal product, built end to end",
+      "facts": [
+        "Next.js web app and Expo mobile app on one Supabase backend",
+        "Real-time availability and booking engine with Postgres RLS"
+      ],
+      "imageAlt": "BookEasely landing page with the headline “The easiest way to book appointments”"
     },
     {
       "name": "ReviewBoost",
@@ -595,7 +667,16 @@
         "OpenAI",
         "Tailwind CSS",
         "shadcn/ui"
-      ]
+      ],
+      "tier": "feature",
+      "title": "ReviewBoost",
+      "kind": "Review management for local businesses",
+      "role": "Personal product, built end to end",
+      "facts": [
+        "Google Business Profile OAuth to sync reviews and post replies",
+        "AI-assisted replies and a pg_cron sync every 30 minutes"
+      ],
+      "imageAlt": "ReviewBoost landing page with the headline “Turn happy customers into 5-star reviews” and a review stats dashboard"
     },
     {
       "name": "Turing Dream",
@@ -622,11 +703,19 @@
         "Azure AD",
         "Stripe",
         "React Testing Library"
-      ]
+      ],
+      "tier": "feature",
+      "title": "Turing Dream",
+      "kind": "AI education platform and admin panel",
+      "role": "Lead frontend at Second Window",
+      "facts": [
+        "Two production React apps with multi-role Azure AD auth",
+        "Stripe subscription billing linked to accounts and users"
+      ],
+      "imageAlt": "Turing Dream landing page with the “Pioneering AI Innovation” wordmark"
     },
     {
       "name": "Professional Portfolio",
-      "image": "/projects/portfolio.webp",
       "isActive": true,
       "description": "Personal portfolio and CV website built for performance, accessibility, and SEO.",
       "highlights": [
@@ -643,11 +732,11 @@
         "TypeScript",
         "Tailwind CSS",
         "GSAP"
-      ]
+      ],
+      "tier": "hidden"
     },
     {
       "name": "Cloud Infrastructure Designer",
-      "image": "/projects/cloud-infra.webp",
       "isActive": true,
       "description": "Interactive visual tool for designing, estimating costs, and deploying cloud architectures across AWS, Azure, and GCP.",
       "highlights": [
@@ -666,11 +755,11 @@
         "Zustand",
         "Azure AD",
         "Stripe API"
-      ]
+      ],
+      "tier": "more"
     },
     {
       "name": "BetHomeWeb",
-      "image": "/projects/bethomeweb.webp",
       "isActive": true,
       "description": "Full-featured sports betting platform with real-time odds, live match tracking, and secure user authentication.",
       "highlights": [
@@ -690,11 +779,11 @@
         "AWS Cognito",
         "AWS Amplify",
         "Jest"
-      ]
+      ],
+      "tier": "more"
     },
     {
       "name": "Employee Management Suite",
-      "image": "/projects/employee-mgmt.webp",
       "isActive": false,
       "description": "Enterprise HR platform for certification tracking, vacation scheduling, and employee onboarding across multiple healthcare facilities.",
       "highlights": [
@@ -710,11 +799,11 @@
         "TypeScript",
         "MongoDB",
         "Tailwind CSS"
-      ]
+      ],
+      "tier": "more"
     },
     {
       "name": "Telecommunications Management System",
-      "image": "/projects/telecom.webp",
       "isActive": false,
       "description": "Internal platform for managing phone line transfers and employee evaluations for Cuba's national telecom provider.",
       "highlights": [
@@ -730,7 +819,8 @@
         "JavaScript",
         "Django",
         "MongoDB"
-      ]
+      ],
+      "tier": "more"
     }
   ]
 }

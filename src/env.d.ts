@@ -16,3 +16,6 @@ declare module "@cv" {
 	export const references: CV["references"];
 	export const projects: CV["projects"];
 }
+
+/** Résumé PDF size label (e.g. "1.5 MB"), injected at build time. */
+declare const __RESUME_SIZE__: string;

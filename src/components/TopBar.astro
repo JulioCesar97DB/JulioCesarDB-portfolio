@@ -1,0 +1,352 @@
+---
+import Icon from "@/icons/Icon.astro";
+import ThemeMenu from "@/components/ThemeMenu.astro";
+import { basics } from "@cv";
+
+const { name, resume } = basics;
+
+const navItems = [
+  { id: "work", label: "Work" },
+  { id: "experience", label: "Experience" },
+  { id: "about", label: "About" },
+];
+---
+
+<!-- At the top of the page the bar is invisible chrome spanning the layout.
+     As the page scrolls it gradually turns to glass and contracts into a
+     floating pill (scroll-linked, see the style block); the wordmark joins it
+     when the hero name leaves (data-named). scripts/interactions.ts drives both. -->
+<header class="topbar fixed inset-x-0 top-0 z-40 px-2 sm:px-4" data-topbar>
+  <div class="bar mx-auto flex items-center gap-0.5 min-[400px]:gap-1" data-bar>
+    <!-- Liquid glass layers: a light-catching rim, a specular highlight that
+         follows the pointer, and a capsule that slides under the hovered or
+         focused control. Purely decorative. -->
+    <span class="bar-rim" aria-hidden="true"></span>
+    <span class="bar-specular" aria-hidden="true"></span>
+    <span class="nav-glass" aria-hidden="true" data-nav-glass></span>
+
+    <a
+      href="#top"
+      data-glass-target
+      class="wordmark flex min-h-11 flex-none items-center rounded-full px-2 font-semibold tracking-tight whitespace-nowrap text-ink max-[359px]:hidden"
+      aria-label={`${name}, back to top`}
+    >
+      <span class="wordmark-text hidden sm:inline" data-wordmark-full>{name}</span>
+      <span class="sm:hidden">JCD</span>
+    </a>
+
+    <nav class="ml-auto" aria-label="Sections">
+      <ul class="flex items-center">
+        {
+          navItems.map((item) => (
+            <li>
+              <a
+                href={`#${item.id}`}
+                data-nav-link
+                data-glass-target
+                class="nav-link flex min-h-11 items-center rounded-full px-1.5 text-sm whitespace-nowrap text-ink-3 transition-colors hover:text-ink min-[400px]:px-2.5 min-[400px]:text-[0.9375rem] sm:px-3"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <ThemeMenu />
+
+    {
+      resume && (
+        <a
+          href={resume}
+          class="btn resume-btn ml-0.5 min-h-11 w-11 flex-none justify-center rounded-full px-0 text-sm sm:min-h-10 sm:w-auto sm:px-3.5"
+          aria-label="Download résumé (PDF)"
+          download
+        >
+          <span class="hidden sm:inline">Résumé</span>
+          <Icon name="file" class="size-4 sm:hidden" />
+          <Icon name="arrow-down" class="hidden size-3.5 text-ink-3 sm:block" />
+        </a>
+      )
+    }
+  </div>
+</header>
+
+<style>
+  /* Registered so --fill can transition (the Résumé ink fill). */
+  @property --fill {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 0;
+  }
+
+  /* The bar's shape is driven by scroll, not toggled. scripts/interactions.ts
+     writes three eased 0..1 phases on the header as the page scrolls:
+       --glass   the glass material fades in (fill, blur, rim, edge, shadow)
+       --shrink  the bar contracts from the layout width into the pill
+       --fill    the Résumé button fills with ink (toggled, then animated)
+     Every property below interpolates from those, so the change is spread
+     over the whole scroll range instead of firing at one threshold. */
+  .topbar {
+    --glass: 0;
+    --shrink: 0;
+    --fill: 0;
+    transition: --fill 0.45s ease;
+  }
+  .topbar[data-filled] {
+    --fill: 1;
+  }
+  /* Without JS the bar is simply the finished pill. */
+  :global(html:not(.js)) .topbar {
+    --glass: 1;
+    --shrink: 1;
+    --fill: 1;
+  }
+
+  .bar {
+    position: relative;
+    width: 100%;
+    max-width: calc(var(--container-page) - (var(--container-page) - 46rem) * var(--shrink));
+    height: calc(4rem - 0.75rem * var(--shrink));
+    margin-top: calc(0.75rem * var(--shrink));
+    padding-inline: calc(
+      clamp(0.75rem, 4vw, 2.5rem) - (clamp(0.75rem, 4vw, 2.5rem) - 0.375rem) * var(--shrink)
+    );
+    border: 1px solid color-mix(in oklch, var(--glass-edge) calc(var(--glass) * 100%), transparent);
+    border-radius: 1.75rem;
+    background: color-mix(in oklch, var(--glass-fill) calc(var(--glass) * 100%), transparent);
+    -webkit-backdrop-filter: blur(calc(20px * var(--glass))) saturate(calc(1 + 0.8 * var(--glass)));
+    backdrop-filter: blur(calc(20px * var(--glass))) saturate(calc(1 + 0.8 * var(--glass)));
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklch, var(--glass-rim) calc(var(--glass) * 100%), transparent),
+      inset 0 -1px 0 color-mix(in oklch, var(--glass-edge) calc(var(--glass) * 100%), transparent),
+      0 calc(10px * var(--glass)) 30px -10px
+        color-mix(in oklch, var(--shade-3) calc(var(--glass) * 100%), transparent),
+      0 2px 6px -2px color-mix(in oklch, var(--shade-2) calc(var(--glass) * 100%), transparent);
+  }
+  /* A faint specular sheen across the upper half of the glass. */
+  .bar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      to bottom,
+      light-dark(oklch(1 0 0 / 0.45), oklch(1 0 0 / 0.06)),
+      transparent 55%
+    );
+    opacity: var(--glass);
+    pointer-events: none;
+  }
+  .bar > * {
+    position: relative;
+  }
+
+  /* Liquid glass, layer 1: the rim. A 1px gradient ring, bright at the top
+     left where light enters, fading along the sides, catching a little light
+     again at the bottom right, like the bevel of a thick glass edge. */
+  .bar-rim {
+    position: absolute !important;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      light-dark(oklch(1 0 0 / 0.95), oklch(1 0 0 / 0.28)),
+      transparent 38%,
+      transparent 62%,
+      light-dark(oklch(1 0 0 / 0.6), oklch(1 0 0 / 0.12))
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+    opacity: var(--glass);
+    pointer-events: none;
+  }
+
+  /* Layer 2: a specular highlight that follows the pointer across the glass. */
+  .bar-specular {
+    position: absolute !important;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      9rem 4rem at var(--sx, 50%) var(--sy, 0%),
+      light-dark(oklch(1 0 0 / 0.75), oklch(1 0 0 / 0.1)),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .topbar[data-hovering] .bar-specular {
+    opacity: var(--glass);
+  }
+
+  /* Layer 3: the hover capsule. A small lens of glass that appears under the
+     hovered or focused control and flows between controls. Its two edges are
+     positioned separately (--gl, --gr, from scripts/interactions.ts) and the
+     leading edge in the direction of travel moves faster than the trailing
+     one, so the capsule stretches as it travels and draws back in when it
+     arrives, like a drop of liquid. Both use an exponential ease-out. */
+  .nav-glass {
+    position: absolute !important;
+    top: 50%;
+    left: var(--gl, 0px);
+    right: var(--gr, 100%);
+    height: 2.5rem;
+    border-radius: 9999px;
+    background: light-dark(oklch(1 0 0 / 0.6), oklch(1 0 0 / 0.09));
+    -webkit-backdrop-filter: blur(8px) saturate(1.8) brightness(1.05);
+    backdrop-filter: blur(8px) saturate(1.8) brightness(1.05);
+    box-shadow:
+      inset 0 1px 0 light-dark(oklch(1 0 0 / 1), oklch(1 0 0 / 0.2)),
+      inset 0 -1px 0 light-dark(oklch(0.25 0.02 270 / 0.07), oklch(0 0 0 / 0.35)),
+      inset 0 0 0 1px light-dark(oklch(0.25 0.02 270 / 0.05), oklch(1 0 0 / 0.06)),
+      0 1px 2px var(--shade-1),
+      0 6px 16px -6px var(--shade-2);
+    transform: translateY(-50%) scale(0.92);
+    opacity: 0;
+    pointer-events: none;
+    --lead: 0.35s;
+    --trail: 0.7s;
+    transition:
+      left var(--trail) cubic-bezier(0.16, 1, 0.3, 1),
+      right var(--lead) cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.22s ease;
+  }
+  /* Travelling left: the left edge leads. */
+  .nav-glass[data-dir="left"] {
+    transition:
+      left var(--lead) cubic-bezier(0.16, 1, 0.3, 1),
+      right var(--trail) cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.22s ease;
+  }
+  .nav-glass[data-active] {
+    transform: translateY(-50%) scale(1);
+    opacity: 1;
+  }
+  /* First appearance, or following the bar while it contracts: no travel. */
+  .nav-glass[data-instant] {
+    transition:
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.22s ease;
+  }
+  /* The capsule replaces the plain hover fill on bar controls. */
+  .bar :global(.icon-btn:hover) {
+    background: transparent;
+  }
+
+  /* Résumé: a sheen sweeps across the button on hover. */
+  .resume-btn {
+    position: relative;
+    overflow: hidden;
+  }
+  .resume-btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 30%,
+      light-dark(oklch(1 0 0 / 0.5), oklch(1 0 0 / 0.35)) 50%,
+      transparent 70%
+    );
+    translate: -120% 0;
+    pointer-events: none;
+  }
+  .resume-btn:hover::after {
+    translate: 120% 0;
+    transition: translate 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-glass,
+    .nav-glass[data-dir="left"] {
+      transition: opacity 0.2s ease;
+    }
+    .resume-btn:hover::after {
+      transition: none;
+    }
+  }
+
+  /* Without backdrop-filter the glass would be see-through; fill with the plate. */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .bar {
+      background: color-mix(in oklch, var(--raised) calc(var(--glass) * 100%), transparent);
+    }
+  }
+
+  .resume-btn {
+    border-color: color-mix(in oklch, var(--line-strong) calc((1 - var(--fill)) * 100%), transparent);
+    background: color-mix(in oklch, var(--ink) calc(var(--fill) * 100%), var(--raised));
+    color: color-mix(in oklch, var(--bg) calc(var(--fill) * 100%), var(--ink));
+  }
+  .resume-btn :global(svg) {
+    color: inherit;
+  }
+
+  /* Wordmark, small screens: fades and rises in once the hero name has
+     scrolled away. Its slot is always reserved (the nav is pushed right
+     anyway), so only opacity and translate animate, never layout. Until it
+     shows it is hidden from pointer and keyboard too. */
+  .wordmark {
+    max-width: 14rem;
+    padding-inline: 0.75rem;
+    opacity: 0;
+    translate: 0 0.35rem;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.35s ease,
+      translate 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0s linear 0.35s;
+  }
+  .topbar[data-named] .wordmark,
+  :global(html:not(.js)) .wordmark {
+    opacity: 1;
+    translate: 0 0;
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+      opacity 0.35s ease,
+      translate 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0s;
+  }
+
+  /* Narrow phones: a tighter wordmark so "JCD" fits down to 360px. */
+  @media (max-width: 399px) {
+    .wordmark {
+      padding-inline: 0.5rem;
+    }
+  }
+
+  /* Name morph (large screens, html.name-morph): the hero name itself flies
+     into this slot. The slot is open from the start so the landing name is
+     never clipped; its own text appears only once the name has landed on it
+     (data-named). */
+  :global(html.name-morph) .wordmark {
+    opacity: 1;
+    translate: 0 0;
+    transition: none;
+  }
+  :global(html.name-morph) .topbar[data-named] .wordmark {
+    pointer-events: auto;
+  }
+  :global(html.name-morph) .wordmark-text {
+    opacity: 0;
+  }
+  :global(html.name-morph) .topbar[data-named] .wordmark-text {
+    opacity: 1;
+  }
+
+  .nav-link[aria-current="true"] {
+    color: var(--ink);
+  }
+</style>

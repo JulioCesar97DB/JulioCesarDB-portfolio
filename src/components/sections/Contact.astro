@@ -1,22 +1,49 @@
 ---
-import Section from "@/components/Section.astro";
-import { basics } from "@cv";
+import EmailActions from "@/components/EmailActions.astro";
+import Icon from "@/icons/Icon.astro";
+import type { CV } from "@/cv";
+import { basics as rawBasics } from "@cv";
 
-const { email } = basics;
+const basics = rawBasics as CV["basics"];
+
+const { resume, profiles } = basics;
+
+// Résumé size, measured from public/ at build time (see astro.config.mjs).
+const resumeSize = __RESUME_SIZE__;
+const links = profiles.filter((p) => p.network === "GitHub" || p.network === "LinkedIn");
 ---
 
-<Section id="contact" title="Get In Touch">
-  <div class="mx-auto max-w-xl space-y-5 text-center">
-    <p class="text-base leading-relaxed text-slate sm:text-lead">
-      I&apos;m always up for interesting projects and collaborations. Whether you have
-      something you want to build, a question, or just want to say hi, my inbox is always
-      open — I&apos;ll do my best to get back to you.
+<section id="contact" class="scroll-mt-20 border-t border-line bg-surface">
+  <div class="container-page py-24 lg:py-32">
+    <h2 class="section-title max-w-[22ch]">Email is the best way to reach me.</h2>
+    <p class="mt-4 max-w-[52ch] text-lead">
+      My résumé has the full history, and most of my code lives on GitHub.
     </p>
-    <a
-      href={`mailto:${email}`}
-      class="inline-flex items-center gap-2 rounded border border-accent px-6 py-3 font-mono text-sm text-accent transition-colors hover:bg-accent/10"
-    >
-      Say Hello
-    </a>
+    <div class="mt-10 flex flex-wrap items-center gap-3">
+      <EmailActions />
+      {
+        resume && (
+          <a href={resume} class="btn" download>
+            <Icon name="file" class="size-4 text-ink-3" />
+            Résumé <span class="text-ink-3">(PDF{resumeSize && `, ${resumeSize}`})</span>
+          </a>
+        )
+      }
+      <div class="flex items-center">
+        {
+          links.map((profile) => (
+            <a
+              href={profile.url}
+              class="icon-btn"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${profile.network} (opens in a new tab)`}
+            >
+              <Icon name={profile.network === "GitHub" ? "github" : "linkedin"} class="size-[1.15rem]" />
+            </a>
+          ))
+        }
+      </div>
+    </div>
   </div>
-</Section>
+</section>
