@@ -278,6 +278,9 @@ CSS scroll-driven animations only (`animation-timeline: view()`), inside `@suppo
 - **Rise:** the lead product frame lifts from `rotateX(18deg) scale(0.9)` to flat as it enters (range entry 0% to cover 45%), like a device lifting off a table.
 - **Lift:** project text, feature projects, More work rows and Experience roles arrive with a 1.75rem rise and fade (entry 0% to 70%).
 
+### Hero background
+A fine dot grid (22px pitch, ink tertiary at 22% light / 42% dark) drawn on a 2D canvas behind the hero, masked to fade out by the bottom of the hero. Near a fine pointer the dots within ~160px brighten toward the accent, grow slightly and are pushed up to 7px outward, like a soft lens; the pointer is eased and its presence fades in and out. On touch devices a very slow diagonal swell keeps the field faintly alive; under reduced motion it is a still grid. It renders only while the hero is on screen and the tab is visible, follows the theme (tokens resolved through computed style, since canvas cannot parse light-dark()), and is capped at 2x device pixel ratio.
+
 ### Global states
 Text selection is accent on paper. The scrollbar is hairline-strong on the page colour. Reduced-motion collapses every transition and disables smooth scrolling.
 

@@ -1,0 +1,24 @@
+---
+// Decorative canvas behind the hero. It fades out toward the bottom so the
+// field never meets the first product frame with a hard edge.
+---
+
+<canvas class="hero-bg" data-hero-bg aria-hidden="true"></canvas>
+
+<script>
+  import { initHeroBackground } from "@/scripts/hero-bg";
+  initHeroBackground();
+</script>
+
+<style>
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent);
+    mask-image: linear-gradient(to bottom, #000 55%, transparent);
+  }
+</style>
