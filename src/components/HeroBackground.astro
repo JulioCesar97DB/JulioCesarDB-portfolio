@@ -3,34 +3,15 @@
 // whole region, but the canvas inside is only one viewport tall and sticky, so
 // it stays behind whatever is on screen and leaves with the region at
 // Experience. Rendering cost is one screen, not the region's full height.
-const isDev = import.meta.env.DEV;
-const options = ["gradient", "particles"];
 ---
 
 <div class="bg-layer" aria-hidden="true">
   <canvas class="bg-canvas" data-hero-bg></canvas>
 </div>
 
-{
-  isDev && (
-    <nav class="bg-switcher" aria-label="Hero background preview (development only)">
-      {options.map((o) => (
-        <a href={`?bg=${o}`} data-bg-option={o}>
-          {o}
-        </a>
-      ))}
-    </nav>
-  )
-}
-
 <script>
   import { initHeroBackground } from "@/scripts/hero-bg";
   initHeroBackground();
-
-  const current = new URLSearchParams(location.search).get("bg") ?? "gradient";
-  document
-    .querySelector(`[data-bg-option="${current}"]`)
-    ?.setAttribute("aria-current", "true");
 </script>
 
 <style>
@@ -53,37 +34,5 @@ const options = ["gradient", "particles"];
     width: 100%;
     height: 100vh;
     height: 100lvh;
-  }
-
-  .bg-switcher {
-    position: fixed;
-    bottom: 1rem;
-    left: 1rem;
-    z-index: 60;
-    display: flex;
-    gap: 0.125rem;
-    border-radius: 9999px;
-    border: 1px solid var(--glass-edge);
-    background: var(--glass-fill);
-    -webkit-backdrop-filter: blur(20px) saturate(1.8);
-    backdrop-filter: blur(20px) saturate(1.8);
-    box-shadow:
-      inset 0 1px 0 var(--glass-rim),
-      0 8px 24px -8px var(--shade-3);
-    padding: 0.25rem;
-    font-size: 0.8125rem;
-  }
-  .bg-switcher a {
-    border-radius: 9999px;
-    padding: 0.35rem 0.8rem;
-    color: var(--ink-3);
-    text-transform: capitalize;
-  }
-  .bg-switcher a:hover {
-    color: var(--ink);
-  }
-  .bg-switcher a[aria-current="true"] {
-    background: var(--ink);
-    color: var(--bg);
   }
 </style>
