@@ -24,6 +24,8 @@ interface Basics {
   summary: string;
   summaryHighlights?: Array<string>;
   aboutParagraphs?: Array<string>;
+  resume?: string;
+  toolkit?: Array<{ group: string; items: Array<string> }>;
   location: Location;
   profiles: Array<Profiles>;
 }
@@ -55,6 +57,7 @@ interface Work {
   skills?: Array<string>;
   location?: string;
   location_type?: string;
+  metric?: string;
 }
 
 type DateStr = `${string}-${string}-${string}`;
@@ -142,6 +145,11 @@ interface Projects {
   year?: string;
   madeAt?: string;
   keywords?: Array<string>;
+  tier?: "lead" | "feature" | "more" | "hidden";
+  title?: string;
+  kind?: string;
+  role?: string;
+  facts?: Array<string>;
 }
 
 interface Interests {
