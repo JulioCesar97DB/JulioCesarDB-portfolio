@@ -1,39 +1,83 @@
 ---
-import Section from "@/components/Section.astro";
-import { basics } from "@cv";
+import type { CV } from "@/cv";
+import { basics as rawBasics, education as rawEducation, languages as rawLanguages } from "@cv";
 
-const { summary, summaryHighlights = [], aboutParagraphs } = basics;
+const basics = rawBasics as CV["basics"];
+const education = rawEducation as CV["education"];
+const languages = rawLanguages as CV["languages"];
 
-// Paragraphs to render — fall back to the single summary string.
-const paragraphs = aboutParagraphs && aboutParagraphs.length > 0 ? aboutParagraphs : [summary];
-
-// Brittany-style emphasis: split each paragraph into plain text and highlighted
-// keywords (rendered near-white) so the important terms stand out.
-const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-const ordered = [...summaryHighlights].sort((a, b) => b.length - a.length);
-const highlightSet = new Set(summaryHighlights);
-const splitter = ordered.length ? new RegExp(`(${ordered.map(escapeRegExp).join("|")})`, "g") : null;
-const toParts = (text: string): string[] => (splitter ? text.split(splitter) : [text]);
+const { aboutParagraphs = [], summary, location, toolkit = [] } = basics;
+const paragraphs = aboutParagraphs.length > 0 ? aboutParagraphs : [summary];
+const degree = education[0];
+const years = degree
+  ? `${new Date(degree.startDate).getUTCFullYear()}–${new Date(degree.endDate).getUTCFullYear()}`
+  : "";
+const langs = [...languages]
+  .sort((a) => (a.language === "Spanish" ? -1 : 1))
+  .map((l) => `${l.language} (${l.language === "Spanish" ? "native" : "professional"})`)
+  .join(", ");
 ---
 
-<Section id="about" title="About Me">
-  <div class="space-y-5 text-slate">
-    {
-      paragraphs.map((paragraph: string, index: number) => (
-        <p
-          class:list={[
-            "leading-relaxed",
-            // The opening paragraph is the lead: one step larger and brighter.
-            index === 0
-              ? "text-lg text-slate-light sm:text-xl"
-              : "text-base sm:text-lead",
-          ]}
-        >
-          {toParts(paragraph).map((part: string) =>
-            highlightSet.has(part) ? <strong class="text-highlight">{part}</strong> : part,
-          )}
-        </p>
-      ))
-    }
+<section id="about" class="container-page scroll-mt-20 py-24 lg:py-32">
+  <div class="grid gap-10 lg:grid-cols-12 lg:gap-12 [&>*]:min-w-0">
+    <div class="lg:col-span-4">
+      <h2 class="section-title lg:sticky lg:top-28">About</h2>
+    </div>
+
+    <div class="lg:col-span-8">
+      <div class="max-w-[64ch] space-y-5">
+        {
+          paragraphs.map((p, i) => (
+            <p class:list={[i === 0 && "text-[1.125rem] leading-relaxed text-ink"]}>{p}</p>
+          ))
+        }
+      </div>
+
+      <dl class="mt-12 grid gap-x-8 gap-y-6 border-t border-line pt-8 sm:grid-cols-3">
+        <div>
+          <dt class="text-sm text-ink-3">Based in</dt>
+          <dd class="mt-1.5 text-[0.9375rem] text-ink">{location.city}, {location.region}</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-ink-3">Languages</dt>
+          <dd class="mt-1.5 text-[0.9375rem] text-ink">{langs}</dd>
+        </div>
+        {
+          degree && (
+            <div>
+              <dt class="text-sm text-ink-3">Education</dt>
+              <dd class="mt-1.5 text-[0.9375rem] text-ink">
+                B.Sc. {degree.area}, UCLV
+                <span class="block text-sm text-ink-3">
+                  Santa Clara, Cuba · <span class="tabular">{years}</span>
+                </span>
+              </dd>
+            </div>
+          )
+        }
+      </dl>
+
+      {
+        toolkit.length > 0 && (
+          <div class="mt-14">
+            <h3 class="text-h3 font-semibold tracking-[-0.015em]">Toolkit</h3>
+            <dl class="mt-5 divide-y divide-line border-y border-line">
+              {toolkit.map((group) => (
+                <div class="grid gap-1 py-4 sm:grid-cols-[9rem_1fr] sm:gap-6">
+                  <dt class="pt-0.5 text-sm text-ink-3">{group.group}</dt>
+                  <dd>
+                    <ul class="stack text-[0.9375rem] text-ink">
+                      {group.items.map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        )
+      }
+    </div>
   </div>
-</Section>
+</section>

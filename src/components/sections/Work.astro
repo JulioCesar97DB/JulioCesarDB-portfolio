@@ -1,0 +1,205 @@
+---
+import Icon from "@/icons/Icon.astro";
+import type { CV } from "@/cv";
+import { projects } from "@cv";
+
+type Project = CV["projects"][number];
+
+const all = projects as Project[];
+const lead = all.find((p) => p.tier === "lead");
+const features = all.filter((p) => p.tier === "feature");
+const more = all
+  .filter((p) => p.tier === "more")
+  .sort((a, b) => Number(b.year ?? 0) - Number(a.year ?? 0));
+
+const host = (url: string) => {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
+};
+---
+
+<section id="work" class="container-page scroll-mt-20 pb-24 lg:pb-32">
+  <h2 class="section-title">Selected work</h2>
+
+  {
+    lead && (
+      <article class="mt-10 grid gap-8 lg:mt-14 lg:grid-cols-12 lg:items-start lg:gap-12 [&>*]:min-w-0">
+        <a
+          href={lead.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block rounded-2xl lg:col-span-7"
+          aria-label={`${lead.title} (opens in a new tab)`}
+          data-frame
+        >
+          <div class="frame">
+            <img
+              src={lead.image}
+              alt={`${lead.title}: sign-in screen and product landing page`}
+              width="900"
+              height="560"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </div>
+        </a>
+
+        <div class="lg:col-span-5">
+          <h3 class="text-[clamp(1.75rem,1.4rem+1.2vw,2.5rem)] leading-tight font-semibold tracking-[-0.03em] [font-stretch:110%]">
+            {lead.title}
+          </h3>
+          <p class="mt-2 text-[0.9375rem] text-ink">{lead.kind}</p>
+          <p class="mt-1 text-sm text-ink-3">{lead.role} · <span class="tabular">{lead.year}</span></p>
+          <p class="mt-4">{lead.description}</p>
+          <ul class="mt-6 space-y-2.5 border-t border-line pt-6">
+            {lead.facts?.map((fact) => (
+              <li class="fact">{fact}</li>
+            ))}
+          </ul>
+          <ul class="stack mt-6">
+            {lead.keywords?.slice(0, 6).map((k) => (
+              <li>{k}</li>
+            ))}
+          </ul>
+          <a
+            href={lead.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link mt-6 inline-flex min-h-11 items-center gap-1.5 font-medium"
+          >
+            {host(lead.url)}
+            <Icon name="arrow-up-right" class="size-4" />
+            <span class="sr-only">(opens in a new tab)</span>
+          </a>
+        </div>
+      </article>
+    )
+  }
+
+  <div class="mt-20 grid gap-x-8 gap-y-14 md:grid-cols-2 lg:mt-28 lg:grid-cols-3 [&>*]:min-w-0">
+    {
+      features.map((p) => {
+        const Tag = p.url ? "a" : "div";
+        return (
+          <article>
+            <Tag
+              {...(p.url
+                ? {
+                    href: p.url,
+                    target: "_blank",
+                    rel: "noopener noreferrer",
+                    "aria-label": `${p.title} (opens in a new tab)`,
+                  }
+                : {})}
+              class="block rounded-2xl"
+              data-frame
+            >
+              <div class="frame">
+                <img
+                  src={p.image}
+                  alt={`${p.title} product screenshot`}
+                  width="900"
+                  height="560"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </Tag>
+            <h3 class="mt-6 text-h3 font-semibold tracking-[-0.015em]">
+              {p.url ? (
+                <a
+                  href={p.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-1 hover:text-accent"
+                >
+                  {p.title}
+                  <Icon name="arrow-up-right" class="size-4 text-ink-3" />
+                  <span class="sr-only">(opens in a new tab)</span>
+                </a>
+              ) : (
+                p.title
+              )}
+            </h3>
+            <p class="mt-1 text-[0.9375rem] text-ink">{p.kind}</p>
+            <p class="mt-0.5 text-sm text-ink-3">{p.role}</p>
+            <ul class="mt-4 space-y-2">
+              {p.facts?.map((fact) => (
+                <li class="fact text-[0.9375rem]">{fact}</li>
+              ))}
+            </ul>
+            <ul class="stack mt-4">
+              {p.keywords?.slice(0, 4).map((k) => (
+                <li>{k}</li>
+              ))}
+            </ul>
+          </article>
+        );
+      })
+    }
+  </div>
+
+  {
+    more.length > 0 && (
+      <div class="mt-24 lg:mt-32">
+        <h3 class="text-h3 font-semibold tracking-[-0.015em]">More work</h3>
+        <ul class="mt-6 border-t border-line">
+          {more.map((p) => (
+            <li class="grid gap-x-8 gap-y-1 border-b border-line py-5 sm:grid-cols-[4rem_minmax(0,16rem)_1fr_auto] sm:items-baseline">
+              <span class="meta">{p.year}</span>
+              <span class="font-medium text-ink">
+                {p.name}
+                {p.madeAt && <span class="block text-sm font-normal text-ink-3">{p.madeAt}</span>}
+              </span>
+              <span class="text-[0.9375rem]">{p.description}</span>
+              <span class="flex gap-1 sm:justify-end">
+                {p.github && (
+                  <a
+                    href={p.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="icon-btn -my-2"
+                    aria-label={`${p.name} source on GitHub (opens in a new tab)`}
+                  >
+                    <Icon name="github" class="size-4" />
+                  </a>
+                )}
+                {p.url && (
+                  <a
+                    href={p.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="icon-btn -my-2"
+                    aria-label={`${p.name} live site (opens in a new tab)`}
+                  >
+                    <Icon name="arrow-up-right" class="size-4" />
+                  </a>
+                )}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+</section>
+
+<style>
+  .fact {
+    position: relative;
+    padding-left: 1.25rem;
+    color: var(--ink-2);
+  }
+  .fact::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 0.5rem;
+    height: 1px;
+    background: var(--line-strong);
+  }
+</style>

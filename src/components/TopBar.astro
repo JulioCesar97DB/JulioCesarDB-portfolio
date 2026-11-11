@@ -1,0 +1,93 @@
+---
+import Icon from "@/icons/Icon.astro";
+import { basics } from "@cv";
+
+const { name, resume } = basics;
+
+const navItems = [
+  { id: "work", label: "Work" },
+  { id: "experience", label: "Experience" },
+  { id: "about", label: "About" },
+];
+---
+
+<!-- The wordmark stays hidden while the hero name is on screen and takes over
+     once it scrolls away (scripts/interactions.ts toggles data-scrolled/data-named). -->
+<header class="topbar fixed inset-x-0 top-0 z-40" data-topbar>
+  <div class="container-page flex h-16 items-center gap-2">
+    <a
+      href="#top"
+      class="wordmark -ml-2 flex min-h-11 items-center rounded-lg px-2 font-semibold tracking-tight text-ink"
+      aria-label={`${name}, back to top`}
+    >
+      <span class="hidden sm:inline">{name}</span>
+      <span class="sm:hidden">JCD</span>
+    </a>
+
+    <nav class="ml-auto" aria-label="Sections">
+      <ul class="flex items-center">
+        {
+          navItems.map((item) => (
+            <li>
+              <a
+                href={`#${item.id}`}
+                data-nav-link
+                class="nav-link flex min-h-11 items-center rounded-lg px-2.5 text-[0.9375rem] text-ink-3 transition-colors hover:text-ink sm:px-3"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    {
+      resume && (
+        <a href={resume} class="btn ml-1 min-h-11 px-3 text-sm sm:min-h-9" download>
+          <span>Résumé</span>
+          <Icon name="arrow-down" class="hidden size-3.5 text-ink-3 sm:block" />
+        </a>
+      )
+    }
+  </div>
+</header>
+
+<style>
+  .topbar {
+    border-bottom: 1px solid transparent;
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .topbar[data-scrolled] {
+    border-bottom-color: var(--line);
+    background-color: color-mix(in oklch, var(--bg) 82%, transparent);
+    -webkit-backdrop-filter: saturate(1.6) blur(14px);
+    backdrop-filter: saturate(1.6) blur(14px);
+  }
+
+  .wordmark {
+    opacity: 0;
+    translate: 0 0.35rem;
+    pointer-events: none;
+    transition:
+      opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      translate 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .topbar[data-named] .wordmark {
+    opacity: 1;
+    translate: 0 0;
+    pointer-events: auto;
+  }
+  /* Without JS the wordmark is always shown. */
+  :global(html:not(.js)) .wordmark {
+    opacity: 1;
+    translate: 0 0;
+    pointer-events: auto;
+  }
+
+  .nav-link[aria-current="true"] {
+    color: var(--ink);
+  }
+</style>

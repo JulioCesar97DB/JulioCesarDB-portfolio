@@ -1,37 +1,45 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Sidebar from "@/components/Sidebar.astro";
-import About from "@/components/sections/About.astro";
+import TopBar from "@/components/TopBar.astro";
+import Hero from "@/components/Hero.astro";
+import Work from "@/components/sections/Work.astro";
 import Experience from "@/components/sections/Experience.astro";
-import Projects from "@/components/sections/Projects.astro";
-import Skills from "@/components/sections/Skills.astro";
-import Education from "@/components/sections/Education.astro";
+import About from "@/components/sections/About.astro";
 import Contact from "@/components/sections/Contact.astro";
 import { basics } from "@cv";
 
 const { name, label } = basics;
+const year = new Date().getFullYear();
 ---
 
 <Layout title={`${name} — ${label}`}>
-  <div
-    class="relative z-10 mx-auto min-h-screen max-w-screen-xl px-6 py-12 sm:px-10 lg:flex lg:gap-12 lg:px-16 lg:py-0"
-  >
-    <Sidebar />
-    <main id="main-content" class="space-y-20 pt-16 lg:w-[55%] lg:space-y-28 lg:py-24">
-      <About />
-      <Experience />
-      <Projects />
-      <Skills />
-      <Education />
-      <Contact />
-    </main>
-  </div>
-  <footer class="relative z-10 pb-10 text-center font-mono text-xs text-slate">
-    Designed &amp; built by {name}
+  <TopBar />
+  <main id="main-content">
+    <Hero />
+    <Work />
+    <Experience />
+    <About />
+    <Contact />
+  </main>
+  <footer class="border-t border-line">
+    <div class="container-page flex flex-col gap-2 py-8 text-sm text-ink-3 sm:flex-row sm:justify-between">
+      <p>© {year} {name}</p>
+      <p>
+        Built with Astro and Tailwind CSS.{" "}
+        <a
+          href="https://github.com/JulioCesar97DB/JulioCesarDB-portfolio"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="link"
+        >
+          Source<span class="sr-only"> (opens in a new tab)</span>
+        </a>
+      </p>
+    </div>
   </footer>
 </Layout>
 
 <script>
-  import { initScrollSpy } from "@/scripts/scrollspy";
-  initScrollSpy();
+  import { initInteractions } from "@/scripts/interactions";
+  initInteractions();
 </script>

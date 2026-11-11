@@ -1,6 +1,6 @@
 ---
+import Icon from "@/icons/Icon.astro";
 import { formatDateRange } from "@/utils/dates";
-import ExternalLink from "@/icons/ExternalLink.astro";
 
 interface Props {
   name: string;
@@ -9,9 +9,10 @@ interface Props {
   startDate: string;
   endDate: string | null;
   summary: string;
+  metric?: string;
   location?: string;
   location_type?: string;
-  responsibilities?: string[];
+  highlights?: string[];
   achievements?: string[];
   skills?: string[];
 }
@@ -23,94 +24,82 @@ const {
   startDate,
   endDate,
   summary,
+  metric,
   location,
   location_type,
-  responsibilities = [],
-  achievements = [],
+  highlights = [],
   skills = [],
 } = Astro.props;
 
 const dateRange = formatDateRange(startDate, endDate);
-const place = [location_type, location].filter(Boolean).join(" · ");
-// Keep the card scannable: the first few skills show as badges, the rest move into details.
-const visibleSkills = skills.slice(0, 6);
-const moreSkills = skills.slice(6);
-const hasDetails = responsibilities.length > 0 || achievements.length > 0 || moreSkills.length > 0;
+const place = [location, location_type].filter(Boolean).join(" · ");
 ---
 
-<li
-  class="sibling-dim transition-opacity duration-300"
->
-  <div
-    class="glass-card group grid gap-1 p-4 sm:grid-cols-[8rem_1fr] sm:gap-5"
-  >
-    <p class="pt-1 font-mono text-meta uppercase tracking-wide text-slate">{dateRange}</p>
-    <div class="space-y-2">
-      <h3 class="text-lg font-semibold leading-snug text-slate-lightest">
-        <span>{position}</span>{" "}
-        {
-          url ? (
-            <a
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-1 text-accent transition-colors hover:underline"
-            >
-              · {name}
-              <ExternalLink class="h-3 w-3" />
-            </a>
-          ) : (
-            <span class="text-accent"> · {name}</span>
-          )
-        }
-      </h3>
-      {place && <p class="font-mono text-meta text-slate-dim">{place}</p>}
-      <p class="text-card leading-relaxed text-slate">{summary}</p>
-
+<li class="border-t border-line py-8 first:border-t-0 first:pt-0 last:pb-0">
+  <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+    <h3 class="text-h3 font-semibold tracking-[-0.015em]">
       {
-        hasDetails && (
-          <details>
-            <summary class="inline-flex cursor-pointer list-none items-center gap-1 font-mono text-meta text-accent hover:underline">
-              View details
-            </summary>
-            <div class="mt-3 space-y-3">
-              {responsibilities.length > 0 && (
-                <ul class="space-y-1.5">
-                  {responsibilities.map((item) => (
-                    <li class="relative pl-5 text-card text-slate before:absolute before:left-0 before:top-[0.8em] before:h-px before:w-2.5 before:bg-slate-dim">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {achievements.length > 0 && (
-                <ul class="space-y-1.5">
-                  {achievements.map((item) => (
-                    <li class="relative pl-5 text-card text-slate-light before:absolute before:left-0 before:top-[0.8em] before:h-px before:w-2.5 before:bg-accent">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {moreSkills.length > 0 && (
-                <p class="text-card text-slate">
-                  <span class="text-slate-light">Also used:</span> {moreSkills.join(", ")}
-                </p>
-              )}
-            </div>
-          </details>
+        url ? (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1 hover:text-accent"
+          >
+            {name}
+            <Icon name="arrow-up-right" class="size-4 text-ink-3" />
+            <span class="sr-only">(opens in a new tab)</span>
+          </a>
+        ) : (
+          name
         )
       }
-
-      {
-        visibleSkills.length > 0 && (
-          <ul class="flex flex-wrap gap-1.5 pt-1">
-            {visibleSkills.map((skill) => (
-              <li class="tag-badge">{skill}</li>
-            ))}
-          </ul>
-        )
-      }
-    </div>
+    </h3>
+    <p class="meta"><time datetime={startDate}>{dateRange}</time></p>
   </div>
+  <p class="mt-1 text-[0.9375rem] font-medium text-ink">{position}</p>
+  {place && <p class="mt-0.5 text-sm text-ink-3">{place}</p>}
+
+  <p class="mt-4 max-w-[68ch]">{summary}</p>
+
+  {metric && <p class="metric mt-4">{metric}</p>}
+
+  {
+    highlights.length > 0 && (
+      <details class="group mt-4">
+        <summary class="inline-flex min-h-11 cursor-pointer list-none items-center gap-1.5 text-sm font-medium text-ink-3 transition-colors hover:text-ink [&::-webkit-details-marker]:hidden">
+          <span class="group-open:hidden">Show details</span>
+          <span class="hidden group-open:inline">Hide details</span>
+          <Icon
+            name="chevron-down"
+            class="size-4 transition-transform duration-300 group-open:rotate-180"
+          />
+        </summary>
+        <ul class="mt-2 max-w-[68ch] space-y-2 pb-1">
+          {highlights.map((item) => (
+            <li class="relative pl-5 text-[0.9375rem] before:absolute before:top-[0.72em] before:left-0 before:h-px before:w-2 before:bg-line-strong">
+              {item}
+            </li>
+          ))}
+        </ul>
+      </details>
+    )
+  }
+
+  {
+    skills.length > 0 && (
+      <ul class="stack mt-4">
+        {skills.slice(0, 7).map((skill) => (
+          <li>{skill}</li>
+        ))}
+      </ul>
+    )
+  }
 </li>
+
+<style>
+  .metric {
+    color: var(--ink);
+    font-weight: 560;
+  }
+</style>
