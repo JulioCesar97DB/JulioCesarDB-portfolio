@@ -39,9 +39,9 @@ const host = (url: string) => {
           <div class="frame">
             <img
               src={lead.image}
-              alt={`${lead.title}: sign-in screen and product landing page`}
+              alt={lead.imageAlt ?? `${lead.title} screenshot`}
               width="900"
-              height="560"
+              height="532"
               fetchpriority="high"
               decoding="async"
             />
@@ -51,7 +51,16 @@ const host = (url: string) => {
 
         <div class="reveal lg:col-span-5">
           <h3 class="text-[clamp(1.75rem,1.4rem+1.2vw,2.5rem)] leading-tight font-semibold tracking-[-0.03em] [font-stretch:110%]">
-            {lead.title}
+            <a
+              href={lead.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 hover:text-accent"
+            >
+              {lead.title}
+              <Icon name="arrow-up-right" class="size-5 text-ink-3" />
+              <span class="sr-only">(opens in a new tab)</span>
+            </a>
           </h3>
           <p class="mt-2 text-[0.9375rem] text-ink">{lead.kind}</p>
           <p class="mt-1 text-sm text-ink-3">{lead.role} · <span class="tabular">{lead.year}</span></p>
@@ -102,7 +111,7 @@ const host = (url: string) => {
               <div class="frame">
                 <img
                   src={p.image}
-                  alt={`${p.title} product screenshot`}
+                  alt={p.imageAlt ?? `${p.title} screenshot`}
                   width="900"
                   height="560"
                   loading="lazy"

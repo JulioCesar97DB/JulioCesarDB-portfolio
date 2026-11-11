@@ -602,7 +602,8 @@
         "Role-based dashboards for 7 roles across Admin, Agency and SMB tenants",
         "English, Spanish and French with next-intl",
         "FastAPI services in Docker, deployed on GCP"
-      ]
+      ],
+      "imageAlt": "ConsumrBuzz sign-in screen beside the product's marketing page with platform, uptime and ranking stats"
     },
     {
       "name": "BookEasely",
@@ -637,7 +638,8 @@
       "facts": [
         "Next.js web app and Expo mobile app on one Supabase backend",
         "Real-time availability and booking engine with Postgres RLS"
-      ]
+      ],
+      "imageAlt": "BookEasely landing page with the headline “The easiest way to book appointments”"
     },
     {
       "name": "ReviewBoost",
@@ -673,7 +675,8 @@
       "facts": [
         "Google Business Profile OAuth to sync reviews and post replies",
         "AI-assisted replies and a pg_cron sync every 30 minutes"
-      ]
+      ],
+      "imageAlt": "ReviewBoost landing page with the headline “Turn happy customers into 5-star reviews” and a review stats dashboard"
     },
     {
       "name": "Turing Dream",
@@ -708,7 +711,8 @@
       "facts": [
         "Two production React apps with multi-role Azure AD auth",
         "Stripe subscription billing linked to accounts and users"
-      ]
+      ],
+      "imageAlt": "Turing Dream landing page with the “Pioneering AI Innovation” wordmark"
     },
     {
       "name": "Professional Portfolio",

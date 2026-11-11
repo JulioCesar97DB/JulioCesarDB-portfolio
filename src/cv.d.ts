@@ -137,6 +137,7 @@ type Language =
 interface Projects {
   name: string;
   image?: string;
+  imageAlt?: string;
   isActive: boolean;
   description: string;
   highlights: Highlight;
