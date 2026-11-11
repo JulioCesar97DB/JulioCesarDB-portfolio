@@ -7,6 +7,9 @@ import { basics as rawBasics } from "@cv";
 const basics = rawBasics as CV["basics"];
 
 const { resume, profiles } = basics;
+
+// Résumé size, measured from public/ at build time (see astro.config.mjs).
+const resumeSize = __RESUME_SIZE__;
 const links = profiles.filter((p) => p.network === "GitHub" || p.network === "LinkedIn");
 ---
 
@@ -22,7 +25,7 @@ const links = profiles.filter((p) => p.network === "GitHub" || p.network === "Li
         resume && (
           <a href={resume} class="btn" download>
             <Icon name="file" class="size-4 text-ink-3" />
-            Résumé (PDF)
+            Résumé <span class="text-ink-3">(PDF{resumeSize && `, ${resumeSize}`})</span>
           </a>
         )
       }

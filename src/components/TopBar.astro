@@ -292,24 +292,32 @@ const navItems = [
     color: inherit;
   }
 
-  /* Wordmark, small screens: fades in once the hero name has scrolled away. */
+  /* Wordmark, small screens: fades and rises in once the hero name has
+     scrolled away. Its slot is always reserved (the nav is pushed right
+     anyway), so only opacity and translate animate, never layout. Until it
+     shows it is hidden from pointer and keyboard too. */
   .wordmark {
-    max-width: 0;
-    overflow: hidden;
-    padding-inline: 0;
+    max-width: 14rem;
+    padding-inline: 0.75rem;
     opacity: 0;
+    translate: 0 0.35rem;
+    visibility: hidden;
     pointer-events: none;
     transition:
-      max-width 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-      padding 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-      opacity 0.35s ease;
+      opacity 0.35s ease,
+      translate 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0s linear 0.35s;
   }
   .topbar[data-named] .wordmark,
   :global(html:not(.js)) .wordmark {
-    max-width: 14rem;
-    padding-inline: 0.75rem;
     opacity: 1;
+    translate: 0 0;
+    visibility: visible;
     pointer-events: auto;
+    transition:
+      opacity 0.35s ease,
+      translate 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0s;
   }
 
   /* Name morph (large screens, html.name-morph): the hero name itself flies
@@ -317,9 +325,8 @@ const navItems = [
      never clipped; its own text appears only once the name has landed on it
      (data-named). */
   :global(html.name-morph) .wordmark {
-    max-width: 14rem;
-    padding-inline: 0.75rem;
     opacity: 1;
+    translate: 0 0;
     transition: none;
   }
   :global(html.name-morph) .topbar[data-named] .wordmark {
