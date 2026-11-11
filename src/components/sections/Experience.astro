@@ -4,15 +4,23 @@ import type { CV } from "@/cv";
 import { work } from "@cv";
 
 type Work = CV["work"][number];
+
+const jobs = work as Work[];
+const since = Math.min(...jobs.map((j) => new Date(j.startDate).getUTCFullYear()));
 ---
 
 <section id="experience" class="scroll-mt-20 border-y border-line bg-surface py-24 lg:py-32">
   <div class="container-page grid gap-10 lg:grid-cols-12 lg:gap-12 [&>*]:min-w-0">
     <div class="lg:col-span-4">
-      <h2 class="section-title lg:sticky lg:top-28">Experience</h2>
+      <div class="lg:sticky lg:top-28">
+        <h2 class="section-title">Experience</h2>
+        <p class="mt-4 max-w-[30ch] text-[0.9375rem] text-ink-3">
+          {jobs.length} roles since {since}, across Cuba, Spain and the United States.
+        </p>
+      </div>
     </div>
     <ol class="lg:col-span-8">
-      {(work as Work[]).map((job) => <ExperienceItem {...job} />)}
+      {jobs.map((job) => <ExperienceItem {...job} />)}
     </ol>
   </div>
 </section>

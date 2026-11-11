@@ -21,7 +21,32 @@ const langs = [...languages]
 <section id="about" class="container-page scroll-mt-20 py-24 lg:py-32">
   <div class="grid gap-10 lg:grid-cols-12 lg:gap-12 [&>*]:min-w-0">
     <div class="lg:col-span-4">
-      <h2 class="section-title lg:sticky lg:top-28">About</h2>
+      <div class="lg:sticky lg:top-28">
+        <h2 class="section-title">About</h2>
+          <dl class="mt-8 grid gap-x-8 gap-y-5 sm:grid-cols-3 lg:grid-cols-1">
+            <div>
+              <dt class="text-sm text-ink-3">Based in</dt>
+              <dd class="mt-1.5 text-[0.9375rem] text-ink">{location.city}, {location.region}</dd>
+            </div>
+            <div>
+              <dt class="text-sm text-ink-3">Languages</dt>
+              <dd class="mt-1.5 text-[0.9375rem] text-ink">{langs}</dd>
+            </div>
+            {
+              degree && (
+                <div>
+                  <dt class="text-sm text-ink-3">Education</dt>
+                  <dd class="mt-1.5 text-[0.9375rem] text-ink">
+                    B.Sc. {degree.area}, UCLV
+                    <span class="block text-sm text-ink-3">
+                      Santa Clara, Cuba · <span class="tabular">{years}</span>
+                    </span>
+                  </dd>
+                </div>
+              )
+            }
+          </dl>
+      </div>
     </div>
 
     <div class="lg:col-span-8">
@@ -33,29 +58,6 @@ const langs = [...languages]
         }
       </div>
 
-      <dl class="mt-12 grid gap-x-8 gap-y-6 border-t border-line pt-8 sm:grid-cols-3">
-        <div>
-          <dt class="text-sm text-ink-3">Based in</dt>
-          <dd class="mt-1.5 text-[0.9375rem] text-ink">{location.city}, {location.region}</dd>
-        </div>
-        <div>
-          <dt class="text-sm text-ink-3">Languages</dt>
-          <dd class="mt-1.5 text-[0.9375rem] text-ink">{langs}</dd>
-        </div>
-        {
-          degree && (
-            <div>
-              <dt class="text-sm text-ink-3">Education</dt>
-              <dd class="mt-1.5 text-[0.9375rem] text-ink">
-                B.Sc. {degree.area}, UCLV
-                <span class="block text-sm text-ink-3">
-                  Santa Clara, Cuba · <span class="tabular">{years}</span>
-                </span>
-              </dd>
-            </div>
-          )
-        }
-      </dl>
 
       {
         toolkit.length > 0 && (

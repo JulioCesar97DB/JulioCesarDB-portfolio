@@ -14,7 +14,6 @@ interface Props {
   location_type?: string;
   highlights?: string[];
   achievements?: string[];
-  skills?: string[];
 }
 
 const {
@@ -28,7 +27,6 @@ const {
   location,
   location_type,
   highlights = [],
-  skills = [],
 } = Astro.props;
 
 const dateRange = formatDateRange(startDate, endDate);
@@ -75,7 +73,7 @@ const place = [location, location_type].filter(Boolean).join(" · ");
             class="size-4 transition-transform duration-300 group-open:rotate-180"
           />
         </summary>
-        <ul class="mt-2 max-w-[68ch] space-y-2 pb-1">
+        <ul class="mt-2 max-w-[60ch] space-y-2 pb-1">
           {highlights.map((item) => (
             <li class="relative pl-5 text-[0.9375rem] before:absolute before:top-[0.72em] before:left-0 before:h-px before:w-2 before:bg-line-strong">
               {item}
@@ -83,16 +81,6 @@ const place = [location, location_type].filter(Boolean).join(" · ");
           ))}
         </ul>
       </details>
-    )
-  }
-
-  {
-    skills.length > 0 && (
-      <ul class="stack mt-4">
-        {skills.slice(0, 7).map((skill) => (
-          <li>{skill}</li>
-        ))}
-      </ul>
     )
   }
 </li>
