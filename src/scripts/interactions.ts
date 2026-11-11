@@ -1,11 +1,59 @@
-/** Top bar: glass once the page scrolls; wordmark once the hero name is gone. */
+/** Scroll range over which the bar turns into the glass pill (px). */
+const BAR_START = 40;
+const BAR_END = 360;
+
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
+const smoothstep = (a: number, b: number, v: number) => {
+  const t = clamp01((v - a) / (b - a));
+  return t * t * (3 - 2 * t);
+};
+const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+
+/**
+ * Top bar. Its shape is scroll-linked: a smoothed scroll position (eased
+ * toward the real one every frame, so stepped mouse wheels still glide) is
+ * mapped onto three overlapping phases written as CSS custom properties:
+ *   --glass   0 -> 1 over the first half of the range (material appears)
+ *   --shrink  0 -> 1 from 12% to the end (contraction into the pill)
+ *   --fill    0 -> 1 over the last third (Résumé fills with ink)
+ * Each frame also emits "topbar:frame" so the name morph can stay in step.
+ */
 function initTopBar(): void {
   const bar = document.querySelector<HTMLElement>("[data-topbar]");
   if (!bar) return;
 
-  const onScroll = () => bar.toggleAttribute("data-scrolled", window.scrollY > 8);
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let smoothY = window.scrollY;
+  let last = 0;
+  let raf = 0;
+
+  const apply = () => {
+    const p = clamp01((smoothY - BAR_START) / (BAR_END - BAR_START));
+    bar.style.setProperty("--glass", smoothstep(0, 0.5, p).toFixed(4));
+    bar.style.setProperty("--shrink", smoothstep(0.12, 1, p).toFixed(4));
+    bar.style.setProperty("--fill", smoothstep(0.65, 1, p).toFixed(4));
+    bar.dispatchEvent(new CustomEvent("topbar:frame", { detail: { smoothY } }));
+  };
+
+  const tick = (time: number) => {
+    raf = 0;
+    const target = window.scrollY;
+    // Frame-rate independent easing toward the real scroll position.
+    const dt = last ? Math.min(64, time - last) : 16.67;
+    last = time;
+    const k = reduced.matches ? 1 : 1 - Math.pow(1 - 0.1, dt / 16.67);
+    smoothY += (target - smoothY) * k;
+    if (Math.abs(target - smoothY) < 0.25) smoothY = target;
+    apply();
+    if (smoothY !== target) raf = requestAnimationFrame(tick);
+    else last = 0;
+  };
+  const kick = () => {
+    if (!raf) raf = requestAnimationFrame(tick);
+  };
+
+  window.addEventListener("scroll", kick, { passive: true });
+  apply();
 
   const name = document.querySelector<HTMLElement>("[data-hero-name]");
   if (!name) {
@@ -30,7 +78,7 @@ function initTopBar(): void {
   const morph = createNameMorph(bar, name);
   const sync = () => {
     morphing = query.matches && !!morph;
-    if (morphing) morph?.enable();
+    if (morphing) morph?.enable(smoothY);
     else {
       morph?.disable();
       bar.toggleAttribute("data-named", named);
@@ -43,25 +91,24 @@ function initTopBar(): void {
 /**
  * Scroll-linked handoff of the hero name into the top bar's wordmark.
  *
- * The name keeps its natural vertical scroll until its centre meets the
- * wordmark's centre; along that same distance it slides left, shrinks to the
- * wordmark's size and eases its width axis, weight and tracking down to the
- * wordmark's values. When it lands it hides and the real wordmark shows, so
- * the swap is invisible. Scrolling back up reverses it.
+ * Horizontally the name slides to the wordmark, scales to its size and eases
+ * its width axis, weight and tracking to the wordmark's values, finishing at
+ * BAR_END together with the bar, so name and pill settle as one. Vertically it
+ * scrolls with the page until its centre meets the wordmark's, then rides
+ * inside the bar while the bar finishes contracting. When it lands it hides
+ * and the real wordmark shows in the same place. Scrolling up reverses it.
  */
 function createNameMorph(bar: HTMLElement, name: HTMLElement) {
   const target = bar.querySelector<HTMLElement>("[data-wordmark-full]");
   if (!target) return null;
 
   const root = document.documentElement;
-  const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
   const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
   // Hero name at rest, measured without any morph styles applied.
   let base = { left: 0, centerY: 0, size: 1, stretch: 118, weight: 640, tracking: -0.04 };
   let active = false;
-  let raf = 0;
-  let settleUntil = 0;
+  let smoothY = 0;
 
   const clear = () => {
     name.style.transform = "";
@@ -87,7 +134,6 @@ function createNameMorph(bar: HTMLElement, name: HTMLElement) {
   };
 
   const frame = () => {
-    raf = 0;
     if (!active) return;
     const t = target.getBoundingClientRect();
     const ts = getComputedStyle(target);
@@ -95,13 +141,12 @@ function createNameMorph(bar: HTMLElement, name: HTMLElement) {
     const targetCenterY = t.top + t.height / 2;
     const targetTracking = (parseFloat(ts.letterSpacing) || 0) / targetSize;
 
-    const distance = Math.max(1, base.centerY - targetCenterY);
-    const progress = Math.min(1, Math.max(0, window.scrollY / distance));
-    const e = ease(progress);
+    const progress = clamp01(smoothY / BAR_END);
+    const e = easeInOut(progress);
 
-    // Vertical: follow the page until landing, then hold on the wordmark.
+    // Vertical: follow the page, then ride inside the bar once it gets there.
     const naturalCenterY = base.centerY - window.scrollY;
-    const dy = progress >= 1 ? targetCenterY - naturalCenterY : 0;
+    const dy = Math.max(0, targetCenterY - naturalCenterY);
     const dx = (t.left - base.left) * e;
     const scale = lerp(1, targetSize / base.size, e);
 
@@ -113,46 +158,35 @@ function createNameMorph(bar: HTMLElement, name: HTMLElement) {
     const landed = progress >= 1;
     name.style.opacity = landed ? "0" : "";
     bar.toggleAttribute("data-named", landed);
-
-    // While the bar is mid-transition into the pill its wordmark moves;
-    // keep tracking it for that window even if the page is not scrolling.
-    if (performance.now() < settleUntil) raf = requestAnimationFrame(frame);
   };
 
-  const schedule = () => {
-    if (!raf) raf = requestAnimationFrame(frame);
-  };
-  const onBarChange = () => {
-    settleUntil = performance.now() + 700;
-    schedule();
+  const onBarFrame = (event: Event) => {
+    smoothY = (event as CustomEvent<{ smoothY: number }>).detail.smoothY;
+    frame();
   };
   const onResize = () => {
     measure();
-    schedule();
+    frame();
   };
-  const observer = new MutationObserver(onBarChange);
 
   return {
-    enable() {
+    enable(initialY: number) {
       if (active) return;
       active = true;
+      smoothY = initialY;
       root.classList.add("name-morph");
       measure();
-      window.addEventListener("scroll", schedule, { passive: true });
+      bar.addEventListener("topbar:frame", onBarFrame);
       window.addEventListener("resize", onResize, { passive: true });
-      observer.observe(bar, { attributes: true, attributeFilter: ["data-scrolled"] });
       document.fonts?.ready.then(onResize);
-      onBarChange();
+      frame();
     },
     disable() {
       if (!active) return;
       active = false;
       root.classList.remove("name-morph");
-      window.removeEventListener("scroll", schedule);
+      bar.removeEventListener("topbar:frame", onBarFrame);
       window.removeEventListener("resize", onResize);
-      observer.disconnect();
-      cancelAnimationFrame(raf);
-      raf = 0;
       clear();
     },
   };
