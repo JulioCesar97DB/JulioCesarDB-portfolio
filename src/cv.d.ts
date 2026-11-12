@@ -26,6 +26,8 @@ interface Basics {
   aboutParagraphs?: Array<string>;
   resume?: string;
   toolkit?: Array<{ group: string; items: Array<string> }>;
+  /** The stack shown first. `match` lists other keywords that count as evidence of it. */
+  coreSkills?: Array<{ name: string; match?: Array<string> }>;
   location: Location;
   profiles: Array<Profiles>;
 }
@@ -151,6 +153,8 @@ interface Projects {
   kind?: string;
   role?: string;
   facts?: Array<string>;
+  /** Request path through the system, outermost layer first. */
+  architecture?: { layers: Array<string>; note?: string };
 }
 
 interface Interests {

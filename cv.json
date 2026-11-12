@@ -62,6 +62,8 @@
           "React",
           "Next.js",
           "TypeScript",
+          "React Native",
+          "Expo",
           "JavaScript",
           "Tailwind CSS",
           "HTML & CSS",
@@ -99,6 +101,32 @@
         "items": [
           "Jest",
           "React Testing Library"
+        ]
+      }
+    ],
+    "coreSkills": [
+      {
+        "name": "React"
+      },
+      {
+        "name": "Next.js"
+      },
+      {
+        "name": "TypeScript"
+      },
+      {
+        "name": "React Native",
+        "match": [
+          "Expo"
+        ]
+      },
+      {
+        "name": "FastAPI"
+      },
+      {
+        "name": "PostgreSQL",
+        "match": [
+          "Supabase"
         ]
       }
     ]
@@ -232,7 +260,7 @@
         "AWS Amplify",
         "AWS Cognito",
         "Jest",
-        "Shadcn"
+        "shadcn/ui"
       ],
       "metric": "Shipped solo in 6 months with 95% test coverage and sub-2s LCP"
     },
@@ -603,7 +631,17 @@
         "English, Spanish, and French with next-intl",
         "FastAPI services in Docker, deployed on GCP"
       ],
-      "imageAlt": "ConsumrBuzz sign-in screen beside the product's marketing page with platform, uptime, and ranking stats"
+      "imageAlt": "ConsumrBuzz sign-in screen beside the product's marketing page with platform, uptime, and ranking stats",
+      "architecture": {
+        "layers": [
+          "Client Components",
+          "TanStack Query hooks",
+          "Server Actions",
+          "Data access layer",
+          "FastAPI on GCP"
+        ],
+        "note": "Auth tokens are handled on the server and never reach the client."
+      }
     },
     {
       "name": "BookEasely",
