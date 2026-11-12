@@ -1,4 +1,5 @@
 ---
+import TechIcon from "@/icons/TechIcon.astro";
 import type { CV } from "@/cv";
 import { basics as rawBasics, projects as rawProjects, work as rawWork } from "@cv";
 import { projectAnchor, roleAnchor } from "@/utils/anchors";
@@ -50,10 +51,13 @@ const groups = toolkit
       <dl class="border-y border-line">
         {
           core.map((skill) => (
-            <div class="reveal grid gap-x-6 gap-y-1.5 border-t border-line py-5 first:border-t-0 sm:grid-cols-[11rem_1fr] sm:items-baseline">
-              <dt class="text-h3 font-semibold tracking-[-0.015em] text-ink">{skill.name}</dt>
+            <div class="skill reveal grid gap-x-6 gap-y-1.5 border-t border-line py-5 first:border-t-0 sm:grid-cols-[11rem_1fr] sm:items-baseline">
+              <dt class="flex items-center gap-3 text-h3 font-semibold tracking-[-0.015em] text-ink">
+                <TechIcon name={skill.name} class="skill-mark size-5" />
+                {skill.name}
+              </dt>
               <dd>
-                <ul class="flex flex-wrap gap-x-5 gap-y-1 text-[0.9375rem]">
+                <ul class="flex flex-wrap gap-x-5 gap-y-1 text-[0.9375rem] sm:pt-0.5">
                   {skill.usedIn.map((p) => (
                     <li>
                       {p.href ? (
@@ -83,7 +87,10 @@ const groups = toolkit
                   <dd>
                     <ul class="stack text-[0.9375rem] text-ink">
                       {group.items.map((item) => (
-                        <li>{item}</li>
+                        <li class="inline-flex items-center gap-2">
+                          <TechIcon name={item} class="size-4 text-ink-3" />
+                          {item}
+                        </li>
                       ))}
                     </ul>
                   </dd>
@@ -96,3 +103,15 @@ const groups = toolkit
     </div>
   </div>
 </section>
+
+<style>
+  /* A skill's mark rests in the tertiary ink and wakes with its row. */
+  .skill :global(.skill-mark) {
+    color: var(--ink-3);
+    transition: color 0.25s ease;
+  }
+  .skill:hover :global(.skill-mark),
+  .skill:focus-within :global(.skill-mark) {
+    color: var(--ink);
+  }
+</style>
