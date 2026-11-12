@@ -2,6 +2,7 @@
 import Icon from "@/icons/Icon.astro";
 import ThemeMenu from "@/components/ThemeMenu.astro";
 import { basics } from "@cv";
+import { resumeFileName } from "@/utils/resume";
 
 const { name, resume } = basics;
 
@@ -63,7 +64,7 @@ const navItems = [
           href={resume}
           class="btn resume-btn ml-0.5 min-h-11 w-11 flex-none justify-center rounded-full px-0 text-sm sm:min-h-10 sm:w-auto sm:px-3.5"
           aria-label="Download resume (PDF)"
-          download
+          download={resumeFileName(name)}
         >
           <span class="hidden sm:inline">Resume</span>
           <Icon name="file" class="size-4 sm:hidden" />

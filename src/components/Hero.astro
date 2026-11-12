@@ -3,6 +3,7 @@ import EmailActions from "@/components/EmailActions.astro";
 import Icon from "@/icons/Icon.astro";
 import TechIcon from "@/icons/TechIcon.astro";
 import type { CV } from "@/cv";
+import { resumeFileName } from "@/utils/resume";
 import { basics as rawBasics, work as rawWork } from "@cv";
 
 const basics = rawBasics as CV["basics"];
@@ -47,7 +48,7 @@ const links = profiles.filter((p) => p.network === "GitHub" || p.network === "Li
   <div class="mt-10 flex flex-wrap items-center gap-3">
     {
       resume && (
-        <a href={resume} class="btn btn-primary" download data-hero-resume>
+        <a href={resume} class="btn btn-primary" download={resumeFileName(name)} data-hero-resume>
           <Icon name="file" class="size-4" />
           Resume
         </a>
