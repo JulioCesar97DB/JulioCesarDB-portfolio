@@ -22,6 +22,8 @@ interface Basics {
   phone: string;
   url: string;
   summary: string;
+  /** Third-person summary for the resume; falls back to `summary`. */
+  resumeSummary?: string;
   summaryHighlights?: Array<string>;
   aboutParagraphs?: Array<string>;
   resume?: string;
@@ -60,6 +62,8 @@ interface Work {
   location?: string;
   location_type?: string;
   metric?: string;
+  /** The metric as a full action sentence, for the resume's first bullet. */
+  resumeLead?: string;
 }
 
 type DateStr = `${string}-${string}-${string}`;

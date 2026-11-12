@@ -8,6 +8,7 @@
     "phone": "+1 561-543-5788",
     "url": "https://www.juliocesardb.com",
     "summary": "Frontend-leaning full-stack developer with 5+ years architecting and shipping production web apps in React, Next.js, and TypeScript — and owning features end to end across FastAPI, Node, and Supabase/Postgres backends. I take complex products from an empty repo to launch: secure authentication, role-based dashboards, internationalization, and the performance work that keeps everything instant. I sweat the details users feel — accessibility, sub-2s loads, and clean architecture a team can extend without fear.",
+    "resumeSummary": "Full-stack engineer with 5+ years shipping production web apps in React, Next.js, and TypeScript, and owning features end to end across FastAPI, Node, and Supabase/Postgres backends. Takes products from an empty repo to launch: secure authentication, role-based dashboards, internationalization, and performance work. Bilingual in English and Spanish.",
     "summaryHighlights": [
       "empty repo to production",
       "5+ years",
@@ -202,7 +203,8 @@
         "Docker",
         "Google Business Profile API"
       ],
-      "metric": "Sole frontend engineer, from first commit to production"
+      "metric": "Sole frontend engineer, from first commit to production",
+      "resumeLead": "Owned the frontend as its sole engineer, from first commit to production"
     },
     {
       "name": "Second Window",
@@ -241,7 +243,8 @@
         "Stripe API",
         "Jest"
       ],
-      "metric": "Component library that improved team velocity by 40%"
+      "metric": "Component library that improved team velocity by 40%",
+      "resumeLead": "Established a reusable component library and development standards that improved team velocity by 40%"
     },
     {
       "name": "Freelance",
@@ -353,7 +356,8 @@
         "Jest",
         "Git"
       ],
-      "metric": "Served 10,000+ daily users across regional offices"
+      "metric": "Served 10,000+ daily users across regional offices",
+      "resumeLead": "Delivered a telecommunications management platform serving 10,000+ daily users across regional offices"
     }
   ],
   "education": [

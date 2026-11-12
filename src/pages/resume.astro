@@ -65,7 +65,21 @@ const langs = [...languages]
         </ul>
       </header>
 
-      <p class="summary">{basics.summary}</p>
+      <p class="summary">{basics.resumeSummary ?? basics.summary}</p>
+
+      <section>
+        <h2>Skills</h2>
+        <dl class="skills">
+          {
+            skillGroups.map((g) => (
+              <>
+                <dt>{g.group}</dt>
+                <dd>{g.items.join(", ")}</dd>
+              </>
+            ))
+          }
+        </dl>
+      </section>
 
       <section>
         <h2>Experience</h2>
@@ -81,7 +95,7 @@ const langs = [...languages]
               <p class="place">{[job.location, job.location_type].filter(Boolean).join(" · ")}</p>
               <p class="lede">{job.summary}</p>
               <ul class="points">
-                {job.metric && <li class="metric">{job.metric}</li>}
+                {(job.resumeLead ?? job.metric) && <li class="metric">{job.resumeLead ?? job.metric}</li>}
                 {job.points.map((point) => (
                   <li>{point}</li>
                 ))}
@@ -95,7 +109,7 @@ const langs = [...languages]
       {
         personal.length > 0 && (
           <section>
-            <h2>Products built end to end</h2>
+            <h2>Personal projects</h2>
             {personal.map((p) => (
               <article class="role">
                 <div class="row">
@@ -115,20 +129,6 @@ const langs = [...languages]
           </section>
         )
       }
-
-      <section>
-        <h2>Skills</h2>
-        <dl class="skills">
-          {
-            skillGroups.map((g) => (
-              <>
-                <dt>{g.group}</dt>
-                <dd>{g.items.join(", ")}</dd>
-              </>
-            ))
-          }
-        </dl>
-      </section>
 
       <section class="pair">
         {
