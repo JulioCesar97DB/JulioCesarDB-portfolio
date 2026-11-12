@@ -126,11 +126,20 @@ export function mountBackground(canvas: HTMLCanvasElement, factory: VariantFacto
     prevSlide = slide;
   };
 
+  let lastFrame = 0;
   const loop = (time: number) => {
     raf = 0;
     followScroll();
-    // Ease the pointer: quick but never snappy (tuned for 30fps).
-    const k = 0.28;
+    // Frames come at 30fps, or at the display rate while scrolling (when a
+    // finger is often the pointer). Scale the easing to the time elapsed so
+    // the pointer feels the same at any rate; a long gap (resuming from idle)
+    // counts as one frame.
+    const gap = lastFrame ? time - lastFrame : FRAME_MS;
+    const frames = gap > 200 ? 1 : gap / FRAME_MS;
+    lastFrame = time;
+    const ease = (perFrame: number) => 1 - (1 - perFrame) ** frames;
+    // Ease the pointer: quick but never snappy (rates are per 30fps frame).
+    const k = ease(0.28);
     if (target.inside) {
       if (pointer.presence === 0) {
         pointer.x = target.x;
@@ -139,7 +148,7 @@ export function mountBackground(canvas: HTMLCanvasElement, factory: VariantFacto
       pointer.x += (target.x - pointer.x) * k;
       pointer.y += (target.y - pointer.y) * k;
     }
-    pointer.presence += ((target.inside ? 1 : 0) - pointer.presence) * 0.16;
+    pointer.presence += ((target.inside ? 1 : 0) - pointer.presence) * ease(0.16);
     if (pointer.presence < 0.002) pointer.presence = 0;
 
     const animating = variant.draw(time, pointer) !== false;
