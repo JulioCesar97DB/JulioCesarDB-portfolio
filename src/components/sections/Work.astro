@@ -2,15 +2,14 @@
 import Icon from "@/icons/Icon.astro";
 import type { CV } from "@/cv";
 import { projects } from "@cv";
+import { projectAnchor } from "@/utils/anchors";
 
 type Project = CV["projects"][number];
 
 const all = projects as Project[];
 const lead = all.find((p) => p.tier === "lead");
 const features = all.filter((p) => p.tier === "feature");
-const more = all
-  .filter((p) => p.tier === "more")
-  .sort((a, b) => Number(b.year ?? 0) - Number(a.year ?? 0));
+const arch = lead?.architecture;
 
 const host = (url: string) => {
   try {
@@ -26,7 +25,10 @@ const host = (url: string) => {
 
   {
     lead && (
-      <article class="mt-10 grid gap-8 lg:mt-14 lg:grid-cols-12 lg:items-start lg:gap-12 [&>*]:min-w-0">
+      <article
+        id={projectAnchor(lead.title ?? lead.name)}
+        class="mt-10 grid scroll-mt-24 gap-8 lg:mt-14 lg:grid-cols-12 lg:items-start lg:gap-x-12 lg:gap-y-10 [&>*]:min-w-0"
+      >
         <div class="lead-stage lg:col-span-7">
         <a
           href={lead.url}
@@ -50,7 +52,7 @@ const host = (url: string) => {
         </a>
         </div>
 
-        <div class="reveal lg:col-span-5">
+        <div class="reveal lg:col-span-5 lg:row-span-2">
           <h3 class="text-[clamp(1.75rem,1.4rem+1.2vw,2.5rem)] leading-tight font-semibold tracking-[-0.03em] [font-stretch:110%]">
             <a
               href={lead.url}
@@ -87,6 +89,21 @@ const host = (url: string) => {
             <span class="sr-only">(opens in a new tab)</span>
           </a>
         </div>
+
+        {
+          arch && (
+            <figure class="arch reveal lg:col-span-7">
+              <ol class="arch-flow" style={`--n: ${arch.layers.length}`}>
+                {arch.layers.map((layer) => (
+                  <li>{layer}</li>
+                ))}
+              </ol>
+              <figcaption class="mt-5 max-w-[60ch] text-sm text-ink-3">
+                How a request travels through {lead.title}.{arch.note && ` ${arch.note}`}
+              </figcaption>
+            </figure>
+          )
+        }
       </article>
     )
   }
@@ -96,7 +113,7 @@ const host = (url: string) => {
       features.map((p) => {
         const Tag = p.url ? "a" : "div";
         return (
-          <article>
+          <article id={projectAnchor(p.title ?? p.name)} class="scroll-mt-24">
             <Tag
               {...(p.url
                 ? {
@@ -146,7 +163,7 @@ const host = (url: string) => {
               ))}
             </ul>
             <ul class="stack mt-4">
-              {p.keywords?.slice(0, 3).map((k) => (
+              {p.keywords?.slice(0, 5).map((k) => (
                 <li>{k}</li>
               ))}
             </ul>
@@ -156,50 +173,6 @@ const host = (url: string) => {
       })
     }
   </div>
-
-  {
-    more.length > 0 && (
-      <div class="mt-24 lg:mt-32">
-        <h3 class="text-h3 font-semibold tracking-[-0.015em]">More work</h3>
-        <ul class="mt-6 border-t border-line">
-          {more.map((p) => (
-            <li class="reveal grid gap-x-8 gap-y-1 border-b border-line py-5 sm:grid-cols-[4rem_minmax(0,16rem)_1fr_auto] sm:items-baseline">
-              <span class="meta">{p.year}</span>
-              <span class="font-medium text-ink">
-                {p.name}
-                {p.madeAt && <span class="block text-sm font-normal text-ink-3">{p.madeAt}</span>}
-              </span>
-              <span class="text-[0.9375rem]">{p.description}</span>
-              <span class="-ml-3 flex gap-1 sm:ml-0 sm:justify-end">
-                {p.github && (
-                  <a
-                    href={p.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="icon-btn -my-2"
-                    aria-label={`${p.name} source on GitHub (opens in a new tab)`}
-                  >
-                    <Icon name="github" class="size-4" />
-                  </a>
-                )}
-                {p.url && (
-                  <a
-                    href={p.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="icon-btn -my-2"
-                    aria-label={`${p.name} live site (opens in a new tab)`}
-                  >
-                    <Icon name="arrow-up-right" class="size-4" />
-                  </a>
-                )}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    )
-  }
 </section>
 
 <style>
@@ -216,5 +189,124 @@ const host = (url: string) => {
     width: 0.5rem;
     height: 1px;
     background: var(--line-strong);
+  }
+
+  /* Architecture strip: the layers a request crosses, as stops on one line.
+     Stacked top to bottom on small screens, left to right from lg. The line
+     runs from the first stop to the last; a short accent pulse travels it
+     twice when the strip is revealed, and again while it is hovered. */
+  .arch-flow {
+    --dot: 0.4375rem;
+    position: relative;
+    display: grid;
+    gap: 0.875rem;
+    color: var(--ink);
+    font-size: 0.875rem;
+    line-height: 1.35;
+  }
+  .arch-flow li {
+    position: relative;
+    padding-left: 1.5rem;
+    text-wrap: balance;
+  }
+  .arch-flow li::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: calc(0.675em - var(--dot) / 2);
+    width: var(--dot);
+    height: var(--dot);
+    border-radius: 50%;
+    border: 1px solid var(--ink-3);
+    background: var(--bg);
+  }
+  .arch-flow::before,
+  .arch-flow::after {
+    content: "";
+    position: absolute;
+    left: calc(var(--dot) / 2 - 0.5px);
+    top: 0.675em;
+    bottom: 0.675em;
+    width: 1px;
+  }
+  .arch-flow::before {
+    background: var(--line-strong);
+  }
+  .arch-flow::after {
+    background: linear-gradient(to bottom, transparent, var(--accent), transparent) no-repeat 0 -40% / 100%
+      28%;
+    opacity: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .arch-flow {
+      grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+      gap: 0;
+    }
+    .arch-flow li {
+      padding: 1.125rem 1rem 0 0;
+    }
+    .arch-flow li::before {
+      top: 0;
+    }
+    .arch-flow::before,
+    .arch-flow::after {
+      left: 0;
+      right: calc(100% / var(--n) - var(--dot));
+      top: calc(var(--dot) / 2 - 0.5px);
+      bottom: auto;
+      width: auto;
+      height: 1px;
+    }
+    .arch-flow::after {
+      background: linear-gradient(to right, transparent, var(--accent), transparent) no-repeat -40% 0 / 28%
+        100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .arch.is-in .arch-flow::after {
+      animation: flow-y 2.4s cubic-bezier(0.45, 0, 0.55, 1) 0.5s 2;
+    }
+    .arch:hover .arch-flow::after {
+      animation: flow-y 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    }
+    @media (min-width: 1024px) {
+      .arch.is-in .arch-flow::after {
+        animation-name: flow-x;
+      }
+      .arch:hover .arch-flow::after {
+        animation-name: flow-x;
+      }
+    }
+  }
+  @keyframes flow-y {
+    0% {
+      opacity: 0;
+      background-position: 0 -40%;
+    }
+    15%,
+    85% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      background-position: 0 140%;
+    }
+  }
+  @keyframes flow-x {
+    0% {
+      opacity: 0;
+      background-position: -40% 0;
+    }
+    15%,
+    85% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      background-position: 140% 0;
+    }
   }
 </style>
