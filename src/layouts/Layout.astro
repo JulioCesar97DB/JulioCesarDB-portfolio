@@ -2,6 +2,9 @@
 import "@fontsource-variable/mona-sans/standard.css";
 import "@fontsource-variable/geist-mono/wght.css";
 import "@/styles/global.css";
+// The Latin file of the text face, preloaded: the hero's name and statement
+// are the largest paint on the page, and they wait for this font.
+import monaSansLatin from "@fontsource-variable/mona-sans/files/mona-sans-latin-standard-normal.woff2?url";
 import type { CV } from "@/cv";
 import cvData from "@cv";
 
@@ -68,6 +71,7 @@ const structuredData = {
     <title>{title}</title>
     <meta name="description" content={metaDescription} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preload" href={monaSansLatin} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
