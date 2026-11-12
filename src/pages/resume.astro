@@ -360,15 +360,11 @@ const langs = [...languages]
   .points li + li {
     margin-top: 1.5pt;
   }
-  /* The result that matters most in each role: ink, heavier, and marked
-     with an accent square instead of a dash. */
+  /* The result that matters most in each role leads the list, a shade
+     darker and a touch heavier than the rest; nothing louder than that. */
   .points .metric {
     color: var(--ink);
-    font-weight: 580;
-    list-style: square;
-  }
-  .points .metric::marker {
-    color: var(--accent);
+    font-weight: 500;
   }
   .stack {
     margin-top: 3.5pt;
