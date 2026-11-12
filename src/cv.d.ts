@@ -17,6 +17,8 @@ interface Basics {
   name: string;
   label: string;
   tagline?: string;
+  /** Search and social preview: a title near 55 characters, a description near 150. */
+  seo?: { title: string; description: string };
   image: string;
   email: string;
   phone: string;

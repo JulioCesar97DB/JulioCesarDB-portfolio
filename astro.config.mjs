@@ -16,6 +16,12 @@ function resumeSize() {
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://www.juliocesardb.com",
+  // The stylesheet is small enough to ship inside the HTML, which removes
+  // the one render-blocking request.
+  build: {
+    inlineStylesheets: "always",
+  },
   redirects: {
     "/archive": "/#work",
   },
