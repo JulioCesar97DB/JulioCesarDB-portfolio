@@ -226,6 +226,21 @@
     text-decoration-color: currentColor;
   }
 
+  /* In-page jump (a skill's evidence, a role's project): reads as text, marked
+     as a link by a hairline underline that takes the accent on hover. */
+  .jump {
+    color: var(--ink);
+    text-decoration-line: underline;
+    text-decoration-color: var(--line-strong);
+    transition:
+      color 0.2s ease,
+      text-decoration-color 0.2s ease;
+  }
+  .jump:hover {
+    color: var(--accent);
+    text-decoration-color: currentColor;
+  }
+
   /* Quiet buttons: hairline border, no fill until hover. */
   .btn {
     display: inline-flex;
@@ -436,6 +451,29 @@ html.name-morph .hero-name {
     transition:
       opacity 0.6s ease,
       translate 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+/* Arriving from an in-page jump: the target answers once, so the eye lands on
+   it. A project's frame lights its border; a role's name takes the accent. */
+@media (prefers-reduced-motion: no-preference) {
+  :target .frame::after {
+    animation: arrive-frame 2s ease-out 0.45s;
+  }
+  .role:target .role-name {
+    animation: arrive-name 2s ease-out 0.45s;
+  }
+}
+@keyframes arrive-frame {
+  25%,
+  55% {
+    opacity: 1;
+  }
+}
+@keyframes arrive-name {
+  25%,
+  55% {
+    color: var(--accent);
   }
 }
 

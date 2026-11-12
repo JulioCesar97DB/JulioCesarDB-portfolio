@@ -1,5 +1,6 @@
 ---
 import Icon from "@/icons/Icon.astro";
+import { roleAnchor } from "@/utils/anchors";
 import { formatDateRange } from "@/utils/dates";
 
 interface Props {
@@ -14,6 +15,11 @@ interface Props {
   location_type?: string;
   highlights?: string[];
   achievements?: string[];
+  skills?: string[];
+  /** Projects built in this role. */
+  built?: { label: string; href?: string; github?: string }[];
+  /** Recent roles show their first highlights without a click. */
+  recent?: boolean;
 }
 
 const {
@@ -27,15 +33,25 @@ const {
   location,
   location_type,
   highlights = [],
+  skills = [],
+  built = [],
+  recent = false,
 } = Astro.props;
 
 const dateRange = formatDateRange(startDate, endDate);
 const place = [location, location_type].filter(Boolean).join(" · ");
+
+// Recent roles lead with three highlights; a single leftover is not worth a
+// disclosure, so it is shown too.
+const lead = recent ? (highlights.length <= 4 ? highlights.length : 3) : 0;
+const shown = highlights.slice(0, lead);
+const rest = highlights.slice(lead);
+const stack = skills.slice(0, 8);
 ---
 
-<li class="reveal border-t border-line py-8 first:border-t-0 first:pt-0 last:pb-0">
+<li id={roleAnchor(name)} class="role reveal scroll-mt-24 border-t border-line py-8 first:border-t-0 first:pt-0 last:pb-0">
   <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-    <h3 class="text-h3 font-semibold tracking-[-0.015em]">
+    <h3 class="role-name text-h3 font-semibold tracking-[-0.015em]">
       {
         url ? (
           <a
@@ -63,24 +79,82 @@ const place = [location, location_type].filter(Boolean).join(" · ");
   {metric && <p class="metric mt-4">{metric}</p>}
 
   {
-    highlights.length > 0 && (
-      <details class="group mt-4">
+    shown.length > 0 && (
+      <ul class="mt-4 max-w-[60ch] space-y-2">
+        {shown.map((item) => (
+          <li class="point">{item}</li>
+        ))}
+      </ul>
+    )
+  }
+
+  {
+    rest.length > 0 && (
+      <details class="group mt-2">
         <summary class="inline-flex min-h-11 cursor-pointer list-none items-center gap-1.5 text-sm font-medium text-ink-3 transition-colors hover:text-ink [&::-webkit-details-marker]:hidden">
-          <span class="group-open:hidden">Show details</span>
-          <span class="hidden group-open:inline">Hide details</span>
+          <span class="group-open:hidden">{shown.length > 0 ? `Show ${rest.length} more` : "Show details"}</span>
+          <span class="hidden group-open:inline">{shown.length > 0 ? "Show fewer" : "Hide details"}</span>
           <Icon
             name="chevron-down"
             class="size-4 transition-transform duration-300 group-open:rotate-180"
           />
         </summary>
-        <ul class="mt-2 max-w-[60ch] space-y-2 pb-1">
-          {highlights.map((item) => (
-            <li class="relative pl-5 text-[0.9375rem] before:absolute before:top-[0.72em] before:left-0 before:h-px before:w-2 before:bg-line-strong">
-              {item}
-            </li>
+        <ul class="max-w-[60ch] space-y-2 pt-1 pb-1">
+          {rest.map((item) => (
+            <li class="point">{item}</li>
           ))}
         </ul>
       </details>
+    )
+  }
+
+  {
+    (built.length > 0 || stack.length > 0) && (
+      <dl class="mt-4 grid gap-x-6 gap-y-1 text-sm sm:grid-cols-[4.5rem_1fr] sm:gap-y-2.5">
+        {built.length > 0 && (
+          <>
+            <dt class="text-ink-3">Projects</dt>
+            <dd class="mb-2 sm:mb-0">
+              <ul class="flex flex-wrap items-center gap-x-5 gap-y-1 text-ink">
+                {built.map((p) => (
+                  <li class="inline-flex items-center gap-1">
+                    {p.href ? (
+                      <a href={p.href} class="jump">
+                        {p.label}
+                      </a>
+                    ) : (
+                      p.label
+                    )}
+                    {p.github && (
+                      <a
+                        href={p.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="icon-btn -my-3 -mr-3"
+                        aria-label={`${p.label} source on GitHub (opens in a new tab)`}
+                      >
+                        <Icon name="github" class="size-4" />
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </dd>
+          </>
+        )}
+        {stack.length > 0 && (
+          <>
+            <dt class="text-ink-3">Stack</dt>
+            <dd>
+              <ul class="stack">
+                {stack.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </dd>
+          </>
+        )}
+      </dl>
     )
   }
 </li>
@@ -89,5 +163,19 @@ const place = [location, location_type].filter(Boolean).join(" · ");
   .metric {
     color: var(--ink);
     font-weight: 560;
+  }
+  .point {
+    position: relative;
+    padding-left: 1.25rem;
+    font-size: 0.9375rem;
+  }
+  .point::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 0.5rem;
+    height: 1px;
+    background: var(--line-strong);
   }
 </style>
