@@ -53,8 +53,10 @@ const langs = [...languages]
   <body>
     <main class="sheet">
       <header>
-        <h1>{basics.name}</h1>
-        <p class="label">{basics.label}</p>
+        <div>
+          <h1>{basics.name}</h1>
+          <p class="label">{basics.label}</p>
+        </div>
         <ul class="contact">
           <li>{basics.location.city}, FL</li>
           {basics.workAuthorization && <li>{basics.workAuthorization}</li>}
@@ -159,6 +161,8 @@ const langs = [...languages]
     size: Letter;
     margin: 0.55in 0.65in;
   }
+  /* No page-margin text (page numbers, running name): PDF text readers put
+     it before the name, which is the first thing a parser looks for. */
 
   :root {
     --ink: oklch(0.205 0.012 270);
@@ -219,9 +223,26 @@ const langs = [...languages]
     text-decoration: none;
   }
 
+  /* Name and title on the left, contact details in two short columns on the
+     right, sharing a baseline. */
+  header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 24pt;
+  }
+  /* The one flourish: a short accent rule above the name. */
+  h1::before {
+    content: "";
+    display: block;
+    width: 26pt;
+    height: 2.5pt;
+    margin-bottom: 10pt;
+    background: var(--accent);
+  }
   h1 {
     color: var(--ink);
-    font-size: 25pt;
+    font-size: 27pt;
     font-weight: 640;
     font-stretch: 116%;
     letter-spacing: -0.02em;
@@ -235,36 +256,47 @@ const langs = [...languages]
     font-weight: 560;
   }
   .contact {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1pt 13pt;
-    margin-top: 7pt;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(4, auto);
+    gap: 1.5pt 20pt;
     color: var(--ink-2);
+    font-size: 8.8pt;
+    line-height: 1.35;
   }
   .contact a {
     color: var(--accent);
   }
 
   .summary {
-    margin-top: 11pt;
-    padding-top: 10pt;
-    border-top: 1px solid var(--line);
+    margin-top: 12pt;
+    padding-top: 11pt;
+    border-top: 1px solid var(--ink);
     color: var(--ink);
+    font-size: 10pt;
     text-wrap: pretty;
   }
 
   section {
     margin-top: 13pt;
   }
+  /* Section titles sit on a hairline that runs out to the margin. */
   h2 {
-    padding-bottom: 3.5pt;
-    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 9pt;
     color: var(--ink);
     font-size: 11.5pt;
     font-weight: 620;
     font-stretch: 108%;
     letter-spacing: -0.015em;
     break-after: avoid;
+  }
+  h2::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
   }
 
   /* A role may run over a page; its heading never parts from what follows. */
@@ -328,9 +360,15 @@ const langs = [...languages]
   .points li + li {
     margin-top: 1.5pt;
   }
+  /* The result that matters most in each role: ink, heavier, and marked
+     with an accent square instead of a dash. */
   .points .metric {
     color: var(--ink);
     font-weight: 580;
+    list-style: square;
+  }
+  .points .metric::marker {
+    color: var(--accent);
   }
   .stack {
     margin-top: 3.5pt;
@@ -342,13 +380,16 @@ const langs = [...languages]
     display: grid;
     grid-template-columns: 7.2em 1fr;
     gap: 2.5pt 12pt;
-    margin-top: 7pt;
+    margin-top: 6pt;
   }
   .skills dt {
     color: var(--ink-3);
   }
   .skills dd {
     color: var(--ink);
+  }
+  .skills dd:first-of-type {
+    font-weight: 600;
   }
 
   .pair {
