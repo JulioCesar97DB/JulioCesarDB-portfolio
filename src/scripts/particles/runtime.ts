@@ -1,8 +1,9 @@
 /**
  * Shared runtime for the animated backgrounds: sizing for the device
- * pixel ratio, a pointer eased toward the cursor, theme-aware colours, and a
- * render loop that only runs while the hero is on screen and the tab is
- * visible. Under reduced motion a variant draws a single still frame.
+ * pixel ratio, a pointer eased toward the cursor, theme-aware colours, the
+ * page scroll fed to the field as parallax, and a render loop that only runs
+ * while the hero is on screen and the tab is visible. Under reduced motion a
+ * variant draws a single still frame and ignores the scroll.
  */
 
 export type RGB = [number, number, number];
@@ -28,6 +29,14 @@ export interface Pointer {
 export interface Variant {
   resize(width: number, height: number, dpr: number): void;
   setPalette(palette: Palette): void;
+  /**
+   * Scroll parallax. The page scrolled by `page` CSS px (positive is down) and
+   * the canvas itself rode `carried` px of that along with the page (0 while
+   * it is stuck). A mark meant to travel at k of the scroll speed on screen
+   * moves by `carried - k * page` inside the canvas (0 pins it to the
+   * viewport, 1 glues it to the content).
+   */
+  scroll?(page: number, carried: number): void;
   /** time in ms; return false when nothing will change until the next input. */
   draw(time: number, pointer: Pointer): boolean | void;
   destroy?(): void;
@@ -89,11 +98,48 @@ export function mountBackground(canvas: HTMLCanvasElement, factory: VariantFacto
   const IDLE_MS = 8000;
   let timer = 0;
   let lastActivity = performance.now();
+  // While the page scrolls the field moves with it, so frames follow the
+  // display rate instead of the 30fps budget, or the motion would judder.
+  const SCROLL_FRAMES_MS = 150;
+  let lastScroll = -Infinity;
 
+  // Scroll parallax. The canvas is sticky: while it is stuck it slides down
+  // its layer exactly as far as the page scrolls, and outside that span it
+  // rides along with the page. Reporting both the scroll and how much of it
+  // the canvas rode lets the variant hold each mark at its own share of the
+  // scroll speed in both cases, so there is no jolt where the sticking
+  // starts or ends.
+  const layer = canvas.parentElement ?? canvas;
+  let prevScroll: number | null = null;
+  let prevSlide = 0;
+  const followScroll = () => {
+    const scroll = window.scrollY;
+    // Most frames (drift, pointer) come without a scroll: skip the layout reads.
+    if (scroll === prevScroll) return;
+    const slide = canvas.getBoundingClientRect().top - layer.getBoundingClientRect().top;
+    if (prevScroll !== null && !reduced.matches) {
+      const page = scroll - prevScroll;
+      const carried = page - (slide - prevSlide);
+      if (page || carried) variant.scroll?.(page, carried);
+    }
+    prevScroll = scroll;
+    prevSlide = slide;
+  };
+
+  let lastFrame = 0;
   const loop = (time: number) => {
     raf = 0;
-    // Ease the pointer: quick but never snappy (tuned for 30fps).
-    const k = 0.28;
+    followScroll();
+    // Frames come at 30fps, or at the display rate while scrolling (when a
+    // finger is often the pointer). Scale the easing to the time elapsed so
+    // the pointer feels the same at any rate; a long gap (resuming from idle)
+    // counts as one frame.
+    const gap = lastFrame ? time - lastFrame : FRAME_MS;
+    const frames = gap > 200 ? 1 : gap / FRAME_MS;
+    lastFrame = time;
+    const ease = (perFrame: number) => 1 - (1 - perFrame) ** frames;
+    // Ease the pointer: quick but never snappy (rates are per 30fps frame).
+    const k = ease(0.28);
     if (target.inside) {
       if (pointer.presence === 0) {
         pointer.x = target.x;
@@ -102,17 +148,21 @@ export function mountBackground(canvas: HTMLCanvasElement, factory: VariantFacto
       pointer.x += (target.x - pointer.x) * k;
       pointer.y += (target.y - pointer.y) * k;
     }
-    pointer.presence += ((target.inside ? 1 : 0) - pointer.presence) * 0.16;
+    pointer.presence += ((target.inside ? 1 : 0) - pointer.presence) * ease(0.16);
     if (pointer.presence < 0.002) pointer.presence = 0;
 
     const animating = variant.draw(time, pointer) !== false;
     const settling = pointer.presence > 0 && pointer.presence < 0.998;
     const awake = performance.now() - lastActivity < IDLE_MS;
     if (!reduced.matches && visible && !document.hidden && animating && (awake || settling)) {
-      timer = window.setTimeout(() => {
-        timer = 0;
+      if (performance.now() - lastScroll < SCROLL_FRAMES_MS) {
         raf = requestAnimationFrame(loop);
-      }, FRAME_MS);
+      } else {
+        timer = window.setTimeout(() => {
+          timer = 0;
+          raf = requestAnimationFrame(loop);
+        }, FRAME_MS);
+      }
     }
   };
 
@@ -141,7 +191,20 @@ export function mountBackground(canvas: HTMLCanvasElement, factory: VariantFacto
     if (visible) kick();
   }).observe(canvas);
   document.addEventListener("visibilitychange", kick);
-  window.addEventListener("scroll", () => visible && kick(), { passive: true });
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!visible) return;
+      lastScroll = performance.now();
+      // Draw on the next frame rather than waiting out the 30fps budget.
+      if (timer) {
+        clearTimeout(timer);
+        timer = 0;
+      }
+      kick();
+    },
+    { passive: true },
+  );
   reduced.addEventListener("change", kick);
 
   // Theme: the menu flips data-theme; "System" follows the OS.
