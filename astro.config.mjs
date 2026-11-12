@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 
-// The résumé's size, shown next to its download link, measured from the file
+// The resume's size, shown next to its download link, measured from the file
 // so the label never goes stale. Empty if the file is missing.
 function resumeSize() {
   try {

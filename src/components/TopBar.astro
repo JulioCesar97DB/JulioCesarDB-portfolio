@@ -61,10 +61,10 @@ const navItems = [
         <a
           href={resume}
           class="btn resume-btn ml-0.5 min-h-11 w-11 flex-none justify-center rounded-full px-0 text-sm sm:min-h-10 sm:w-auto sm:px-3.5"
-          aria-label="Download résumé (PDF)"
+          aria-label="Download resume (PDF)"
           download
         >
-          <span class="hidden sm:inline">Résumé</span>
+          <span class="hidden sm:inline">Resume</span>
           <Icon name="file" class="size-4 sm:hidden" />
           <Icon name="arrow-down" class="hidden size-3.5 text-ink-3 sm:block" />
         </a>
@@ -74,7 +74,7 @@ const navItems = [
 </header>
 
 <style>
-  /* Registered so --fill can transition (the Résumé ink fill). */
+  /* Registered so --fill can transition (the Resume ink fill). */
   @property --fill {
     syntax: "<number>";
     inherits: true;
@@ -85,7 +85,7 @@ const navItems = [
      writes three eased 0..1 phases on the header as the page scrolls:
        --glass   the glass material fades in (fill, blur, rim, edge, shadow)
        --shrink  the bar contracts from the layout width into the pill
-       --fill    the Résumé button fills with ink (toggled, then animated)
+       --fill    the Resume button fills with ink (toggled, then animated)
      Every property below interpolates from those, so the change is spread
      over the whole scroll range instead of firing at one threshold. */
   .topbar {
@@ -243,7 +243,7 @@ const navItems = [
     background: transparent;
   }
 
-  /* Résumé: a sheen sweeps across the button on hover. */
+  /* Resume: a sheen sweeps across the button on hover. */
   .resume-btn {
     position: relative;
     overflow: hidden;
