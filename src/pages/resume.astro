@@ -16,20 +16,39 @@ const github = basics.profiles.find((p) => p.network === "GitHub");
 const linkedin = basics.profiles.find((p) => p.network === "LinkedIn");
 const bare = (url: string) => decodeURI(url).replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
 
-// Recent roles carry more detail than early ones.
-const bullets = [5, 4, 3, 3, 3];
+// Recent roles carry more detail than early ones. Each role leads with its
+// headline result, then its highlights.
+const bullets = [5, 4, 3, 2, 2];
 const roles = work.map((job, i) => ({
   ...job,
-  points: job.highlights.slice(0, bullets[i] ?? 3),
+  place: [job.location, job.location_type].filter(Boolean).join(" · "),
+  points: [job.resumeLead ?? job.metric, ...job.highlights.slice(0, bullets[i] ?? 2)].filter(
+    (point): point is string => !!point,
+  ),
   stack: (job.skills ?? []).slice(0, 10),
 }));
 
+// Figures are what a reader scans a resume for, so they are set heavier
+// inside their sentence: percentages, counts with a plus, and load times.
+const escapeHtml = (text: string) =>
+  text.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c] ?? c);
+const figures = /(\d[\d,]*\+?%|\d[\d,]*\+|sub-\d+s(?: LCP)?)/g;
+const emphasize = (text: string) => escapeHtml(text).replace(figures, "<strong>$1</strong>");
+
 const personal = projects.filter((p) => p.madeAt === "Personal" && p.tier === "feature");
 
+// Skills, most relevant first. On paper the one-item Mobile group folds into
+// Frontend, so every row carries a real list.
 const core = (basics.coreSkills ?? []).map((skill) => skill.name);
+const rest = (name: string) =>
+  (basics.toolkit ?? []).find((g) => g.group === name)?.items.filter((item) => !core.includes(item)) ?? [];
 const skillGroups = [
-  { group: "Core", items: core },
-  ...(basics.toolkit ?? []).map((g) => ({ group: g.group, items: g.items.filter((item) => !core.includes(item)) })),
+  { group: "Core stack", items: core },
+  { group: "Frontend & mobile", items: [...rest("Frontend"), ...rest("Mobile")] },
+  { group: "Backend & data", items: rest("Backend") },
+  { group: "Cloud & DevOps", items: rest("Infrastructure") },
+  { group: "Integrations", items: rest("Integrations") },
+  { group: "Testing", items: rest("Testing") },
 ].filter((g) => g.items.length > 0);
 
 const degree = education[0];
@@ -92,15 +111,14 @@ const langs = [...languages]
               <div class="row">
                 <h3>
                   {job.position}, <span class="org">{job.name}</span>
+                  {job.place && <span class="place">{job.place}</span>}
                 </h3>
                 <p class="dates">{formatDateRange(job.startDate, job.endDate)}</p>
               </div>
-              <p class="place">{[job.location, job.location_type].filter(Boolean).join(" · ")}</p>
               <p class="lede">{job.summary}</p>
               <ul class="points">
-                {(job.resumeLead ?? job.metric) && <li class="metric">{job.resumeLead ?? job.metric}</li>}
                 {job.points.map((point) => (
-                  <li>{point}</li>
+                  <li set:html={emphasize(point)} />
                 ))}
               </ul>
               {job.stack.length > 0 && <p class="stack">{job.stack.join(" · ")}</p>}
@@ -117,13 +135,13 @@ const langs = [...languages]
               <article class="role">
                 <div class="row">
                   <h3>
-                    {p.title}, <span class="org">{p.kind?.toLowerCase()}</span>
+                    {p.title}, <span class="sub">{p.kind?.toLowerCase()}</span>
                   </h3>
                   <p class="dates">{p.url ? <a href={p.url}>{bare(p.url)}</a> : p.year}</p>
                 </div>
                 <ul class="points">
                   {(p.facts ?? p.highlights.slice(0, 2)).map((point) => (
-                    <li>{point}</li>
+                    <li set:html={emphasize(point)} />
                   ))}
                 </ul>
                 {p.keywords && <p class="stack">{p.keywords.join(" · ")}</p>}
@@ -140,7 +158,7 @@ const langs = [...languages]
               <h2>Education</h2>
               <div class="row">
                 <h3>
-                  B.Sc. {degree.area}, <span class="org">{degree.institution.replace(/\s*\(.*\)$/, "")}</span>
+                  B.Sc. {degree.area}, <span class="sub">{degree.institution.replace(/\s*\(.*\)$/, "")}</span>
                 </h3>
                 <p class="dates">{degreeYears}</p>
               </div>
@@ -169,6 +187,7 @@ const langs = [...languages]
     --ink-2: oklch(0.36 0.014 270);
     --ink-3: oklch(0.48 0.014 270);
     --line: oklch(0.86 0.005 270);
+    --line-soft: oklch(0.925 0.004 270);
     --accent: oklch(0.5 0.21 276);
     color-scheme: light;
   }
@@ -286,9 +305,9 @@ const langs = [...languages]
     align-items: center;
     gap: 9pt;
     color: var(--ink);
-    font-size: 11.5pt;
-    font-weight: 620;
-    font-stretch: 108%;
+    font-size: 12.5pt;
+    font-weight: 640;
+    font-stretch: 110%;
     letter-spacing: -0.015em;
     break-after: avoid;
   }
@@ -301,10 +320,13 @@ const langs = [...languages]
 
   /* A role may run over a page; its heading never parts from what follows. */
   .role {
-    margin-top: 8.5pt;
+    margin-top: 9pt;
+  }
+  .role + .role {
+    padding-top: 8.5pt;
+    border-top: 1px solid var(--line-soft);
   }
   .role .row,
-  .role .place,
   .role .lede {
     break-after: avoid;
   }
@@ -316,11 +338,14 @@ const langs = [...languages]
   }
   h3 {
     color: var(--ink);
-    font-size: 10.4pt;
+    font-size: 10.6pt;
     font-weight: 620;
     letter-spacing: -0.01em;
   }
   .org {
+    font-weight: 620;
+  }
+  .sub {
     font-weight: 460;
   }
   .dates {
@@ -334,13 +359,18 @@ const langs = [...languages]
   .dates a {
     color: var(--accent);
   }
+  /* The place rides the heading line, quieter, after a gap. */
   .place {
+    margin-left: 8pt;
     color: var(--ink-3);
     font-size: 8.8pt;
+    font-weight: 420;
+    letter-spacing: 0;
   }
   .lede {
     margin-top: 3pt;
     text-wrap: pretty;
+    break-inside: avoid;
   }
 
   /* Real list markers, not positioned pseudo-elements: positioned boxes are
@@ -360,11 +390,9 @@ const langs = [...languages]
   .points li + li {
     margin-top: 1.5pt;
   }
-  /* The result that matters most in each role leads the list, a shade
-     darker and a touch heavier than the rest; nothing louder than that. */
-  .points .metric {
+  .points strong {
     color: var(--ink);
-    font-weight: 500;
+    font-weight: 620;
   }
   .stack {
     margin-top: 3.5pt;
@@ -374,7 +402,7 @@ const langs = [...languages]
 
   .skills {
     display: grid;
-    grid-template-columns: 7.2em 1fr;
+    grid-template-columns: 9.2em 1fr;
     gap: 2.5pt 12pt;
     margin-top: 6pt;
   }
