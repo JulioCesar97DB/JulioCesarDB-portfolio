@@ -62,14 +62,20 @@
           "React",
           "Next.js",
           "TypeScript",
-          "React Native",
-          "Expo",
           "JavaScript",
           "Tailwind CSS",
+          "shadcn/ui",
           "HTML & CSS",
           "TanStack Query",
           "Zustand",
           "Redux"
+        ]
+      },
+      {
+        "group": "Mobile",
+        "items": [
+          "React Native",
+          "Expo"
         ]
       },
       {
