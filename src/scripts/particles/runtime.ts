@@ -6,13 +6,6 @@
  * variant draws a single still frame and ignores the scroll.
  */
 
-/**
- * How fast the field travels with the page scroll: 0 leaves it pinned to the
- * viewport, 1 glues it to the content. In between it reads as a layer set
- * back from the page.
- */
-const SCROLL_FOLLOW = 0.6;
-
 export type RGB = [number, number, number];
 
 export interface Palette {
@@ -36,8 +29,14 @@ export interface Pointer {
 export interface Variant {
   resize(width: number, height: number, dpr: number): void;
   setPalette(palette: Palette): void;
-  /** Move the whole field by dy CSS px (positive is down), for scroll parallax. */
-  scroll?(dy: number): void;
+  /**
+   * Scroll parallax. The page scrolled by `page` CSS px (positive is down) and
+   * the canvas itself rode `carried` px of that along with the page (0 while
+   * it is stuck). A mark meant to travel at k of the scroll speed on screen
+   * moves by `carried - k * page` inside the canvas (0 pins it to the
+   * viewport, 1 glues it to the content).
+   */
+  scroll?(page: number, carried: number): void;
   /** time in ms; return false when nothing will change until the next input. */
   draw(time: number, pointer: Pointer): boolean | void;
   destroy?(): void;
@@ -106,19 +105,22 @@ export function mountBackground(canvas: HTMLCanvasElement, factory: VariantFacto
 
   // Scroll parallax. The canvas is sticky: while it is stuck it slides down
   // its layer exactly as far as the page scrolls, and outside that span it
-  // rides along with the page. Shifting the field by (1 - follow) of the
-  // scroll, minus that slide, makes it travel at `follow` of the scroll speed
-  // on screen in both cases, so there is no jolt where the sticking starts or
-  // ends.
+  // rides along with the page. Reporting both the scroll and how much of it
+  // the canvas rode lets the variant hold each mark at its own share of the
+  // scroll speed in both cases, so there is no jolt where the sticking
+  // starts or ends.
   const layer = canvas.parentElement ?? canvas;
   let prevScroll: number | null = null;
   let prevSlide = 0;
   const followScroll = () => {
     const scroll = window.scrollY;
+    // Most frames (drift, pointer) come without a scroll: skip the layout reads.
+    if (scroll === prevScroll) return;
     const slide = canvas.getBoundingClientRect().top - layer.getBoundingClientRect().top;
     if (prevScroll !== null && !reduced.matches) {
-      const dy = (1 - SCROLL_FOLLOW) * (scroll - prevScroll) - (slide - prevSlide);
-      if (dy) variant.scroll?.(dy);
+      const page = scroll - prevScroll;
+      const carried = page - (slide - prevSlide);
+      if (page || carried) variant.scroll?.(page, carried);
     }
     prevScroll = scroll;
     prevSlide = slide;
