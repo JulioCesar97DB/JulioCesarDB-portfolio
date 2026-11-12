@@ -21,7 +21,7 @@
     ],
     "aboutParagraphs": [
       "I studied Software Engineering at UCLV in Santa Clara, Cuba, and wrote my first production code there, building internal tools for ETECSA, the national telecom. Since then I've worked from Alicante, Spain, and now West Palm Beach, Florida. The job has stayed the same at its core: take a product from an empty repo to something people use every day.",
-      "Most of my time goes into the frontend: React, Next.js, and TypeScript, structured so a team can keep extending it. I'm just as comfortable on the other side of the API, with FastAPI and Node services, Postgres with row-level security on Supabase, and Docker deploys on GCP and AWS. Owning both sides means fewer handoffs and fewer surprises.",
+      "Most of my time goes into the frontend: React, Next.js, and TypeScript, structured so a team can keep extending it. I'm just as comfortable on the other side of the API, with FastAPI and Node services, Postgres with row-level security on Supabase, and Docker deploys on Railway and AWS. Owning both sides means fewer handoffs and fewer surprises.",
       "I care about the details people feel without noticing: fast loads, accessible interfaces, and code that is pleasant to come back to."
     ],
     "theme": "default",
@@ -89,6 +89,7 @@
         "group": "Infrastructure",
         "items": [
           "Docker",
+          "Railway",
           "GCP",
           "AWS",
           "Azure",
@@ -148,7 +149,7 @@
         "Integrated Kinde Auth with secure server-side token management, preventing client-side token exposure",
         "Implemented full internationalization (i18n) supporting English, Spanish, and French with next-intl",
         "Developed backend REST APIs with FastAPI (Python) for entity management, analytics, and authentication",
-        "Containerized services with Docker and deployed the platform on Google Cloud Platform (GCP)",
+        "Containerized services with Docker and deployed the platform on Railway",
         "Integrated the Google Business Profile API to synchronize and manage business listings at scale"
       ],
       "responsibilities": [
@@ -158,14 +159,14 @@
         "Implement automated scraping job monitoring and analytics dashboards",
         "Integrate authentication, bulk upload, billing, and document management modules",
         "Build backend REST APIs with FastAPI and a secure data-access layer",
-        "Containerize services with Docker and manage deployments on Google Cloud Platform (GCP)",
+        "Containerize services with Docker and manage deployments on Railway",
         "Integrate the Google Business Profile API for business listing synchronization"
       ],
       "achievements": [
         "Delivered production-ready business intelligence platform from concept to deployment",
         "Established a strict three-layer architecture pattern ensuring security and maintainability",
         "Built a modular dashboard supporting multiple user roles with dynamic navigation",
-        "Delivered the full-stack platform end to end — Next.js frontend, FastAPI backend, and GCP deployment"
+        "Delivered the full-stack platform end to end — Next.js frontend, FastAPI backend, and Railway deployment"
       ],
       "skills": [
         "Next.js",
@@ -173,7 +174,7 @@
         "TypeScript",
         "FastAPI",
         "Python",
-        "GCP",
+        "Railway",
         "Tailwind CSS",
         "shadcn/ui",
         "Kinde Auth",
@@ -184,7 +185,7 @@
         "Docker",
         "Google Business Profile API"
       ],
-      "metric": "Sole frontend engineer, from first commit to production on GCP"
+      "metric": "Sole frontend engineer, from first commit to production"
     },
     {
       "name": "Second Window",
@@ -599,13 +600,13 @@
       "name": "ConsumrBuzz SaaS - Business Intelligence Dashboard",
       "image": "/projects/consumrbuzz.webp",
       "isActive": true,
-      "description": "Full-stack SaaS platform for business listing management with automated publisher scanning, analytics, and multi-tenant role-based dashboards, powered by a FastAPI backend deployed on GCP.",
+      "description": "Full-stack SaaS platform for business listing management with automated publisher scanning, analytics, and multi-tenant role-based dashboards, powered by a FastAPI backend deployed on Railway.",
       "highlights": [
         "Built the entire frontend from scratch with Next.js 15, React 19, TypeScript, and Tailwind v4",
         "Three-layer secure architecture: Client → Server Actions → DAL → FastAPI backend",
         "Role-based dashboards for 7 user roles across Admin, Agency, and SMB tenants",
         "Full i18n support (EN/ES/FR) with Kinde Auth and automated publisher scraping workflows",
-        "Built backend REST APIs with FastAPI, containerized with Docker and deployed on Google Cloud Platform (GCP)",
+        "Built backend REST APIs with FastAPI, containerized with Docker and deployed on Railway",
         "Integrated the Google Business Profile API for business listing synchronization"
       ],
       "url": "https://app.consumrbuzz.com/en",
@@ -618,7 +619,7 @@
         "FastAPI",
         "Python",
         "Docker",
-        "GCP",
+        "Railway",
         "Google Business Profile",
         "TanStack Query"
       ],
@@ -629,7 +630,7 @@
       "facts": [
         "Role-based dashboards for 7 roles across Admin, Agency, and SMB tenants",
         "English, Spanish, and French with next-intl",
-        "FastAPI services in Docker, deployed on GCP"
+        "FastAPI services in Docker, deployed on Railway"
       ],
       "imageAlt": "ConsumrBuzz sign-in screen beside the product's marketing page with platform, uptime, and ranking stats",
       "architecture": {
@@ -638,7 +639,7 @@
           "TanStack Query hooks",
           "Server Actions",
           "Data access layer",
-          "FastAPI on GCP"
+          "FastAPI on Railway"
         ],
         "note": "Auth tokens are handled on the server and never reach the client."
       }
@@ -807,7 +808,6 @@
         "90+ Lighthouse performance score with sub-2s load times"
       ],
       "url": "",
-      "github": "https://github.com/BlindersBetHome/bethome-web",
       "year": "2024",
       "madeAt": "Freelance",
       "keywords": [
