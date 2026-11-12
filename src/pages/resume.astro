@@ -33,7 +33,9 @@ const roles = work.map((job, i) => ({
 const escapeHtml = (text: string) =>
   text.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c] ?? c);
 const figures = /(\d[\d,]*\+?%|\d[\d,]*\+|sub-\d+s(?: LCP)?)/g;
-const emphasize = (text: string) => escapeHtml(text).replace(figures, "<strong>$1</strong>");
+// Arrows become plain ">" so no parser can garble them.
+const emphasize = (text: string) =>
+  escapeHtml(text.replaceAll(" → ", " > ")).replace(figures, "<strong>$1</strong>");
 
 const personal = projects.filter((p) => p.madeAt === "Personal" && p.tier === "feature");
 
@@ -109,12 +111,13 @@ const langs = [...languages]
           roles.map((job) => (
             <article class="role">
               <div class="row">
-                <h3>
-                  {job.position}, <span class="org">{job.name}</span>
-                  {job.place && <span class="place">{job.place}</span>}
-                </h3>
+                <h3>{job.position}</h3>
                 <p class="dates">{formatDateRange(job.startDate, job.endDate)}</p>
               </div>
+              <p class="employer">
+                <span class="org">{job.name}</span>
+                {job.place && <span class="place">{job.place}</span>}
+              </p>
               <p class="lede">{job.summary}</p>
               <ul class="points">
                 {job.points.map((point) => (
@@ -187,7 +190,7 @@ const langs = [...languages]
     --ink-2: oklch(0.36 0.014 270);
     --ink-3: oklch(0.48 0.014 270);
     --line: oklch(0.86 0.005 270);
-    --line-soft: oklch(0.925 0.004 270);
+    --surface: oklch(0.968 0.004 270);
     --accent: oklch(0.5 0.21 276);
     color-scheme: light;
   }
@@ -261,7 +264,7 @@ const langs = [...languages]
   }
   h1 {
     color: var(--ink);
-    font-size: 27pt;
+    font-size: 29pt;
     font-weight: 640;
     font-stretch: 116%;
     letter-spacing: -0.02em;
@@ -319,16 +322,21 @@ const langs = [...languages]
   }
 
   /* A role may run over a page; its heading never parts from what follows. */
+  /* Title and dates on one line, employer and place on the next: the
+     layout resume parsers read most reliably. */
   .role {
-    margin-top: 9pt;
+    margin-top: 11pt;
   }
-  .role + .role {
-    padding-top: 8.5pt;
-    border-top: 1px solid var(--line-soft);
+  h2 + .role {
+    margin-top: 8pt;
   }
   .role .row,
+  .role .employer,
   .role .lede {
     break-after: avoid;
+  }
+  .employer {
+    margin-top: 0.5pt;
   }
   .row {
     display: flex;
@@ -343,7 +351,8 @@ const langs = [...languages]
     letter-spacing: -0.01em;
   }
   .org {
-    font-weight: 620;
+    color: var(--ink);
+    font-weight: 540;
   }
   .sub {
     font-weight: 460;
@@ -359,13 +368,13 @@ const langs = [...languages]
   .dates a {
     color: var(--accent);
   }
-  /* The place rides the heading line, quieter, after a gap. */
   .place {
-    margin-left: 8pt;
     color: var(--ink-3);
     font-size: 8.8pt;
-    font-weight: 420;
-    letter-spacing: 0;
+  }
+  .place::before {
+    content: "·";
+    margin: 0 5pt;
   }
   .lede {
     margin-top: 3pt;
@@ -400,11 +409,15 @@ const langs = [...languages]
     font-size: 8.8pt;
   }
 
+  /* The one tinted panel on the page: the skills a reader scans for first. */
   .skills {
     display: grid;
     grid-template-columns: 9.2em 1fr;
     gap: 2.5pt 12pt;
-    margin-top: 6pt;
+    margin-top: 7pt;
+    padding: 8pt 11pt;
+    border-radius: 4pt;
+    background: var(--surface);
   }
   .skills dt {
     color: var(--ink-3);
