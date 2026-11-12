@@ -3,7 +3,8 @@
 // a `relative` element marked `data-bg-region`. The layer spans the whole
 // region, but the canvas inside is only one viewport tall and sticky, so it
 // stays behind whatever is on screen and leaves with the region: the
-// rendering cost is one screen, not the region's full height.
+// rendering cost is one screen, not the region's full height. The particles
+// inside still travel with the scroll, as parallax (see particles/runtime).
 interface Props {
   /** Which edges fade into the page: the hero only fades at the bottom; a
       region between two bands fades at both. */

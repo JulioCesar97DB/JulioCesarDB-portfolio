@@ -1,9 +1,17 @@
 /**
  * Shared runtime for the animated backgrounds: sizing for the device
- * pixel ratio, a pointer eased toward the cursor, theme-aware colours, and a
- * render loop that only runs while the hero is on screen and the tab is
- * visible. Under reduced motion a variant draws a single still frame.
+ * pixel ratio, a pointer eased toward the cursor, theme-aware colours, the
+ * page scroll fed to the field as parallax, and a render loop that only runs
+ * while the hero is on screen and the tab is visible. Under reduced motion a
+ * variant draws a single still frame and ignores the scroll.
  */
+
+/**
+ * How fast the field travels with the page scroll: 0 leaves it pinned to the
+ * viewport, 1 glues it to the content. In between it reads as a layer set
+ * back from the page.
+ */
+const SCROLL_FOLLOW = 0.6;
 
 export type RGB = [number, number, number];
 
@@ -28,6 +36,8 @@ export interface Pointer {
 export interface Variant {
   resize(width: number, height: number, dpr: number): void;
   setPalette(palette: Palette): void;
+  /** Move the whole field by dy CSS px (positive is down), for scroll parallax. */
+  scroll?(dy: number): void;
   /** time in ms; return false when nothing will change until the next input. */
   draw(time: number, pointer: Pointer): boolean | void;
   destroy?(): void;
@@ -89,9 +99,34 @@ export function mountBackground(canvas: HTMLCanvasElement, factory: VariantFacto
   const IDLE_MS = 8000;
   let timer = 0;
   let lastActivity = performance.now();
+  // While the page scrolls the field moves with it, so frames follow the
+  // display rate instead of the 30fps budget, or the motion would judder.
+  const SCROLL_FRAMES_MS = 150;
+  let lastScroll = -Infinity;
+
+  // Scroll parallax. The canvas is sticky: while it is stuck it slides down
+  // its layer exactly as far as the page scrolls, and outside that span it
+  // rides along with the page. Shifting the field by (1 - follow) of the
+  // scroll, minus that slide, makes it travel at `follow` of the scroll speed
+  // on screen in both cases, so there is no jolt where the sticking starts or
+  // ends.
+  const layer = canvas.parentElement ?? canvas;
+  let prevScroll: number | null = null;
+  let prevSlide = 0;
+  const followScroll = () => {
+    const scroll = window.scrollY;
+    const slide = canvas.getBoundingClientRect().top - layer.getBoundingClientRect().top;
+    if (prevScroll !== null && !reduced.matches) {
+      const dy = (1 - SCROLL_FOLLOW) * (scroll - prevScroll) - (slide - prevSlide);
+      if (dy) variant.scroll?.(dy);
+    }
+    prevScroll = scroll;
+    prevSlide = slide;
+  };
 
   const loop = (time: number) => {
     raf = 0;
+    followScroll();
     // Ease the pointer: quick but never snappy (tuned for 30fps).
     const k = 0.28;
     if (target.inside) {
@@ -109,10 +144,14 @@ export function mountBackground(canvas: HTMLCanvasElement, factory: VariantFacto
     const settling = pointer.presence > 0 && pointer.presence < 0.998;
     const awake = performance.now() - lastActivity < IDLE_MS;
     if (!reduced.matches && visible && !document.hidden && animating && (awake || settling)) {
-      timer = window.setTimeout(() => {
-        timer = 0;
+      if (performance.now() - lastScroll < SCROLL_FRAMES_MS) {
         raf = requestAnimationFrame(loop);
-      }, FRAME_MS);
+      } else {
+        timer = window.setTimeout(() => {
+          timer = 0;
+          raf = requestAnimationFrame(loop);
+        }, FRAME_MS);
+      }
     }
   };
 
@@ -141,7 +180,20 @@ export function mountBackground(canvas: HTMLCanvasElement, factory: VariantFacto
     if (visible) kick();
   }).observe(canvas);
   document.addEventListener("visibilitychange", kick);
-  window.addEventListener("scroll", () => visible && kick(), { passive: true });
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!visible) return;
+      lastScroll = performance.now();
+      // Draw on the next frame rather than waiting out the 30fps budget.
+      if (timer) {
+        clearTimeout(timer);
+        timer = 0;
+      }
+      kick();
+    },
+    { passive: true },
+  );
   reduced.addEventListener("change", kick);
 
   // Theme: the menu flips data-theme; "System" follows the OS.

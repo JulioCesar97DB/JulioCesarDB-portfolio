@@ -23,6 +23,11 @@ const MAX_PARTICLES = 70;
 const MIN_PARTICLES = 40; // phones: area alone would give ~20, too sparse to link
 const AREA_PER_PARTICLE = 16000; // px² per particle
 const BUCKETS = 5; // opacity levels for batched strokes
+// px the field extends past the top and bottom edges. Scrolling wraps
+// particles from one edge to the other all the time; with a band one link
+// long, a particle wraps only once it is too far off screen to link to
+// anything visible, so no line pops in or out at the edges.
+const EDGE = LINK;
 
 export function createParticles(canvas: HTMLCanvasElement): Variant | null {
   const ctx = canvas.getContext("2d");
@@ -45,15 +50,23 @@ export function createParticles(canvas: HTMLCanvasElement): Variant | null {
   const linkPaths: Path2D[] = [];
   const pointerPaths: Path2D[] = [];
 
+  // Wrap a y coordinate into the band [-EDGE, h + EDGE), however far it went.
+  const wrapY = (y: number) => {
+    const span = h + EDGE * 2;
+    return ((((y + EDGE) % span) + span) % span) - EDGE;
+  };
+
   const seed = () => {
     const byArea = (w * h) / AREA_PER_PARTICLE;
-    const count = Math.round(Math.min(MAX_PARTICLES, Math.max(MIN_PARTICLES, byArea)));
+    const onScreen = Math.min(MAX_PARTICLES, Math.max(MIN_PARTICLES, byArea));
+    // The off-screen bands get the same density, so what is visible is unchanged.
+    const count = Math.round((onScreen * (h + EDGE * 2)) / h);
     particles = Array.from({ length: count }, () => {
       const angle = Math.random() * Math.PI * 2;
       const speed = 0.05 + Math.random() * 0.08;
       return {
         x: Math.random() * w,
-        y: Math.random() * h,
+        y: Math.random() * (h + EDGE * 2) - EDGE,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
       };
@@ -71,6 +84,9 @@ export function createParticles(canvas: HTMLCanvasElement): Variant | null {
     setPalette(p) {
       palette = p;
       boost = p.dark ? 1.6 : 1;
+    },
+    scroll(dy) {
+      for (const p of particles) p.y = wrapY(p.y + dy);
     },
     draw(time, pointer: Pointer) {
       if (!palette) return false;
@@ -101,8 +117,7 @@ export function createParticles(canvas: HTMLCanvasElement): Variant | null {
           p.y += p.vy * dt;
           if (p.x < -10) p.x = w + 10;
           else if (p.x > w + 10) p.x = -10;
-          if (p.y < -10) p.y = h + 10;
-          else if (p.y > h + 10) p.y = -10;
+          p.y = wrapY(p.y);
         }
       }
 
