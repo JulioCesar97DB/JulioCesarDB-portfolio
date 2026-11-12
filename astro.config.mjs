@@ -16,6 +16,7 @@ function resumeSize() {
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://www.juliocesardb.com",
   redirects: {
     "/archive": "/#work",
   },

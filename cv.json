@@ -3,6 +3,10 @@
     "name": "Julio César Díaz",
     "label": "Full-stack engineer",
     "tagline": "I take web products from an empty repo to production. The frontend is where I go deepest.",
+    "seo": {
+      "title": "Julio César Díaz | Full-stack engineer (React, Next.js)",
+      "description": "Julio César Díaz is a full-stack engineer in West Palm Beach, Florida, building production web apps with React, Next.js, TypeScript, and FastAPI."
+    },
     "image": "/og.png",
     "email": "juliocesar97db@gmail.com",
     "phone": "+1 561-543-5788",

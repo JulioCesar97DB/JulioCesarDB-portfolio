@@ -2,16 +2,63 @@
 import "@fontsource-variable/mona-sans/standard.css";
 import "@fontsource-variable/geist-mono/wght.css";
 import "@/styles/global.css";
-import { basics } from "@cv";
+import type { CV } from "@/cv";
+import cvData from "@cv";
 
 interface Props {
-  title: string;
+  title?: string;
   description?: string;
 }
 
-const { title, description } = Astro.props;
-const { image, summary, url } = basics;
-const metaDescription = description ?? summary;
+const { basics, work, education } = cvData as unknown as CV;
+const { name, label, image, summary, seo, location, profiles, email, coreSkills = [] } = basics;
+
+// Search results cut titles near 60 characters and descriptions near 155, so
+// both come from basics.seo, written to fit, not from the long summary.
+const title = Astro.props.title ?? seo?.title ?? `${name} | ${label}`;
+const metaDescription = Astro.props.description ?? seo?.description ?? summary;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const socialImage = new URL(image, Astro.site).href;
+const imageAlt = `${name}, ${label.toLowerCase()}`;
+
+// Only the profiles the page itself links to.
+const sameAs = profiles.filter((p) => p.network === "GitHub" || p.network === "LinkedIn").map((p) => p.url);
+const current = work.find((job) => job.endDate == null);
+const degree = education[0];
+
+// Structured data: who this page is about, in the vocabulary search engines
+// read. Every value comes from cv.json.
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  url: canonical,
+  name: title,
+  description: metaDescription,
+  inLanguage: "en",
+  mainEntity: {
+    "@type": "Person",
+    "@id": `${canonical}#person`,
+    name,
+    jobTitle: label,
+    description: metaDescription,
+    url: canonical,
+    email: `mailto:${email}`,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: location.city,
+      addressRegion: location.region,
+      addressCountry: location.countryCode,
+    },
+    knowsAbout: coreSkills.map((skill) => skill.name),
+    knowsLanguage: ["en", "es"],
+    sameAs,
+    ...(current && { worksFor: { "@type": "Organization", name: current.name, url: current.url || undefined } }),
+    ...(degree && {
+      alumniOf: { "@type": "CollegeOrUniversity", name: degree.institution.replace(/\s*\(.*\)$/, "") },
+    }),
+  },
+};
 ---
 
 <!doctype html>
@@ -28,24 +75,29 @@ const metaDescription = description ?? summary;
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#fcfcfd" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0e0e11" media="(prefers-color-scheme: dark)" />
-    <link rel="canonical" href={url} />
+    <link rel="canonical" href={canonical} />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <meta name="author" content={name} />
 
-    <meta property="og:url" content={url} />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content={title} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="profile" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content={name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={metaDescription} />
-    <meta property="og:image" content={`${url}${image}`} />
+    <meta property="og:image" content={socialImage} />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={title} />
+    <meta property="og:image:alt" content={imageAlt} />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={metaDescription} />
-    <meta name="twitter:image" content={`${url}${image}`} />
-    <meta name="twitter:image:alt" content={title} />
+    <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
 
     <script is:inline>
       // Runs before first paint: apply a saved theme so there is no flash.

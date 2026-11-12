@@ -10,11 +10,11 @@ import About from "@/components/sections/About.astro";
 import Contact from "@/components/sections/Contact.astro";
 import { basics } from "@cv";
 
-const { name, label } = basics;
+const { name } = basics;
 const year = new Date().getFullYear();
 ---
 
-<Layout title={`${name} — ${label}`}>
+<Layout>
   <TopBar />
   <main id="main-content">
     <!-- Particle fields: one across the hero and Selected work (ending where
