@@ -21,7 +21,7 @@
     ],
     "aboutParagraphs": [
       "I studied Software Engineering at UCLV in Santa Clara, Cuba, and wrote my first production code there, building internal tools for ETECSA, the national telecom. Since then I've worked from Alicante, Spain, and now West Palm Beach, Florida. The job has stayed the same at its core: take a product from an empty repo to something people use every day.",
-      "Most of my time goes into the frontend: React, Next.js and TypeScript, structured so a team can keep extending it. I'm just as comfortable on the other side of the API, with FastAPI and Node services, Postgres with row-level security on Supabase, and Docker deploys on GCP and AWS. Owning both sides means fewer handoffs and fewer surprises.",
+      "Most of my time goes into the frontend: React, Next.js, and TypeScript, structured so a team can keep extending it. I'm just as comfortable on the other side of the API, with FastAPI and Node services, Postgres with row-level security on Supabase, and Docker deploys on GCP and AWS. Owning both sides means fewer handoffs and fewer surprises.",
       "I care about the details people feel without noticing: fast loads, accessible interfaces, and code that is pleasant to come back to."
     ],
     "theme": "default",
@@ -106,17 +106,17 @@
   "work": [
     {
       "name": "ConsumrBuzz",
-      "position": "Main Frontend Developer",
+      "position": "Lead Frontend Developer",
       "location_type": "Hybrid",
       "location": "Lake Worth Beach, Florida",
       "url": "https://consumrbuzz.com/",
       "startDate": "2025-10-07",
       "endDate": null,
-      "summary": "Built ConsumrBuzz SaaS end to end — owning the entire frontend and contributing across the backend — a full-stack business intelligence dashboard for business listing management, automated publisher scanning, and analytics reporting.",
+      "summary": "Built ConsumrBuzz, a full-stack business intelligence dashboard for business listing management, automated publisher scanning, and analytics reporting — owning the frontend end to end and contributing across the backend.",
       "highlights": [
-        "Architected and built the complete frontend from zero using Next.js 15, React 19, and TypeScript",
-        "Implemented a three-layer data flow architecture (Client Components → TanStack Query Hooks → Server Actions → DAL → API) ensuring secure authentication handling",
-        "Built role-based access control system supporting 7 roles across Admin, Agency, and SMB dashboards",
+        "Architected and built the complete frontend from scratch using Next.js 15, React 19, and TypeScript",
+        "Implemented a three-layer data flow architecture (Client Components → TanStack Query Hooks → Server Actions → DAL → API), ensuring secure authentication handling",
+        "Built a role-based access control system supporting 7 roles across Admin, Agency, and SMB dashboards",
         "Integrated Kinde Auth with secure server-side token management, preventing client-side token exposure",
         "Implemented full internationalization (i18n) supporting English, Spanish, and French with next-intl",
         "Developed backend REST APIs with FastAPI (Python) for entity management, analytics, and authentication",
@@ -160,18 +160,18 @@
     },
     {
       "name": "Second Window",
-      "position": "Front End Developer",
+      "position": "Frontend Developer",
       "location_type": "Remote",
       "location": "Alicante, Spain",
       "url": "https://secondwindow.es",
       "startDate": "2024-10-25",
       "endDate": "2025-10-03",
-      "summary": "Led frontend development for AI-powered educational platforms and a multi-cloud infrastructure visualization tool, delivering two production applications end-to-end.",
+      "summary": "Led frontend development for AI-powered educational platforms and a multi-cloud infrastructure visualization tool, delivering two production applications end to end.",
       "highlights": [
         "Architected and shipped two production web applications for AI-driven educational services from concept to launch",
         "Built an interactive drag-and-drop cloud infrastructure designer with XYFlow supporting AWS, Azure, and GCP resource provisioning",
         "Integrated Azure AD SSO authentication and Stripe subscription billing with webhook handling",
-        "Implemented real-time cost estimation engine calculating infrastructure pricing across three cloud providers"
+        "Implemented a real-time cost estimation engine calculating infrastructure pricing across three cloud providers"
       ],
       "responsibilities": [
         "Own frontend architecture decisions, tech stack selection, and code quality standards",
@@ -199,19 +199,19 @@
       "metric": "Component library that improved team velocity by 40%"
     },
     {
-      "name": "Freelancer",
+      "name": "Freelance",
       "position": "Web Developer",
       "location_type": "Remote",
       "location": "Alicante, Spain",
       "url": "",
       "startDate": "2024-03-01",
       "endDate": "2024-10-20",
-      "summary": "Designed and built a full-featured sports betting platform from scratch with real-time odds, live data feeds, and secure user authentication deployed on AWS.",
+      "summary": "Designed and built a full-featured sports betting platform from scratch, deployed on AWS, with real-time odds, live data feeds, and secure user authentication.",
       "highlights": [
         "Built a complete React SPA for sports betting with live odds updates across multiple sports categories",
-        "Implemented end-to-end authentication flow with AWS Cognito including MFA and session management",
-        "Deployed via AWS Amplify CI/CD pipeline with automated preview environments per branch",
-        "Achieved 95% test coverage with Jest and React Testing Library ensuring production reliability"
+        "Implemented an end-to-end authentication flow with AWS Cognito, including MFA and session management",
+        "Deployed via an AWS Amplify CI/CD pipeline with automated preview environments per branch",
+        "Achieved 95% test coverage with Jest and React Testing Library, ensuring production reliability"
       ],
       "responsibilities": [
         "Architect and develop the entire React-based betting platform independently from concept to production",
@@ -244,9 +244,9 @@
       "url": "https://legacybhc.com",
       "startDate": "2023-01-15",
       "endDate": "2024-03-04",
-      "summary": "Built enterprise internal tools for a behavioral healthcare company, digitalizing employee certification tracking, vacation management, and HR workflows.",
+      "summary": "Built enterprise internal tools for a behavioral healthcare company, digitizing employee certification tracking, vacation management, and HR workflows.",
       "highlights": [
-        "Developed a full employee management suite with Next.js and MongoDB replacing manual spreadsheet-based processes",
+        "Developed a full employee management suite with Next.js and MongoDB, replacing manual spreadsheet-based processes",
         "Translated complex Figma design systems into pixel-perfect, responsive React components",
         "Managed AWS infrastructure deployments and maintained Windows Server/Active Directory environments"
       ],
@@ -258,7 +258,7 @@
         "Administer IT systems including Active Directory, Office 365, and network infrastructure"
       ],
       "achievements": [
-        "Digitalized employee certification tracking, eliminating manual processes and reducing administrative overhead by 60%",
+        "Digitized employee certification tracking, eliminating manual processes and reducing administrative overhead by 60%",
         "Delivered a complete HR management platform serving 200+ employees across multiple facilities",
         "Maintained 99.9% uptime across all managed applications and IT infrastructure"
       ],
@@ -284,7 +284,7 @@
       "summary": "Developed internal web applications for Cuba's national telecommunications company, building management systems that streamlined regional operations for thousands of users.",
       "highlights": [
         "Built a phone line transfer management system that automated previously manual workflows, improving regional processing efficiency by 40%",
-        "Developed an employee feedback and evaluation platform with React frontend and Django REST API backend",
+        "Developed an employee feedback and evaluation platform with a React frontend and a Django REST API backend",
         "Integrated frontend applications with existing enterprise systems and legacy databases"
       ],
       "responsibilities": [
@@ -313,7 +313,7 @@
   ],
   "education": [
     {
-      "institution": "Universidad Central Martha Abreu de Las Villas (UCLV)",
+      "institution": "Universidad Central Marta Abreu de Las Villas (UCLV)",
       "url": "https://www.uclv.edu.cu/",
       "area": "Software Engineering",
       "studyType": "Bachelor",
@@ -599,11 +599,11 @@
       "kind": "Business intelligence SaaS",
       "role": "Sole frontend engineer, backend contributor",
       "facts": [
-        "Role-based dashboards for 7 roles across Admin, Agency and SMB tenants",
-        "English, Spanish and French with next-intl",
+        "Role-based dashboards for 7 roles across Admin, Agency, and SMB tenants",
+        "English, Spanish, and French with next-intl",
         "FastAPI services in Docker, deployed on GCP"
       ],
-      "imageAlt": "ConsumrBuzz sign-in screen beside the product's marketing page with platform, uptime and ranking stats"
+      "imageAlt": "ConsumrBuzz sign-in screen beside the product's marketing page with platform, uptime, and ranking stats"
     },
     {
       "name": "BookEasely",
@@ -707,7 +707,7 @@
       "tier": "feature",
       "title": "Turing Dream",
       "kind": "AI education platform and admin panel",
-      "role": "Lead frontend at Second Window",
+      "role": "Frontend lead at Second Window",
       "facts": [
         "Two production React apps with multi-role Azure AD auth",
         "Stripe subscription billing linked to accounts and users"
@@ -738,7 +738,7 @@
     {
       "name": "Cloud Infrastructure Designer",
       "isActive": true,
-      "description": "Interactive visual tool for designing, estimating costs, and deploying cloud architectures across AWS, Azure, and GCP.",
+      "description": "Interactive visual tool for designing cloud architectures across AWS, Azure, and GCP, estimating their costs, and deploying them.",
       "highlights": [
         "Drag-and-drop canvas built with React and XYFlow for visual cloud architecture design",
         "Real-time cost estimation engine calculating pricing across three major cloud providers",
@@ -788,7 +788,7 @@
       "description": "Enterprise HR platform for certification tracking, vacation scheduling, and employee onboarding across multiple healthcare facilities.",
       "highlights": [
         "Next.js application with MongoDB backend serving 200+ employees",
-        "Digitalized manual HR processes reducing administrative overhead by 60%",
+        "Digitized manual HR processes reducing administrative overhead by 60%",
         "Pixel-perfect implementation from Figma designs with role-based access control"
       ],
       "url": "",

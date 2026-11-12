@@ -15,9 +15,9 @@ const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 
  * mapped onto three overlapping phases written as CSS custom properties:
  *   --glass   0 -> 1 over the first half of the range (material appears)
  *   --shrink  0 -> 1 from 12% to the end (contraction into the pill)
- * The Résumé button fills with ink (data-filled, an animated --fill) only
- * once the hero's own Résumé button has left the viewport, so two black
- * Résumé buttons are never on screen together.
+ * The Resume button fills with ink (data-filled, an animated --fill) only
+ * once the hero's own Resume button has left the viewport, so two black
+ * Resume buttons are never on screen together.
  * Each frame also emits "topbar:frame" so the name morph can stay in step.
  */
 function initTopBar(): void {

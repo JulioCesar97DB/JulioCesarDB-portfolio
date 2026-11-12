@@ -8,23 +8,23 @@ web
 
 ## Users
 
-Primary: recruiters and hiring managers at US product companies filling **full-stack** roles (frontend as the strong side). They arrive from a résumé, LinkedIn or an application link, skim in under a minute on desktop or phone, and need to answer: what has this person actually built, how deep does it go, and how do I get the résumé or reach him.
+Primary: recruiters and hiring managers at US product companies filling **full-stack** roles (frontend as the strong side). They arrive from a resume, LinkedIn or an application link, skim in under a minute on desktop or phone, and need to answer: what has this person actually built, how deep does it go, and how do I get the resume or reach him.
 
 Secondary: engineers on the hiring loop who click into projects and code to judge depth.
 
 ## Product Purpose
 
-A personal portfolio for Julio César Díaz that shows what he knows and can do through real, shipped work. Success: a US full-stack hiring manager leaves convinced by the evidence, downloads the résumé or gets in touch.
+A personal portfolio for Julio César Díaz that shows what he knows and can do through real, shipped work. Success: a US full-stack hiring manager leaves convinced by the evidence, downloads the resume or gets in touch.
 
 ## Positioning
 
 The work does the talking. Julio has taken several SaaS products from an empty repo to production — often as the sole frontend engineer with backend ownership — and cares about the frontend craft (performance, accessibility, clean architecture) and about the product and its users, not just the ticket.
 
-The site must **show, not sell**. The owner explicitly rejects an openly self-promotional, "hire me" tone. Contact and résumé must be easy to find but quiet; no hype, no sales copy, no availability banners.
+The site must **show, not sell**. The owner explicitly rejects an openly self-promotional, "hire me" tone. Contact and resume must be easy to find but quiet; no hype, no sales copy, no availability banners.
 
 ## Operating Context
 
-- Visitors usually come from a job application, résumé link, LinkedIn or GitHub.
+- Visitors usually come from a job application, resume link, LinkedIn or GitHub.
 - English only, US market.
 - Owner's background: Cuba (ETECSA, UCLV) → Spain (Alicante, Second Window, freelance) → Florida (Legacy BHC, ConsumrBuzz). He is willing to tell this story as part of who he is.
 
@@ -33,7 +33,7 @@ The site must **show, not sell**. The owner explicitly rejects an openly self-pr
 - Astro 5 + Tailwind CSS 4 static site; all content is data-driven from `cv.json` (aliased `@cv`). Keep that single source of truth.
 - Routes: `/` (home) and `/archive`.
 - Domain: juliocesardb.com.
-- Résumé PDF to offer for download: `~/Downloads/Resume_1.pdf` (3 pages; page 1 carries his phone number). It titles him "Senior Frontend Engineer" and his ConsumrBuzz role "Web Developer", which differs from `cv.json` ("Main Frontend Developer") and from the new full-stack target — **open decision**: align job titles across site and résumé.
+- Resume PDF to offer for download: `~/Downloads/Resume_1.pdf` (3 pages; page 1 carries his phone number). It titles him "Senior Frontend Engineer" and his ConsumrBuzz role "Web Developer", which differs from `cv.json` ("Lead Frontend Developer") and from the new full-stack target — **open decision**: align job titles across site and resume.
 - The owner did **not** approve using his photo (`public/JULIOCESAR.jpg`). Do not use it unless he says so.
 - The owner did **not** approve an "open to work" / availability statement. Do not add one.
 
@@ -53,7 +53,7 @@ The site must **show, not sell**. The owner explicitly rejects an openly self-pr
 ## Product Principles
 
 1. **Evidence over claims.** Every statement about skill should sit next to the work or number that proves it.
-2. **Quiet confidence.** No hype, no "hire me" pressure; contact and résumé are present and obvious, never pushy.
+2. **Quiet confidence.** No hype, no "hire me" pressure; contact and resume are present and obvious, never pushy.
 3. **Lead with the best work.** Depth on the flagship products beats an even list of everything.
 4. **Authored, not templated.** The site itself is a frontend work sample; it must look like his, not like a known template.
 5. **Fast and accessible by default.** The site has to live up to the performance and accessibility it claims.
