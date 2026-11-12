@@ -1,0 +1,378 @@
+---
+// The resume, rendered from the same cv.json as the site so the two cannot
+// disagree. public/resume.pdf is this page printed to Letter from a browser
+// (Print, Save as PDF, default margins off: the page sets its own).
+// Plain single-column text so applicant tracking systems can parse it.
+import "@fontsource-variable/mona-sans/standard.css";
+import "@fontsource-variable/geist-mono/wght.css";
+import type { CV } from "@/cv";
+import cvData from "@cv";
+import { formatDateRange } from "@/utils/dates";
+
+const cv = cvData as unknown as CV;
+const { basics, work, projects, education, languages } = cv;
+
+const github = basics.profiles.find((p) => p.network === "GitHub");
+const linkedin = basics.profiles.find((p) => p.network === "LinkedIn");
+const bare = (url: string) => decodeURI(url).replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
+
+// Recent roles carry more detail than early ones.
+const bullets = [5, 4, 3, 3, 3];
+const roles = work.map((job, i) => ({
+  ...job,
+  points: job.highlights.slice(0, bullets[i] ?? 3),
+  stack: (job.skills ?? []).slice(0, 10),
+}));
+
+const personal = projects.filter((p) => p.madeAt === "Personal" && p.tier === "feature");
+
+const core = (basics.coreSkills ?? []).map((skill) => skill.name);
+const skillGroups = [
+  { group: "Core", items: core },
+  ...(basics.toolkit ?? []).map((g) => ({ group: g.group, items: g.items.filter((item) => !core.includes(item)) })),
+].filter((g) => g.items.length > 0);
+
+const degree = education[0];
+const degreeYears = degree
+  ? `${new Date(degree.startDate).getUTCFullYear()} – ${new Date(degree.endDate).getUTCFullYear()}`
+  : "";
+const langs = [...languages]
+  .sort((a) => (a.language === "Spanish" ? -1 : 1))
+  .map((l) => `${l.language} (${l.language === "Spanish" ? "native" : "professional"})`)
+  .join(" · ");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>{basics.name} — Resume</title>
+  </head>
+  <body>
+    <main class="sheet">
+      <header>
+        <h1>{basics.name}</h1>
+        <p class="label">{basics.label}</p>
+        <ul class="contact">
+          <li>{basics.location.city}, FL</li>
+          <li><a href={`tel:${basics.phone.replace(/[^+\d]/g, "")}`}>{basics.phone}</a></li>
+          <li><a href={`mailto:${basics.email}`}>{basics.email}</a></li>
+          <li><a href={basics.url}>{bare(basics.url)}</a></li>
+          {github && <li><a href={github.url}>{bare(github.url)}</a></li>}
+          {linkedin && <li><a href={linkedin.url}>{bare(linkedin.url)}</a></li>}
+        </ul>
+      </header>
+
+      <p class="summary">{basics.summary}</p>
+
+      <section>
+        <h2>Experience</h2>
+        {
+          roles.map((job) => (
+            <article class="role">
+              <div class="row">
+                <h3>
+                  {job.position}, <span class="org">{job.name}</span>
+                </h3>
+                <p class="dates">{formatDateRange(job.startDate, job.endDate)}</p>
+              </div>
+              <p class="place">{[job.location, job.location_type].filter(Boolean).join(" · ")}</p>
+              <p class="lede">{job.summary}</p>
+              <ul class="points">
+                {job.metric && <li class="metric">{job.metric}</li>}
+                {job.points.map((point) => (
+                  <li>{point}</li>
+                ))}
+              </ul>
+              {job.stack.length > 0 && <p class="stack">{job.stack.join(" · ")}</p>}
+            </article>
+          ))
+        }
+      </section>
+
+      {
+        personal.length > 0 && (
+          <section>
+            <h2>Products built end to end</h2>
+            {personal.map((p) => (
+              <article class="role">
+                <div class="row">
+                  <h3>
+                    {p.title}, <span class="org">{p.kind?.toLowerCase()}</span>
+                  </h3>
+                  <p class="dates">{p.url ? <a href={p.url}>{bare(p.url)}</a> : p.year}</p>
+                </div>
+                <ul class="points">
+                  {(p.facts ?? p.highlights.slice(0, 2)).map((point) => (
+                    <li>{point}</li>
+                  ))}
+                </ul>
+                {p.keywords && <p class="stack">{p.keywords.join(" · ")}</p>}
+              </article>
+            ))}
+          </section>
+        )
+      }
+
+      <section>
+        <h2>Skills</h2>
+        <dl class="skills">
+          {
+            skillGroups.map((g) => (
+              <>
+                <dt>{g.group}</dt>
+                <dd>{g.items.join(", ")}</dd>
+              </>
+            ))
+          }
+        </dl>
+      </section>
+
+      <section class="pair">
+        {
+          degree && (
+            <div>
+              <h2>Education</h2>
+              <div class="row">
+                <h3>
+                  B.Sc. {degree.area}, <span class="org">{degree.institution.replace(/\s*\(.*\)$/, "")}</span>
+                </h3>
+                <p class="dates">{degreeYears}</p>
+              </div>
+            </div>
+          )
+        }
+        <div>
+          <h2>Languages</h2>
+          <p>{langs}</p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  @page {
+    size: Letter;
+    margin: 0.55in 0.65in;
+  }
+
+  :root {
+    --ink: oklch(0.205 0.012 270);
+    --ink-2: oklch(0.36 0.014 270);
+    --ink-3: oklch(0.48 0.014 270);
+    --line: oklch(0.86 0.005 270);
+    --accent: oklch(0.5 0.21 276);
+    color-scheme: light;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-size: 9.4pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    margin: 0;
+    background: oklch(0.955 0.003 270);
+    color: var(--ink-2);
+    font-family: "Mona Sans Variable", ui-sans-serif, system-ui, sans-serif;
+    font-weight: 420;
+    line-height: 1.42;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* On screen the page is shown as a sheet of Letter paper. */
+  .sheet {
+    width: 8.5in;
+    max-width: 100%;
+    margin: 2rem auto;
+    padding: 0.55in 0.65in;
+    background: #fff;
+    box-shadow:
+      0 1px 2px oklch(0.25 0.02 270 / 0.06),
+      0 12px 32px -12px oklch(0.25 0.02 270 / 0.18);
+  }
+
+  h1,
+  h2,
+  h3,
+  p,
+  ul,
+  dl,
+  dd {
+    margin: 0;
+    padding: 0;
+  }
+  ul {
+    list-style: none;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  h1 {
+    color: var(--ink);
+    font-size: 25pt;
+    font-weight: 640;
+    font-stretch: 116%;
+    letter-spacing: -0.02em;
+    word-spacing: 0.06em;
+    line-height: 1;
+  }
+  .label {
+    margin-top: 5pt;
+    color: var(--ink);
+    font-size: 11.5pt;
+    font-weight: 560;
+  }
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1pt 13pt;
+    margin-top: 7pt;
+    color: var(--ink-2);
+  }
+  .contact a {
+    color: var(--accent);
+  }
+
+  .summary {
+    margin-top: 11pt;
+    padding-top: 10pt;
+    border-top: 1px solid var(--line);
+    color: var(--ink);
+    text-wrap: pretty;
+  }
+
+  section {
+    margin-top: 13pt;
+  }
+  h2 {
+    padding-bottom: 3.5pt;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    font-size: 11.5pt;
+    font-weight: 620;
+    font-stretch: 108%;
+    letter-spacing: -0.015em;
+    break-after: avoid;
+  }
+
+  /* A role may run over a page; its heading never parts from what follows. */
+  .role {
+    margin-top: 8.5pt;
+  }
+  .role .row,
+  .role .place,
+  .role .lede {
+    break-after: avoid;
+  }
+  .row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12pt;
+  }
+  h3 {
+    color: var(--ink);
+    font-size: 10.4pt;
+    font-weight: 620;
+    letter-spacing: -0.01em;
+  }
+  .org {
+    font-weight: 460;
+  }
+  .dates {
+    flex: none;
+    color: var(--ink-3);
+    font-family: "Geist Mono Variable", ui-monospace, monospace;
+    font-size: 8.2pt;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .dates a {
+    color: var(--accent);
+  }
+  .place {
+    color: var(--ink-3);
+    font-size: 8.8pt;
+  }
+  .lede {
+    margin-top: 3pt;
+    text-wrap: pretty;
+  }
+
+  /* Real list markers, not positioned pseudo-elements: positioned boxes are
+     extracted out of order by PDF text readers and applicant tracking systems. */
+  .points {
+    margin-top: 3.5pt;
+    padding-left: 11pt;
+    list-style: "–  ";
+  }
+  .points li {
+    text-wrap: pretty;
+    break-inside: avoid;
+  }
+  .points li::marker {
+    color: var(--ink-3);
+  }
+  .points li + li {
+    margin-top: 1.5pt;
+  }
+  .points .metric {
+    color: var(--ink);
+    font-weight: 580;
+  }
+  .stack {
+    margin-top: 3.5pt;
+    color: var(--ink-3);
+    font-size: 8.8pt;
+  }
+
+  .skills {
+    display: grid;
+    grid-template-columns: 7.2em 1fr;
+    gap: 2.5pt 12pt;
+    margin-top: 7pt;
+  }
+  .skills dt {
+    color: var(--ink-3);
+  }
+  .skills dd {
+    color: var(--ink);
+  }
+
+  .pair {
+    display: grid;
+    grid-template-columns: 1.45fr 1fr;
+    gap: 24pt;
+    break-inside: avoid;
+  }
+  .pair .row,
+  .pair > div > p {
+    margin-top: 7pt;
+  }
+  .pair > div > p {
+    color: var(--ink);
+  }
+
+  @media print {
+    body {
+      background: none;
+    }
+    .sheet {
+      width: auto;
+      margin: 0;
+      padding: 0;
+      box-shadow: none;
+    }
+  }
+</style>
