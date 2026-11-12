@@ -227,7 +227,7 @@ Three liquid-glass layers sit inside the bar, all scaled by `--glass`:
 
 ## Shapes
 
-Gently rounded and consistent: controls at 10px (0.625rem), nav and wordmark hit areas at 8px, product frames at 16px with the screenshot inset at 11px so the inner corner stays concentric inside the 6px mat. The focus ring is a 2px accent outline offset 3px with a 4px radius. Borders are always 1px. Screenshots hold a fixed 900:560 ratio. List markers are short 8px horizontal dashes, never bullets or glyphs. Icons are one inline stroke set on a 24px grid at 1.75 stroke; GitHub and LinkedIn are the only filled marks.
+Gently rounded and consistent: controls at 10px (0.625rem), nav and wordmark hit areas at 8px, product frames at 16px with the screenshot inset at 11px so the inner corner stays concentric inside the 6px mat. The focus ring is a 2px accent outline offset 3px with a 4px radius. Borders are always 1px. Screenshots hold a fixed 900:560 ratio. List markers are short 8px horizontal dashes, never bullets or glyphs. Icons are one inline stroke set on a 24px grid at 1.75 stroke; GitHub, LinkedIn and the technology marks in Skills are the only filled marks; technology marks are always one colour (ink tertiary, ink when their row is hovered), never their brand colour.
 
 ## Components
 
