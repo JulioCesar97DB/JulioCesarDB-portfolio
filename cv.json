@@ -21,7 +21,7 @@
     ],
     "aboutParagraphs": [
       "I studied Software Engineering at UCLV in Santa Clara, Cuba, and wrote my first production code there, building internal tools for ETECSA, the national telecom. Since then I've worked from Alicante, Spain, and now West Palm Beach, Florida. The job has stayed the same at its core: take a product from an empty repo to something people use every day.",
-      "Most of my time goes into the frontend: React, Next.js and TypeScript, structured so a team can keep extending it. I'm just as comfortable on the other side of the API, with FastAPI and Node services, Postgres with row-level security on Supabase, and Docker deploys on GCP and AWS. Owning both sides means fewer handoffs and fewer surprises.",
+      "Most of my time goes into the frontend: React, Next.js, and TypeScript, structured so a team can keep extending it. I'm just as comfortable on the other side of the API, with FastAPI and Node services, Postgres with row-level security on Supabase, and Docker deploys on GCP and AWS. Owning both sides means fewer handoffs and fewer surprises.",
       "I care about the details people feel without noticing: fast loads, accessible interfaces, and code that is pleasant to come back to."
     ],
     "theme": "default",
@@ -599,11 +599,11 @@
       "kind": "Business intelligence SaaS",
       "role": "Sole frontend engineer, backend contributor",
       "facts": [
-        "Role-based dashboards for 7 roles across Admin, Agency and SMB tenants",
-        "English, Spanish and French with next-intl",
+        "Role-based dashboards for 7 roles across Admin, Agency, and SMB tenants",
+        "English, Spanish, and French with next-intl",
         "FastAPI services in Docker, deployed on GCP"
       ],
-      "imageAlt": "ConsumrBuzz sign-in screen beside the product's marketing page with platform, uptime and ranking stats"
+      "imageAlt": "ConsumrBuzz sign-in screen beside the product's marketing page with platform, uptime, and ranking stats"
     },
     {
       "name": "BookEasely",
