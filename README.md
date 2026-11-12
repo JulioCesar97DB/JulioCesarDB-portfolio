@@ -41,7 +41,7 @@ Change a date, a title or a stack in `cv.json` and the home page and the resume 
 
 ### Adding a project
 
-1. Put a screenshot in `public/projects/` (WebP, 900 × 560).
+1. Put a screenshot in `src/assets/projects/` (WebP, 900 × 560). The build turns it into AVIF and WebP at three widths.
 2. Add an entry to `projects` in `cv.json`:
 
    ```json
@@ -74,7 +74,14 @@ Its `keywords` are what place it next to a skill, and `madeAt` is what attaches 
 2. Print to PDF: Letter, default margins off (the page sets its own), background graphics on.
 3. Save over `public/resume.pdf`.
 
-The page is marked `noindex`. The download buttons serve the PDF as `Julio-Cesar-Diaz-Resume.pdf`.
+The page is marked `noindex` and left out of the sitemap. The download buttons serve the PDF as `Julio-Cesar-Diaz-Resume.pdf`.
+
+## Search and sharing
+
+- Title and description come from `basics.seo` in `cv.json`, written to fit a search result (about 55 and 150 characters).
+- A `ProfilePage` / `Person` JSON-LD block is built from `cv.json` in the layout.
+- `/robots.txt` and `/sitemap.xml` are generated at build time; the site URL is set once, as `site` in `astro.config.mjs`.
+- The stylesheet is inlined, the text font is preloaded, and screenshots ship as AVIF with a WebP fallback.
 
 ## Getting started
 
@@ -102,9 +109,10 @@ Then open [localhost:4321](http://localhost:4321).
 ├── DESIGN.md                  # The design system: tokens, components, named rules
 ├── PRODUCT.md                 # Audience, positioning and content rules
 ├── public/
-│   ├── projects/              # Project screenshots
+│   ├── og.png                 # Social preview image
 │   └── resume.pdf             # /resume, printed
 └── src/
+    ├── assets/projects/       # Project screenshots, optimized at build time
     ├── components/
     │   ├── sections/          # Work, Experience, Skills, About, Contact
     │   ├── Hero.astro
@@ -114,7 +122,7 @@ Then open [localhost:4321](http://localhost:4321).
     │   └── ParticleBackground.astro
     ├── icons/                 # Icon.astro (UI), TechIcon.astro (technology marks)
     ├── layouts/Layout.astro   # <head>, metadata, fonts
-    ├── pages/                 # index.astro (/) and resume.astro (/resume)
+    ├── pages/                 # index.astro (/), resume.astro (/resume), robots.txt and sitemap.xml
     ├── scripts/               # interactions.ts, theme.ts, particles/
     ├── styles/global.css      # Tokens, base and component layers
     ├── utils/                 # Dates, anchors, resume file name
