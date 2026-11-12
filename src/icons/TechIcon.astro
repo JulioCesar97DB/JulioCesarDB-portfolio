@@ -8,6 +8,7 @@ import {
   siDjango,
   siDocker,
   siExpo,
+  siExpress,
   siFastapi,
   siGit,
   siGooglecloud,
@@ -25,6 +26,7 @@ import {
   siReactquery,
   siRedux,
   siShadcnui,
+  siStripe,
   siSupabase,
   siTailwindcss,
   siTestinglibrary,
@@ -56,6 +58,7 @@ const simple: Record<string, { path: string }> = {
   Redux: siRedux,
   Python: siPython,
   "Node.js": siNodedotjs,
+  "Express.js": siExpress,
   Django: siDjango,
   Supabase: siSupabase,
   MongoDB: siMongodb,
@@ -63,10 +66,14 @@ const simple: Record<string, { path: string }> = {
   Docker: siDocker,
   GCP: siGooglecloud,
   Railway: siRailway,
+  Stripe: siStripe,
   "Git & GitHub": siGit,
   Jest: siJest,
   "React Testing Library": siTestinglibrary,
 };
+
+// Products that carry their platform's mark.
+const aliases: Record<string, string> = { "Azure AD": "Azure" };
 
 // Not brands: drawn in the site's own stroke style.
 const drawn: Record<string, string[]> = {
@@ -75,7 +82,7 @@ const drawn: Record<string, string[]> = {
 
 const mark = simple[name]
   ? { viewBox: "0 0 24 24", path: simple[name].path }
-  : (extraMarks[name] ?? null);
+  : (extraMarks[aliases[name] ?? name] ?? null);
 const strokes = drawn[name];
 ---
 
