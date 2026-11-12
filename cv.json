@@ -84,11 +84,22 @@
           "Python",
           "FastAPI",
           "Node.js",
+          "Express.js",
           "Django",
           "PostgreSQL",
           "Supabase",
           "MongoDB",
           "GraphQL"
+        ]
+      },
+      {
+        "group": "Integrations",
+        "items": [
+          "Stripe",
+          "Azure AD",
+          "AWS Cognito",
+          "Twilio",
+          "OpenAI"
         ]
       },
       {
@@ -141,7 +152,7 @@
   "work": [
     {
       "name": "ConsumrBuzz",
-      "position": "Lead Frontend Developer",
+      "position": "Software Developer",
       "location_type": "Hybrid",
       "location": "Lake Worth Beach, Florida",
       "url": "https://consumrbuzz.com/",
@@ -222,7 +233,6 @@
       ],
       "skills": [
         "React",
-        "Next.js",
         "TypeScript",
         "Tailwind CSS",
         "Zustand",
