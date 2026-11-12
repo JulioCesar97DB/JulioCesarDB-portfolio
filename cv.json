@@ -99,7 +99,6 @@
         "items": [
           "Stripe",
           "Azure AD",
-          "AWS Cognito",
           "Twilio",
           "OpenAI"
         ]
@@ -255,16 +254,14 @@
       "url": "",
       "startDate": "2024-03-01",
       "endDate": "2024-10-20",
-      "summary": "Built the frontend of a sports betting platform as part of a team: real-time odds, live data feeds, and secure user authentication, deployed on AWS.",
+      "summary": "Built the frontend of a sports betting platform as part of a team, with real-time odds and live data feeds, and set up its deployment on AWS Amplify.",
       "highlights": [
         "Built a React SPA for sports betting with a team, with live odds updates across multiple sports categories",
-        "Implemented an end-to-end authentication flow with AWS Cognito, including MFA and session management",
         "Deployed via an AWS Amplify CI/CD pipeline with automated preview environments per branch",
         "Achieved 95% test coverage with Jest and React Testing Library, ensuring production reliability"
       ],
       "responsibilities": [
         "Develop the React-based betting platform with a team, from concept to production",
-        "Design and implement secure authentication flows with AWS Cognito including user pools and identity management",
         "Build responsive, accessible UI components with Tailwind CSS",
         "Integrate third-party sports data APIs for real-time odds and live match tracking",
         "Establish testing strategies, CI/CD pipelines, and code quality standards"
@@ -279,7 +276,6 @@
         "TypeScript",
         "Tailwind CSS",
         "AWS Amplify",
-        "AWS Cognito",
         "Jest"
       ],
       "metric": "Shipped in 6 months with 95% test coverage and sub-2s LCP"
@@ -820,10 +816,10 @@
     {
       "name": "BetHomeWeb",
       "isActive": true,
-      "description": "Full-featured sports betting platform with real-time odds, live match tracking, and secure user authentication.",
+      "description": "Sports betting platform with real-time odds and live match tracking. Built the frontend with a team and set up its AWS Amplify deployment.",
       "highlights": [
         "React SPA with live odds updates and multi-sport category support",
-        "AWS Cognito authentication with MFA and automated Amplify CI/CD pipeline",
+        "Automated AWS Amplify CI/CD pipeline",
         "95% test coverage with Jest and React Testing Library",
         "90+ Lighthouse performance score with sub-2s load times"
       ],
@@ -834,7 +830,6 @@
         "React",
         "TypeScript",
         "Tailwind CSS",
-        "AWS Cognito",
         "AWS Amplify",
         "Jest"
       ],
