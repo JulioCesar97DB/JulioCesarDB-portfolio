@@ -1,12 +1,26 @@
 ---
 import ExperienceItem from "@/components/sections/ExperienceItem.astro";
 import type { CV } from "@/cv";
-import { work } from "@cv";
+import { projects, work } from "@cv";
+import { projectAnchor } from "@/utils/anchors";
 
 type Work = CV["work"][number];
+type Project = CV["projects"][number];
 
 const jobs = work as Work[];
+const all = (projects as Project[]).filter((p) => p.tier && p.tier !== "hidden");
 const since = Math.min(...jobs.map((j) => new Date(j.startDate).getUTCFullYear()));
+
+/** What was built in each role: projects shown above link up to their frame,
+    the rest are named here and nowhere else. */
+const builtAt = (employer: string) =>
+  all
+    .filter((p) => p.madeAt === employer)
+    .map((p) => {
+      const label = p.title ?? p.name;
+      const selected = p.tier === "lead" || p.tier === "feature";
+      return { label, href: selected ? `#${projectAnchor(label)}` : undefined, github: p.github || undefined };
+    });
 ---
 
 <section id="experience" class="scroll-mt-20 border-y border-line bg-surface py-24 lg:py-32">
@@ -20,7 +34,7 @@ const since = Math.min(...jobs.map((j) => new Date(j.startDate).getUTCFullYear()
       </div>
     </div>
     <ol class="lg:col-span-8">
-      {jobs.map((job) => <ExperienceItem {...job} />)}
+      {jobs.map((job, i) => <ExperienceItem {...job} built={builtAt(job.name)} recent={i < 2} />)}
     </ol>
   </div>
 </section>

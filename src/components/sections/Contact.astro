@@ -2,11 +2,12 @@
 import EmailActions from "@/components/EmailActions.astro";
 import Icon from "@/icons/Icon.astro";
 import type { CV } from "@/cv";
+import { resumeFileName } from "@/utils/resume";
 import { basics as rawBasics } from "@cv";
 
 const basics = rawBasics as CV["basics"];
 
-const { resume, profiles } = basics;
+const { name, resume, profiles } = basics;
 
 // Resume size, measured from public/ at build time (see astro.config.mjs).
 const resumeSize = __RESUME_SIZE__;
@@ -23,7 +24,7 @@ const links = profiles.filter((p) => p.network === "GitHub" || p.network === "Li
       <EmailActions />
       {
         resume && (
-          <a href={resume} class="btn" download>
+          <a href={resume} class="btn" download={resumeFileName(name)}>
             <Icon name="file" class="size-4 text-ink-3" />
             Resume <span class="text-ink-3">(PDF{resumeSize && `, ${resumeSize}`})</span>
           </a>

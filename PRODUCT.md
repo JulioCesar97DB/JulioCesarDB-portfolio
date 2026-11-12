@@ -33,7 +33,7 @@ The site must **show, not sell**. The owner explicitly rejects an openly self-pr
 - Astro 5 + Tailwind CSS 4 static site; all content is data-driven from `cv.json` (aliased `@cv`). Keep that single source of truth.
 - Routes: `/` (home) and `/archive`.
 - Domain: juliocesardb.com.
-- Resume PDF to offer for download: `~/Downloads/Resume_1.pdf` (3 pages; page 1 carries his phone number). It titles him "Senior Frontend Engineer" and his ConsumrBuzz role "Web Developer", which differs from `cv.json` ("Lead Frontend Developer") and from the new full-stack target — **open decision**: align job titles across site and resume.
+- Resume PDF to offer for download: `~/Downloads/Resume_1.pdf` (3 pages; page 1 carries his phone number). Decided 2026-11-12: the site and the resume it offers both title him "Full-stack engineer" and his ConsumrBuzz role "Software Developer"; a separate "Senior Frontend Engineer" resume may exist for frontend-only applications but is not the one hosted here. The hosted PDF still predates this and needs regenerating.
 - The owner did **not** approve using his photo (`public/JULIOCESAR.jpg`). Do not use it unless he says so.
 - The owner did **not** approve an "open to work" / availability statement. Do not add one.
 
@@ -47,7 +47,7 @@ The site must **show, not sell**. The owner explicitly rejects an openly self-pr
 
 - Shipped products with live URLs and screenshots in `public/projects/`: ConsumrBuzz (app.consumrbuzz.com), BookEasely (bookeasely.com), ReviewBoost (review-boost.app). Turing Dream (Second Window client, no public link).
 - Other work: Cloud infrastructure designer (Balsain Almena / Second Window, drag-and-drop multi-cloud builder), BetHomeWeb (sports betting), Employee Management Suite (Legacy BHC), Telecommunications Management System (ETECSA).
-- Numbers in `cv.json`: 100/100 Lighthouse, 95% test coverage, sub-2s loads, 60% less administrative overhead, 200+ employees, 10,000+ daily users, solo delivery in 6 months. Use only these; do not invent metrics, testimonials, clients or logos.
+- Numbers in `cv.json`: 100/100 Lighthouse, 95% test coverage, sub-2s loads, 60% less administrative overhead, 200+ employees, 10,000+ daily users, delivery in 6 months (BetHomeWeb, built with a team, not solo). Use only these; do not invent metrics, testimonials, clients or logos.
 - B.Sc. Software Engineering, Universidad Central "Marta Abreu" de Las Villas (2016–2021). Spanish native, English professional.
 
 ## Product Principles

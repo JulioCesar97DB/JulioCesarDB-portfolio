@@ -6,7 +6,7 @@ const basics = rawBasics as CV["basics"];
 const education = rawEducation as CV["education"];
 const languages = rawLanguages as CV["languages"];
 
-const { aboutParagraphs = [], summary, toolkit = [] } = basics;
+const { aboutParagraphs = [], summary } = basics;
 const paragraphs = aboutParagraphs.length > 0 ? aboutParagraphs : [summary];
 const degree = education[0];
 const years = degree
@@ -54,28 +54,6 @@ const langs = [...languages]
         }
       </div>
 
-
-      {
-        toolkit.length > 0 && (
-          <div class="mt-14">
-            <h3 class="text-h3 font-semibold tracking-[-0.015em]">Toolkit</h3>
-            <dl class="mt-5 divide-y divide-line border-y border-line">
-              {toolkit.map((group) => (
-                <div class="grid gap-1 py-4 sm:grid-cols-[9rem_1fr] sm:gap-6">
-                  <dt class="pt-0.5 text-sm text-ink-3">{group.group}</dt>
-                  <dd>
-                    <ul class="stack text-[0.9375rem] text-ink">
-                      {group.items.map((item) => (
-                        <li>{item}</li>
-                      ))}
-                    </ul>
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        )
-      }
     </div>
   </div>
 </section>

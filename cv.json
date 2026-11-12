@@ -8,6 +8,7 @@
     "phone": "+1 561-543-5788",
     "url": "https://www.juliocesardb.com",
     "summary": "Frontend-leaning full-stack developer with 5+ years architecting and shipping production web apps in React, Next.js, and TypeScript — and owning features end to end across FastAPI, Node, and Supabase/Postgres backends. I take complex products from an empty repo to launch: secure authentication, role-based dashboards, internationalization, and the performance work that keeps everything instant. I sweat the details users feel — accessibility, sub-2s loads, and clean architecture a team can extend without fear.",
+    "resumeSummary": "Full-stack engineer with 5+ years shipping production web apps in React, Next.js, and TypeScript, and owning features end to end across FastAPI, Node, and Supabase/Postgres backends. Takes products from an empty repo to launch: secure authentication, role-based dashboards, internationalization, and performance work. Bilingual in English and Spanish.",
     "summaryHighlights": [
       "empty repo to production",
       "5+ years",
@@ -21,7 +22,7 @@
     ],
     "aboutParagraphs": [
       "I studied Software Engineering at UCLV in Santa Clara, Cuba, and wrote my first production code there, building internal tools for ETECSA, the national telecom. Since then I've worked from Alicante, Spain, and now West Palm Beach, Florida. The job has stayed the same at its core: take a product from an empty repo to something people use every day.",
-      "Most of my time goes into the frontend: React, Next.js, and TypeScript, structured so a team can keep extending it. I'm just as comfortable on the other side of the API, with FastAPI and Node services, Postgres with row-level security on Supabase, and Docker deploys on GCP and AWS. Owning both sides means fewer handoffs and fewer surprises.",
+      "Most of my time goes into the frontend: React, Next.js, and TypeScript, structured so a team can keep extending it. I'm just as comfortable on the other side of the API, with FastAPI and Node services, Postgres with row-level security on Supabase, and Docker deploys on Railway and AWS. Owning both sides means fewer handoffs and fewer surprises.",
       "I care about the details people feel without noticing: fast loads, accessible interfaces, and code that is pleasant to come back to."
     ],
     "theme": "default",
@@ -32,11 +33,12 @@
       "countryCode": "US",
       "region": "Florida"
     },
+    "workAuthorization": "Authorized to work in the US",
     "profiles": [
       {
         "network": "LinkedIn",
         "username": "juliocesardb",
-        "url": "https://www.linkedin.com/in/julio-césar-díaz-boente-49727821b"
+        "url": "https://www.linkedin.com/in/juliocesardb/"
       },
       {
         "network": "X",
@@ -64,10 +66,18 @@
           "TypeScript",
           "JavaScript",
           "Tailwind CSS",
+          "shadcn/ui",
           "HTML & CSS",
           "TanStack Query",
           "Zustand",
           "Redux"
+        ]
+      },
+      {
+        "group": "Mobile",
+        "items": [
+          "React Native",
+          "Expo"
         ]
       },
       {
@@ -76,6 +86,7 @@
           "Python",
           "FastAPI",
           "Node.js",
+          "Express.js",
           "Django",
           "PostgreSQL",
           "Supabase",
@@ -84,9 +95,19 @@
         ]
       },
       {
+        "group": "Integrations",
+        "items": [
+          "Stripe",
+          "Azure AD",
+          "Twilio",
+          "OpenAI"
+        ]
+      },
+      {
         "group": "Infrastructure",
         "items": [
           "Docker",
+          "Railway",
           "GCP",
           "AWS",
           "Azure",
@@ -101,12 +122,38 @@
           "React Testing Library"
         ]
       }
+    ],
+    "coreSkills": [
+      {
+        "name": "React"
+      },
+      {
+        "name": "Next.js"
+      },
+      {
+        "name": "TypeScript"
+      },
+      {
+        "name": "React Native",
+        "match": [
+          "Expo"
+        ]
+      },
+      {
+        "name": "FastAPI"
+      },
+      {
+        "name": "PostgreSQL",
+        "match": [
+          "Supabase"
+        ]
+      }
     ]
   },
   "work": [
     {
       "name": "ConsumrBuzz",
-      "position": "Lead Frontend Developer",
+      "position": "Software Developer",
       "location_type": "Hybrid",
       "location": "Lake Worth Beach, Florida",
       "url": "https://consumrbuzz.com/",
@@ -120,7 +167,7 @@
         "Integrated Kinde Auth with secure server-side token management, preventing client-side token exposure",
         "Implemented full internationalization (i18n) supporting English, Spanish, and French with next-intl",
         "Developed backend REST APIs with FastAPI (Python) for entity management, analytics, and authentication",
-        "Containerized services with Docker and deployed the platform on Google Cloud Platform (GCP)",
+        "Containerized services with Docker and deployed the platform on Railway",
         "Integrated the Google Business Profile API to synchronize and manage business listings at scale"
       ],
       "responsibilities": [
@@ -130,14 +177,14 @@
         "Implement automated scraping job monitoring and analytics dashboards",
         "Integrate authentication, bulk upload, billing, and document management modules",
         "Build backend REST APIs with FastAPI and a secure data-access layer",
-        "Containerize services with Docker and manage deployments on Google Cloud Platform (GCP)",
+        "Containerize services with Docker and manage deployments on Railway",
         "Integrate the Google Business Profile API for business listing synchronization"
       ],
       "achievements": [
         "Delivered production-ready business intelligence platform from concept to deployment",
         "Established a strict three-layer architecture pattern ensuring security and maintainability",
         "Built a modular dashboard supporting multiple user roles with dynamic navigation",
-        "Delivered the full-stack platform end to end — Next.js frontend, FastAPI backend, and GCP deployment"
+        "Delivered the full-stack platform end to end — Next.js frontend, FastAPI backend, and Railway deployment"
       ],
       "skills": [
         "Next.js",
@@ -145,7 +192,7 @@
         "TypeScript",
         "FastAPI",
         "Python",
-        "GCP",
+        "Railway",
         "Tailwind CSS",
         "shadcn/ui",
         "Kinde Auth",
@@ -156,7 +203,8 @@
         "Docker",
         "Google Business Profile API"
       ],
-      "metric": "Sole frontend engineer, from first commit to production on GCP"
+      "metric": "Sole frontend engineer, from first commit to production",
+      "resumeLead": "Owned the frontend as its sole engineer, from first commit to production"
     },
     {
       "name": "Second Window",
@@ -187,7 +235,6 @@
       ],
       "skills": [
         "React",
-        "Next.js",
         "TypeScript",
         "Tailwind CSS",
         "Zustand",
@@ -196,7 +243,8 @@
         "Stripe API",
         "Jest"
       ],
-      "metric": "Component library that improved team velocity by 40%"
+      "metric": "Component library that improved team velocity by 40%",
+      "resumeLead": "Established a reusable component library and development standards that improved team velocity by 40%"
     },
     {
       "name": "Freelance",
@@ -206,22 +254,20 @@
       "url": "",
       "startDate": "2024-03-01",
       "endDate": "2024-10-20",
-      "summary": "Designed and built a full-featured sports betting platform from scratch, deployed on AWS, with real-time odds, live data feeds, and secure user authentication.",
+      "summary": "Built the frontend of a sports betting platform as part of a team, with real-time odds and live data feeds, and set up its deployment on AWS Amplify.",
       "highlights": [
-        "Built a complete React SPA for sports betting with live odds updates across multiple sports categories",
-        "Implemented an end-to-end authentication flow with AWS Cognito, including MFA and session management",
+        "Built a React SPA for sports betting with a team, with live odds updates across multiple sports categories",
         "Deployed via an AWS Amplify CI/CD pipeline with automated preview environments per branch",
         "Achieved 95% test coverage with Jest and React Testing Library, ensuring production reliability"
       ],
       "responsibilities": [
-        "Architect and develop the entire React-based betting platform independently from concept to production",
-        "Design and implement secure authentication flows with AWS Cognito including user pools and identity management",
-        "Build responsive, accessible UI components with Tailwind CSS and shadcn/ui component library",
+        "Develop the React-based betting platform with a team, from concept to production",
+        "Build responsive, accessible UI components with Tailwind CSS",
         "Integrate third-party sports data APIs for real-time odds and live match tracking",
         "Establish testing strategies, CI/CD pipelines, and code quality standards"
       ],
       "achievements": [
-        "Delivered production-ready betting platform within a 6-month timeline as a solo developer",
+        "Delivered a production-ready betting platform within a 6-month timeline as part of a team",
         "Built a modular, scalable architecture enabling rapid feature additions post-launch",
         "Optimized Core Web Vitals achieving sub-2s LCP and 90+ Lighthouse performance scores"
       ],
@@ -230,11 +276,9 @@
         "TypeScript",
         "Tailwind CSS",
         "AWS Amplify",
-        "AWS Cognito",
-        "Jest",
-        "Shadcn"
+        "Jest"
       ],
-      "metric": "Shipped solo in 6 months with 95% test coverage and sub-2s LCP"
+      "metric": "Shipped in 6 months with 95% test coverage and sub-2s LCP"
     },
     {
       "name": "Legacy BHC",
@@ -308,7 +352,8 @@
         "Jest",
         "Git"
       ],
-      "metric": "Served 10,000+ daily users across regional offices"
+      "metric": "Served 10,000+ daily users across regional offices",
+      "resumeLead": "Delivered a telecommunications management platform serving 10,000+ daily users across regional offices"
     }
   ],
   "education": [
@@ -571,13 +616,13 @@
       "name": "ConsumrBuzz SaaS - Business Intelligence Dashboard",
       "image": "/projects/consumrbuzz.webp",
       "isActive": true,
-      "description": "Full-stack SaaS platform for business listing management with automated publisher scanning, analytics, and multi-tenant role-based dashboards, powered by a FastAPI backend deployed on GCP.",
+      "description": "Full-stack SaaS platform for business listing management with automated publisher scanning, analytics, and multi-tenant role-based dashboards, powered by a FastAPI backend deployed on Railway.",
       "highlights": [
         "Built the entire frontend from scratch with Next.js 15, React 19, TypeScript, and Tailwind v4",
         "Three-layer secure architecture: Client → Server Actions → DAL → FastAPI backend",
         "Role-based dashboards for 7 user roles across Admin, Agency, and SMB tenants",
         "Full i18n support (EN/ES/FR) with Kinde Auth and automated publisher scraping workflows",
-        "Built backend REST APIs with FastAPI, containerized with Docker and deployed on Google Cloud Platform (GCP)",
+        "Built backend REST APIs with FastAPI, containerized with Docker and deployed on Railway",
         "Integrated the Google Business Profile API for business listing synchronization"
       ],
       "url": "https://app.consumrbuzz.com/en",
@@ -590,7 +635,7 @@
         "FastAPI",
         "Python",
         "Docker",
-        "GCP",
+        "Railway",
         "Google Business Profile",
         "TanStack Query"
       ],
@@ -601,9 +646,19 @@
       "facts": [
         "Role-based dashboards for 7 roles across Admin, Agency, and SMB tenants",
         "English, Spanish, and French with next-intl",
-        "FastAPI services in Docker, deployed on GCP"
+        "FastAPI services in Docker, deployed on Railway"
       ],
-      "imageAlt": "ConsumrBuzz sign-in screen beside the product's marketing page with platform, uptime, and ranking stats"
+      "imageAlt": "ConsumrBuzz sign-in screen beside the product's marketing page with platform, uptime, and ranking stats",
+      "architecture": {
+        "layers": [
+          "Client Components",
+          "TanStack Query hooks",
+          "Server Actions",
+          "Data access layer",
+          "FastAPI on Railway"
+        ],
+        "note": "Auth tokens are handled on the server and never reach the client."
+      }
     },
     {
       "name": "BookEasely",
@@ -761,22 +816,20 @@
     {
       "name": "BetHomeWeb",
       "isActive": true,
-      "description": "Full-featured sports betting platform with real-time odds, live match tracking, and secure user authentication.",
+      "description": "Sports betting platform with real-time odds and live match tracking. Built the frontend with a team and set up its AWS Amplify deployment.",
       "highlights": [
         "React SPA with live odds updates and multi-sport category support",
-        "AWS Cognito authentication with MFA and automated Amplify CI/CD pipeline",
+        "Automated AWS Amplify CI/CD pipeline",
         "95% test coverage with Jest and React Testing Library",
         "90+ Lighthouse performance score with sub-2s load times"
       ],
       "url": "",
-      "github": "https://github.com/BlindersBetHome/bethome-web",
       "year": "2024",
       "madeAt": "Freelance",
       "keywords": [
         "React",
         "TypeScript",
         "Tailwind CSS",
-        "AWS Cognito",
         "AWS Amplify",
         "Jest"
       ],

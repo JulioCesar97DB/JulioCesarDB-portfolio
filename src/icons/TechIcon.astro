@@ -1,0 +1,110 @@
+---
+// Technology marks for the Skills section. One colour (currentColor), one
+// size per context, so a row of them reads as a set and not as a logo wall.
+// Paths come from simple-icons at build time; nothing ships to the client
+// but the inline SVG. A name without a mark renders nothing.
+import {
+  siCss,
+  siDjango,
+  siDocker,
+  siExpo,
+  siExpress,
+  siFastapi,
+  siGit,
+  siGooglecloud,
+  siGraphql,
+  siHtml5,
+  siJavascript,
+  siJest,
+  siMongodb,
+  siNextdotjs,
+  siNodedotjs,
+  siPostgresql,
+  siPython,
+  siRailway,
+  siReact,
+  siReactquery,
+  siRedux,
+  siShadcnui,
+  siStripe,
+  siSupabase,
+  siTailwindcss,
+  siTestinglibrary,
+  siTypescript,
+} from "simple-icons";
+import { extraMarks } from "@/icons/tech-extra";
+
+interface Props {
+  name: string;
+  class?: string;
+}
+
+const { name, class: className = "size-4" } = Astro.props;
+
+const simple: Record<string, { path: string }> = {
+  React: siReact,
+  "React Native": siReact,
+  "Next.js": siNextdotjs,
+  TypeScript: siTypescript,
+  JavaScript: siJavascript,
+  FastAPI: siFastapi,
+  PostgreSQL: siPostgresql,
+  Expo: siExpo,
+  "Tailwind CSS": siTailwindcss,
+  "shadcn/ui": siShadcnui,
+  "HTML & CSS": siHtml5,
+  CSS: siCss,
+  "TanStack Query": siReactquery,
+  Redux: siRedux,
+  Python: siPython,
+  "Node.js": siNodedotjs,
+  "Express.js": siExpress,
+  Django: siDjango,
+  Supabase: siSupabase,
+  MongoDB: siMongodb,
+  GraphQL: siGraphql,
+  Docker: siDocker,
+  GCP: siGooglecloud,
+  Railway: siRailway,
+  Stripe: siStripe,
+  "Git & GitHub": siGit,
+  Jest: siJest,
+  "React Testing Library": siTestinglibrary,
+};
+
+// Products that carry their platform's mark.
+const aliases: Record<string, string> = { "Azure AD": "Azure" };
+
+// Not brands: drawn in the site's own stroke style.
+const drawn: Record<string, string[]> = {
+  "CI/CD": ["M4 12a8 8 0 0 1 13.66-5.66L20 8.5", "M20 4v4.5h-4.5", "M20 12a8 8 0 0 1-13.66 5.66L4 15.5", "M4 20v-4.5h4.5"],
+};
+
+const mark = simple[name]
+  ? { viewBox: "0 0 24 24", path: simple[name].path }
+  : (extraMarks[aliases[name] ?? name] ?? null);
+const strokes = drawn[name];
+---
+
+{
+  mark ? (
+    <svg viewBox={mark.viewBox} class:list={["flex-none", className]} fill="currentColor" aria-hidden="true">
+      <path d={mark.path} />
+    </svg>
+  ) : strokes ? (
+    <svg
+      viewBox="0 0 24 24"
+      class:list={["flex-none", className]}
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.75"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      {strokes.map((d) => (
+        <path d={d} />
+      ))}
+    </svg>
+  ) : null
+}

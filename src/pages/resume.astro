@@ -1,0 +1,457 @@
+---
+// The resume, rendered from the same cv.json as the site so the two cannot
+// disagree. public/resume.pdf is this page printed to Letter from a browser
+// (Print, Save as PDF, default margins off: the page sets its own).
+// Plain single-column text so applicant tracking systems can parse it.
+import "@fontsource-variable/mona-sans/standard.css";
+import "@fontsource-variable/geist-mono/wght.css";
+import type { CV } from "@/cv";
+import cvData from "@cv";
+import { formatDateRange } from "@/utils/dates";
+
+const cv = cvData as unknown as CV;
+const { basics, work, projects, education, languages } = cv;
+
+const github = basics.profiles.find((p) => p.network === "GitHub");
+const linkedin = basics.profiles.find((p) => p.network === "LinkedIn");
+const bare = (url: string) => decodeURI(url).replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
+
+// Recent roles carry more detail than early ones. Each role leads with its
+// headline result, then its highlights.
+const bullets = [5, 4, 3, 2, 2];
+const roles = work.map((job, i) => ({
+  ...job,
+  place: [job.location, job.location_type].filter(Boolean).join(" · "),
+  points: [job.resumeLead ?? job.metric, ...job.highlights.slice(0, bullets[i] ?? 2)].filter(
+    (point): point is string => !!point,
+  ),
+  stack: (job.skills ?? []).slice(0, 10),
+}));
+
+// Figures are what a reader scans a resume for, so they are set heavier
+// inside their sentence: percentages, counts with a plus, and load times.
+const escapeHtml = (text: string) =>
+  text.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c] ?? c);
+const figures = /(\d[\d,]*\+?%|\d[\d,]*\+|sub-\d+s(?: LCP)?)/g;
+// Arrows become plain ">" so no parser can garble them.
+const emphasize = (text: string) =>
+  escapeHtml(text.replaceAll(" → ", " > ")).replace(figures, "<strong>$1</strong>");
+
+const personal = projects.filter((p) => p.madeAt === "Personal" && p.tier === "feature");
+
+// Skills, most relevant first. On paper the one-item Mobile group folds into
+// Frontend, so every row carries a real list.
+const core = (basics.coreSkills ?? []).map((skill) => skill.name);
+const rest = (name: string) =>
+  (basics.toolkit ?? []).find((g) => g.group === name)?.items.filter((item) => !core.includes(item)) ?? [];
+const skillGroups = [
+  { group: "Core stack", items: core },
+  { group: "Frontend & mobile", items: [...rest("Frontend"), ...rest("Mobile")] },
+  { group: "Backend & data", items: rest("Backend") },
+  { group: "Cloud & DevOps", items: rest("Infrastructure") },
+  { group: "Integrations", items: rest("Integrations") },
+  { group: "Testing", items: rest("Testing") },
+].filter((g) => g.items.length > 0);
+
+const degree = education[0];
+const degreeYears = degree
+  ? `${new Date(degree.startDate).getUTCFullYear()} – ${new Date(degree.endDate).getUTCFullYear()}`
+  : "";
+const langs = [...languages]
+  .sort((a) => (a.language === "Spanish" ? -1 : 1))
+  .map((l) => `${l.language} (${l.language === "Spanish" ? "native" : "professional"})`)
+  .join(" · ");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>{basics.name} — Resume</title>
+  </head>
+  <body>
+    <main class="sheet">
+      <header>
+        <div>
+          <h1>{basics.name}</h1>
+          <p class="label">{basics.label}</p>
+        </div>
+        <ul class="contact">
+          <li>{basics.location.city}, FL</li>
+          {basics.workAuthorization && <li>{basics.workAuthorization}</li>}
+          <li><a href={`tel:${basics.phone.replace(/[^+\d]/g, "")}`}>{basics.phone}</a></li>
+          <li><a href={`mailto:${basics.email}`}>{basics.email}</a></li>
+          <li><a href={basics.url}>{bare(basics.url)}</a></li>
+          {github && <li><a href={github.url}>{bare(github.url)}</a></li>}
+          {linkedin && <li><a href={linkedin.url}>{bare(linkedin.url)}</a></li>}
+        </ul>
+      </header>
+
+      <p class="summary">{basics.resumeSummary ?? basics.summary}</p>
+
+      <section>
+        <h2>Skills</h2>
+        <dl class="skills">
+          {
+            skillGroups.map((g) => (
+              <>
+                <dt>{g.group}</dt>
+                <dd>{g.items.join(", ")}</dd>
+              </>
+            ))
+          }
+        </dl>
+      </section>
+
+      <section>
+        <h2>Experience</h2>
+        {
+          roles.map((job) => (
+            <article class="role">
+              <div class="row">
+                <h3>{job.position}</h3>
+                <p class="dates">{formatDateRange(job.startDate, job.endDate)}</p>
+              </div>
+              <p class="employer">
+                <span class="org">{job.name}</span>
+                {job.place && <span class="place">{job.place}</span>}
+              </p>
+              <p class="lede">{job.summary}</p>
+              <ul class="points">
+                {job.points.map((point) => (
+                  <li set:html={emphasize(point)} />
+                ))}
+              </ul>
+              {job.stack.length > 0 && <p class="stack">{job.stack.join(" · ")}</p>}
+            </article>
+          ))
+        }
+      </section>
+
+      {
+        personal.length > 0 && (
+          <section>
+            <h2>Personal projects</h2>
+            {personal.map((p) => (
+              <article class="role">
+                <div class="row">
+                  <h3>
+                    {p.title}, <span class="sub">{p.kind?.toLowerCase()}</span>
+                  </h3>
+                  <p class="dates">{p.url ? <a href={p.url}>{bare(p.url)}</a> : p.year}</p>
+                </div>
+                <ul class="points">
+                  {(p.facts ?? p.highlights.slice(0, 2)).map((point) => (
+                    <li set:html={emphasize(point)} />
+                  ))}
+                </ul>
+                {p.keywords && <p class="stack">{p.keywords.join(" · ")}</p>}
+              </article>
+            ))}
+          </section>
+        )
+      }
+
+      <section class="pair">
+        {
+          degree && (
+            <div>
+              <h2>Education</h2>
+              <div class="row">
+                <h3>
+                  B.Sc. {degree.area}, <span class="sub">{degree.institution.replace(/\s*\(.*\)$/, "")}</span>
+                </h3>
+                <p class="dates">{degreeYears}</p>
+              </div>
+            </div>
+          )
+        }
+        <div>
+          <h2>Languages</h2>
+          <p>{langs}</p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  @page {
+    size: Letter;
+    margin: 0.55in 0.65in;
+  }
+  /* No page-margin text (page numbers, running name): PDF text readers put
+     it before the name, which is the first thing a parser looks for. */
+
+  :root {
+    --ink: oklch(0.205 0.012 270);
+    --ink-2: oklch(0.36 0.014 270);
+    --ink-3: oklch(0.48 0.014 270);
+    --line: oklch(0.86 0.005 270);
+    --surface: oklch(0.968 0.004 270);
+    --accent: oklch(0.5 0.21 276);
+    color-scheme: light;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-size: 9.4pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    margin: 0;
+    background: oklch(0.955 0.003 270);
+    color: var(--ink-2);
+    font-family: "Mona Sans Variable", ui-sans-serif, system-ui, sans-serif;
+    font-weight: 420;
+    line-height: 1.42;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* On screen the page is shown as a sheet of Letter paper. */
+  .sheet {
+    width: 8.5in;
+    max-width: 100%;
+    margin: 2rem auto;
+    padding: 0.55in 0.65in;
+    background: #fff;
+    box-shadow:
+      0 1px 2px oklch(0.25 0.02 270 / 0.06),
+      0 12px 32px -12px oklch(0.25 0.02 270 / 0.18);
+  }
+
+  h1,
+  h2,
+  h3,
+  p,
+  ul,
+  dl,
+  dd {
+    margin: 0;
+    padding: 0;
+  }
+  ul {
+    list-style: none;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Name and title on the left, contact details in two short columns on the
+     right, sharing a baseline. */
+  header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 24pt;
+  }
+  /* The one flourish: a short accent rule above the name. */
+  h1::before {
+    content: "";
+    display: block;
+    width: 26pt;
+    height: 2.5pt;
+    margin-bottom: 10pt;
+    background: var(--accent);
+  }
+  h1 {
+    color: var(--ink);
+    font-size: 29pt;
+    font-weight: 640;
+    font-stretch: 116%;
+    letter-spacing: -0.02em;
+    word-spacing: 0.06em;
+    line-height: 1;
+  }
+  .label {
+    margin-top: 5pt;
+    color: var(--ink);
+    font-size: 11.5pt;
+    font-weight: 560;
+  }
+  .contact {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(4, auto);
+    gap: 1.5pt 20pt;
+    color: var(--ink-2);
+    font-size: 8.8pt;
+    line-height: 1.35;
+  }
+  .contact a {
+    color: var(--accent);
+  }
+
+  .summary {
+    margin-top: 12pt;
+    padding-top: 11pt;
+    border-top: 1px solid var(--ink);
+    color: var(--ink);
+    font-size: 10pt;
+    text-wrap: pretty;
+  }
+
+  section {
+    margin-top: 13pt;
+  }
+  /* Section titles sit on a hairline that runs out to the margin. */
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 9pt;
+    color: var(--ink);
+    font-size: 12.5pt;
+    font-weight: 640;
+    font-stretch: 110%;
+    letter-spacing: -0.015em;
+    break-after: avoid;
+  }
+  h2::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* A role may run over a page; its heading never parts from what follows. */
+  /* Title and dates on one line, employer and place on the next: the
+     layout resume parsers read most reliably. */
+  .role {
+    margin-top: 11pt;
+  }
+  h2 + .role {
+    margin-top: 8pt;
+  }
+  .role .row,
+  .role .employer,
+  .role .lede {
+    break-after: avoid;
+  }
+  .employer {
+    margin-top: 0.5pt;
+  }
+  .row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12pt;
+  }
+  h3 {
+    color: var(--ink);
+    font-size: 10.6pt;
+    font-weight: 620;
+    letter-spacing: -0.01em;
+  }
+  .org {
+    color: var(--ink);
+    font-weight: 540;
+  }
+  .sub {
+    font-weight: 460;
+  }
+  .dates {
+    flex: none;
+    color: var(--ink-3);
+    font-family: "Geist Mono Variable", ui-monospace, monospace;
+    font-size: 8.2pt;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .dates a {
+    color: var(--accent);
+  }
+  .place {
+    color: var(--ink-3);
+    font-size: 8.8pt;
+  }
+  .place::before {
+    content: "·";
+    margin: 0 5pt;
+  }
+  .lede {
+    margin-top: 3pt;
+    text-wrap: pretty;
+    break-inside: avoid;
+  }
+
+  /* Real list markers, not positioned pseudo-elements: positioned boxes are
+     extracted out of order by PDF text readers and applicant tracking systems. */
+  .points {
+    margin-top: 3.5pt;
+    padding-left: 11pt;
+    list-style: "–  ";
+  }
+  .points li {
+    text-wrap: pretty;
+    break-inside: avoid;
+  }
+  .points li::marker {
+    color: var(--ink-3);
+  }
+  .points li + li {
+    margin-top: 1.5pt;
+  }
+  .points strong {
+    color: var(--ink);
+    font-weight: 620;
+  }
+  .stack {
+    margin-top: 3.5pt;
+    color: var(--ink-3);
+    font-size: 8.8pt;
+  }
+
+  /* The one tinted panel on the page: the skills a reader scans for first. */
+  .skills {
+    display: grid;
+    grid-template-columns: 9.2em 1fr;
+    gap: 2.5pt 12pt;
+    margin-top: 7pt;
+    padding: 8pt 11pt;
+    border-radius: 4pt;
+    background: var(--surface);
+  }
+  .skills dt {
+    color: var(--ink-3);
+  }
+  .skills dd {
+    color: var(--ink);
+  }
+  .skills dd:first-of-type {
+    font-weight: 600;
+  }
+
+  .pair {
+    display: grid;
+    grid-template-columns: 1.45fr 1fr;
+    gap: 24pt;
+    break-inside: avoid;
+  }
+  .pair .row,
+  .pair > div > p {
+    margin-top: 7pt;
+  }
+  .pair > div > p {
+    color: var(--ink);
+  }
+
+  @media print {
+    body {
+      background: none;
+    }
+    .sheet {
+      width: auto;
+      margin: 0;
+      padding: 0;
+      box-shadow: none;
+    }
+  }
+</style>

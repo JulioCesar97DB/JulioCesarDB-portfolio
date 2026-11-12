@@ -22,11 +22,17 @@ interface Basics {
   phone: string;
   url: string;
   summary: string;
+  /** Third-person summary for the resume; falls back to `summary`. */
+  resumeSummary?: string;
   summaryHighlights?: Array<string>;
   aboutParagraphs?: Array<string>;
   resume?: string;
   toolkit?: Array<{ group: string; items: Array<string> }>;
+  /** The stack shown first. `match` lists other keywords that count as evidence of it. */
+  coreSkills?: Array<{ name: string; match?: Array<string> }>;
   location: Location;
+  /** Shown on the resume only, beside the location. */
+  workAuthorization?: string;
   profiles: Array<Profiles>;
 }
 
@@ -58,6 +64,8 @@ interface Work {
   location?: string;
   location_type?: string;
   metric?: string;
+  /** The metric as a full action sentence, for the resume's first bullet. */
+  resumeLead?: string;
 }
 
 type DateStr = `${string}-${string}-${string}`;
@@ -151,6 +159,8 @@ interface Projects {
   kind?: string;
   role?: string;
   facts?: Array<string>;
+  /** Request path through the system, outermost layer first. */
+  architecture?: { layers: Array<string>; note?: string };
 }
 
 interface Interests {

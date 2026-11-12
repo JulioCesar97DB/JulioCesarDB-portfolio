@@ -140,7 +140,7 @@ components:
 
 The category standard executed at product-company craft (the Linear, Vercel, Stripe register): a calm, left-aligned, typographic page in which real product screenshots, held in raised frames, are the loudest objects. Everything else (type, hairlines, a single accent) recedes so the work carries the page. The world follows the OS: a near-white cool paper by day, a near-black cool ink by night, with identical structure in both.
 
-Density is relaxed and editorial: generous section padding, a 12-column grid that splits into a 4/8 label-and-content rhythm for Experience and About, and a measure held to 64-68ch for prose. Hierarchy comes from Mona Sans's width axis and weight, not from colour or ornament. The display name is set wide and tight; section titles a little less wide; everything below sits at the normal width.
+Density is relaxed and editorial: generous section padding, a 12-column grid that splits into a 4/8 label-and-content rhythm for Experience, Skills and About, and a measure held to 64-68ch for prose. Hierarchy comes from Mona Sans's width axis and weight, not from colour or ornament. The display name is set wide and tight; section titles a little less wide; everything below sits at the normal width.
 
 This world explicitly replaces the sticky-sidebar, dark-navy portfolio template the site previously wore, and refuses the hero-metric and pill-badge kit. Craft lives in small, honest interactions: the name hands off to a wordmark when it scrolls away, a hairline glow follows the pointer around product frames, disclosures ease open, and copying the email confirms inline.
 
@@ -187,10 +187,10 @@ A restrained cool-grey ladder with a single saturated ultramarine-violet voice; 
 ### Hierarchy
 - **Display** (640, clamp(2.75rem → 6rem), 0.95, width 118%, -0.04em): the hero name, once per page.
 - **Headline** (620, clamp(1.625rem → 2.25rem), 1.15, width 108%, -0.025em): section titles and the closing contact statement.
-- **Title** (600, 1.25rem, 1.3, -0.015em): product names, employers, sub-headings such as More work and Toolkit. The lead project title runs larger (clamp(1.75rem → 2.5rem), width 110%, -0.03em) as a single exception.
+- **Title** (600, 1.25rem, 1.3, -0.015em): product names, employers, sub-headings such as Also in the toolkit, and the core skill names. The lead project title runs larger (clamp(1.75rem → 2.5rem), width 110%, -0.03em) as a single exception.
 - **Lead** (420, clamp(1.125rem → 1.375rem), 1.5): the hero statement and the contact sub-line, held to 34-52ch.
 - **Body** (420, 1rem on a root that scales 16-18px, 1.6): paragraphs at 64-68ch, `text-wrap: pretty`. Emphasis is weight 560-600 in ink, never colour.
-- **Body small** (420, 0.9375rem, 1.55): fact lines, positions, More work descriptions, definition values, nav links, menu items, the hero meta line.
+- **Body small** (420, 0.9375rem, 1.55): fact lines, positions, role highlights, skill evidence, definition values, nav links, menu items, the hero meta line.
 - **Label** (420, 0.875rem): roles, stacks, definition terms, metadata lines.
 - **Meta** (Geist Mono, 0.8125rem, 1.4, tabular): employment date ranges and project years.
 
@@ -201,7 +201,7 @@ A restrained cool-grey ladder with a single saturated ultramarine-violet voice; 
 
 ## Layout
 
-A single centred container (max 72rem) with fluid gutters (clamp(1.25rem, 4vw, 3rem)). Sections breathe with 6rem vertical padding, 8rem from the large breakpoint. On large screens the 12-column grid takes two shapes: a 7/5 split for the lead project (frame left, text right), and a 4/8 split for Experience and About in which the section title sits sticky in the narrow column (top 7rem). Feature projects fall into a 1/2/3-column grid with 2rem column and 3.5rem row gaps. The More work list becomes a four-column row (year, name, description, links) from the small breakpoint.
+A single centred container (max 72rem) with fluid gutters (clamp(1.25rem, 4vw, 3rem)). Sections breathe with 6rem vertical padding, 8rem from the large breakpoint. On large screens the 12-column grid takes two shapes: a 7/5 split for the lead project (frame left, text right), and a 4/8 split for Experience, Skills and About in which the section title sits sticky in the narrow column (top 7rem). Feature projects fall into a 1/2/3-column grid with 2rem column and 3.5rem row gaps. The lead project is a two-row grid: the text column spans both rows, and the architecture strip sits under the frame. Skills rows are a two-column definition list (11rem term, evidence beside it) from the small breakpoint.
 
 The hero is left-aligned with deep top padding (8 → 10 → 12rem) so the top edge of the first product frame peeks above the fold. A fixed 4rem top bar sits over everything; anchor targets scroll with 5rem padding to clear it. Section bands (Experience, Contact) alternate the page background with the surface tone, bounded by hairlines, instead of using cards.
 
@@ -227,7 +227,7 @@ Three liquid-glass layers sit inside the bar, all scaled by `--glass`:
 
 ## Shapes
 
-Gently rounded and consistent: controls at 10px (0.625rem), nav and wordmark hit areas at 8px, product frames at 16px with the screenshot inset at 11px so the inner corner stays concentric inside the 6px mat. The focus ring is a 2px accent outline offset 3px with a 4px radius. Borders are always 1px. Screenshots hold a fixed 900:560 ratio. List markers are short 8px horizontal dashes, never bullets or glyphs. Icons are one inline stroke set on a 24px grid at 1.75 stroke; GitHub and LinkedIn are the only filled marks.
+Gently rounded and consistent: controls at 10px (0.625rem), nav and wordmark hit areas at 8px, product frames at 16px with the screenshot inset at 11px so the inner corner stays concentric inside the 6px mat. The focus ring is a 2px accent outline offset 3px with a 4px radius. Borders are always 1px. Screenshots hold a fixed 900:560 ratio. List markers are short 8px horizontal dashes, never bullets or glyphs. Icons are one inline stroke set on a 24px grid at 1.75 stroke; GitHub, LinkedIn and the technology marks in Skills are the only filled marks; technology marks are always one colour (ink tertiary, ink when their row is hovered), never their brand colour.
 
 ## Components
 
@@ -271,6 +271,14 @@ Geist Mono 0.8125rem, ink tertiary, tabular figures; date ranges and years only.
 ### Disclosure
 "Show details / Hide details" summary in label size, ink tertiary to ink on hover, with a chevron that rotates 180° over 0.3s. Where the browser can interpolate to `auto`, the content eases open in height over 0.4s (expo-out) with a 0.3s fade; elsewhere it simply opens.
 
+### Jump link
+- In-page links that connect a claim to its evidence (a skill to the projects that used it, a role to its project above). Ink text with a 1px hairline-strong underline; hover takes the accent on both. Never the accent at rest: a row of six would break the Reserved Accent Rule.
+- **Arrival:** the target answers once, 0.45s after the jump: a project frame lights its accent border, a role name takes the accent, then both return over 2s. Off under reduced motion.
+
+### Architecture strip
+- The layers a request crosses in the lead project, as stops on one hairline: 7px ringed dots with the layer name beside (small screens, top to bottom) or below (large screens, left to right). The line runs from the first stop to the last.
+- A short accent pulse travels the line twice when the strip is revealed and loops only while it is hovered, so nothing moves unattended for more than five seconds. Off under reduced motion.
+
 ### Navigation
 A fixed top bar, invisible chrome spanning the 72rem container at the top of the page. Its transformation into a floating glass pill (max 46rem wide, 3.25rem tall, 0.75rem from the top, 1.75rem radius; see Glass) is scroll-linked rather than toggled: between 24px and 260px of scroll a smoothed scroll position (eased toward the real one each frame, so stepped wheels glide) drives three overlapping phases written as CSS custom properties: `--glass` (material fades in over the first half), `--shrink` (contraction from 12% to the end) plus `--fill` (the Resume button fills with ink, animated over 0.45s, only once the hero's own Resume button has scrolled out of view, so two ink buttons never share the screen). Every visual property of the bar interpolates from them. On large screens the hero name morph completes at the same 260px (or when the name reaches the bar, if later), so name and pill settle together. On phones Resume collapses to a round icon button. Nav links (Work, Experience, About) are body-small ink tertiary, ink on hover, and ink when their section crosses the top third of the viewport.
 ### Theme menu
@@ -281,7 +289,7 @@ Transform-only effects may be scroll-driven (`animation-timeline: view()`, insid
 - **Name handoff (large screens):** the hero name itself flies into the top bar. It scrolls with the page until its centre meets the wordmark's, then rides inside the bar; across the bar's full 260px range it slides to the wordmark, scales to its size and eases width (118% → 100%), weight (640 → 600) and tracking to the wordmark's values (ease-in-out cubic), then hides as the real wordmark appears in the same place. Scroll-linked and reversible, rendered above the glass bar while in flight; measured with `getBoundingClientRect`, one write per animation frame.
 - **Recede (small screens):** where the handoff is off, the hero name fades to 15%, rises 2rem and scales to 0.96 as it exits, and the wordmark (initials on phones) fades in.
 - **Rise:** the lead product frame lifts from `rotateX(18deg) scale(0.9)` to flat as it enters (range entry 0% to cover 45%), like a device lifting off a table.
-- **Lift (one-shot, not scroll-scrubbed):** project text, More work rows and Experience roles rise 1.75rem and fade in once, the first time any part of them enters the viewport (IntersectionObserver adds `.is-in`; 0.6s fade, 0.9s expo-out rise), and stay fully opaque after. Product frames use a rise-only variant (`.reveal-solid`). Scroll-scrubbed opacity is not allowed for text: it leaves copy half-transparent wherever the page comes to rest. Without JS or with reduced motion nothing is hidden.
+- **Lift (one-shot, not scroll-scrubbed):** project text, Skills rows and Experience roles rise 1.75rem and fade in once, the first time any part of them enters the viewport (IntersectionObserver adds `.is-in`; 0.6s fade, 0.9s expo-out rise), and stay fully opaque after. Product frames use a rise-only variant (`.reveal-solid`). Scroll-scrubbed opacity is not allowed for text: it leaves copy half-transparent wherever the page comes to rest. Without JS or with reduced motion nothing is hidden.
 
 **The Solid Surfaces Rule.** Anything opaque that sits over the particle field (product frames and their screenshots) may move but never fade: no opacity in its keyframes or on any ancestor's animation. A half-transparent frame lets the particles show through the screenshot. Fades are for text only.
 
