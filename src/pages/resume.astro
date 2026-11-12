@@ -57,6 +57,7 @@ const langs = [...languages]
         <p class="label">{basics.label}</p>
         <ul class="contact">
           <li>{basics.location.city}, FL</li>
+          {basics.workAuthorization && <li>{basics.workAuthorization}</li>}
           <li><a href={`tel:${basics.phone.replace(/[^+\d]/g, "")}`}>{basics.phone}</a></li>
           <li><a href={`mailto:${basics.email}`}>{basics.email}</a></li>
           <li><a href={basics.url}>{bare(basics.url)}</a></li>

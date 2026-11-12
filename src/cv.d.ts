@@ -31,6 +31,8 @@ interface Basics {
   /** The stack shown first. `match` lists other keywords that count as evidence of it. */
   coreSkills?: Array<{ name: string; match?: Array<string> }>;
   location: Location;
+  /** Shown on the resume only, beside the location. */
+  workAuthorization?: string;
   profiles: Array<Profiles>;
 }
 
