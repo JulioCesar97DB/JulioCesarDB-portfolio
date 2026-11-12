@@ -265,7 +265,7 @@
       "responsibilities": [
         "Develop the React-based betting platform with a team, from concept to production",
         "Design and implement secure authentication flows with AWS Cognito including user pools and identity management",
-        "Build responsive, accessible UI components with Tailwind CSS and shadcn/ui component library",
+        "Build responsive, accessible UI components with Tailwind CSS",
         "Integrate third-party sports data APIs for real-time odds and live match tracking",
         "Establish testing strategies, CI/CD pipelines, and code quality standards"
       ],
@@ -280,8 +280,7 @@
         "Tailwind CSS",
         "AWS Amplify",
         "AWS Cognito",
-        "Jest",
-        "shadcn/ui"
+        "Jest"
       ],
       "metric": "Shipped in 6 months with 95% test coverage and sub-2s LCP"
     },
