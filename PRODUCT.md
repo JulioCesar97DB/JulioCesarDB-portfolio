@@ -47,7 +47,7 @@ The site must **show, not sell**. The owner explicitly rejects an openly self-pr
 
 - Shipped products with live URLs and screenshots in `public/projects/`: ConsumrBuzz (app.consumrbuzz.com), BookEasely (bookeasely.com), ReviewBoost (review-boost.app). Turing Dream (Second Window client, no public link).
 - Other work: Cloud infrastructure designer (Balsain Almena / Second Window, drag-and-drop multi-cloud builder), BetHomeWeb (sports betting), Employee Management Suite (Legacy BHC), Telecommunications Management System (ETECSA).
-- Numbers in `cv.json`: 100/100 Lighthouse, 95% test coverage, sub-2s loads, 60% less administrative overhead, 200+ employees, 10,000+ daily users, solo delivery in 6 months. Use only these; do not invent metrics, testimonials, clients or logos.
+- Numbers in `cv.json`: 100/100 Lighthouse, 95% test coverage, sub-2s loads, 60% less administrative overhead, 200+ employees, 10,000+ daily users, delivery in 6 months (BetHomeWeb, built with a team, not solo). Use only these; do not invent metrics, testimonials, clients or logos.
 - B.Sc. Software Engineering, Universidad Central "Marta Abreu" de Las Villas (2016–2021). Spanish native, English professional.
 
 ## Product Principles

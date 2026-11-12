@@ -255,22 +255,22 @@
       "url": "",
       "startDate": "2024-03-01",
       "endDate": "2024-10-20",
-      "summary": "Designed and built a full-featured sports betting platform from scratch, deployed on AWS, with real-time odds, live data feeds, and secure user authentication.",
+      "summary": "Built the frontend of a sports betting platform as part of a team: real-time odds, live data feeds, and secure user authentication, deployed on AWS.",
       "highlights": [
-        "Built a complete React SPA for sports betting with live odds updates across multiple sports categories",
+        "Built a React SPA for sports betting with a team, with live odds updates across multiple sports categories",
         "Implemented an end-to-end authentication flow with AWS Cognito, including MFA and session management",
         "Deployed via an AWS Amplify CI/CD pipeline with automated preview environments per branch",
         "Achieved 95% test coverage with Jest and React Testing Library, ensuring production reliability"
       ],
       "responsibilities": [
-        "Architect and develop the entire React-based betting platform independently from concept to production",
+        "Develop the React-based betting platform with a team, from concept to production",
         "Design and implement secure authentication flows with AWS Cognito including user pools and identity management",
         "Build responsive, accessible UI components with Tailwind CSS and shadcn/ui component library",
         "Integrate third-party sports data APIs for real-time odds and live match tracking",
         "Establish testing strategies, CI/CD pipelines, and code quality standards"
       ],
       "achievements": [
-        "Delivered production-ready betting platform within a 6-month timeline as a solo developer",
+        "Delivered a production-ready betting platform within a 6-month timeline as part of a team",
         "Built a modular, scalable architecture enabling rapid feature additions post-launch",
         "Optimized Core Web Vitals achieving sub-2s LCP and 90+ Lighthouse performance scores"
       ],
@@ -283,7 +283,7 @@
         "Jest",
         "shadcn/ui"
       ],
-      "metric": "Shipped solo in 6 months with 95% test coverage and sub-2s LCP"
+      "metric": "Shipped in 6 months with 95% test coverage and sub-2s LCP"
     },
     {
       "name": "Legacy BHC",
