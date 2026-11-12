@@ -86,6 +86,11 @@ export function createParticles(canvas: HTMLCanvasElement): Variant | null {
   };
 
   const seed = () => {
+    // Nothing to fill while the canvas has no size (hidden); the next resize seeds.
+    if (w <= 0 || h <= 0) {
+      particles = [];
+      return;
+    }
     const byArea = (w * h) / AREA_PER_PARTICLE;
     const onScreen = Math.min(MAX_PARTICLES, Math.max(MIN_PARTICLES, byArea));
     // The off-screen bands get the same density, so what is visible is unchanged.
@@ -109,11 +114,21 @@ export function createParticles(canvas: HTMLCanvasElement): Variant | null {
 
   return {
     resize(width, height, ratio) {
-      const first = w === 0;
+      // Spread the field over the new size (a phone turned sideways, a window
+      // resized) instead of leaving it bunched where the old size ended.
+      const spread = w > 0 && h > 0 && particles.length > 0;
+      if (spread) {
+        const sx = width / w;
+        const sy = (height + EDGE * 2) / (h + EDGE * 2);
+        for (const p of particles) {
+          p.x *= sx;
+          p.y = (p.y + EDGE) * sy - EDGE;
+        }
+      }
       w = width;
       h = height;
       dpr = ratio;
-      if (first || particles.length === 0) seed();
+      if (!spread) seed();
     },
     setPalette(p) {
       palette = p;
