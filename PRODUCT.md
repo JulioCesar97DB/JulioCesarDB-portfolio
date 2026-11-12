@@ -33,7 +33,7 @@ The site must **show, not sell**. The owner explicitly rejects an openly self-pr
 - Astro 5 + Tailwind CSS 4 static site; all content is data-driven from `cv.json` (aliased `@cv`). Keep that single source of truth.
 - Routes: `/` (home) and `/archive`.
 - Domain: juliocesardb.com.
-- Resume PDF to offer for download: `~/Downloads/Resume_1.pdf` (3 pages; page 1 carries his phone number). It titles him "Senior Frontend Engineer" and his ConsumrBuzz role "Web Developer", which differs from `cv.json` ("Lead Frontend Developer") and from the new full-stack target — **open decision**: align job titles across site and resume.
+- Resume PDF to offer for download: `~/Downloads/Resume_1.pdf` (3 pages; page 1 carries his phone number). Decided 2026-11-12: the site and the resume it offers both title him "Full-stack engineer" and his ConsumrBuzz role "Software Developer"; a separate "Senior Frontend Engineer" resume may exist for frontend-only applications but is not the one hosted here. The hosted PDF still predates this and needs regenerating.
 - The owner did **not** approve using his photo (`public/JULIOCESAR.jpg`). Do not use it unless he says so.
 - The owner did **not** approve an "open to work" / availability statement. Do not add one.
 
