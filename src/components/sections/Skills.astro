@@ -1,0 +1,98 @@
+---
+import type { CV } from "@/cv";
+import { basics as rawBasics, projects as rawProjects, work as rawWork } from "@cv";
+import { projectAnchor, roleAnchor } from "@/utils/anchors";
+
+const basics = rawBasics as CV["basics"];
+const projects = (rawProjects as CV["projects"]).filter((p) => p.tier && p.tier !== "hidden");
+const employers = new Set((rawWork as CV["work"]).map((job) => job.name));
+
+const { coreSkills = [], toolkit = [] } = basics;
+
+/** Where a project can be found on the page: its frame in Selected work, or
+    the role it was built in. */
+const whereIs = (p: CV["projects"][number]) => {
+  const label = p.title ?? p.name;
+  if (p.tier === "lead" || p.tier === "feature") return `#${projectAnchor(label)}`;
+  return p.madeAt && employers.has(p.madeAt) ? `#${roleAnchor(p.madeAt)}` : undefined;
+};
+
+// Each core skill is listed with the projects that used it, read from the
+// projects' own keywords, so the claim and its evidence cannot drift apart.
+const core = coreSkills
+  .map((skill) => {
+    const names = [skill.name, ...(skill.match ?? [])];
+    const usedIn = projects
+      .filter((p) => p.keywords?.some((k) => names.includes(k)))
+      .map((p) => ({ label: p.title ?? p.name, href: whereIs(p) }));
+    return { name: skill.name, usedIn };
+  })
+  .filter((skill) => skill.usedIn.length > 0);
+
+const coreNames = new Set(core.map((skill) => skill.name));
+const groups = toolkit
+  .map((group) => ({ ...group, items: group.items.filter((item) => !coreNames.has(item)) }))
+  .filter((group) => group.items.length > 0);
+---
+
+<section id="skills" class="container-page scroll-mt-20 pt-24 lg:pt-32">
+  <div class="grid gap-10 lg:grid-cols-12 lg:gap-12 [&>*]:min-w-0">
+    <div class="lg:col-span-4">
+      <div class="lg:sticky lg:top-28">
+        <h2 class="section-title">Skills</h2>
+        <p class="mt-4 max-w-[30ch] text-[0.9375rem] text-ink-3">
+          The stack I reach for first, next to the work that shipped on it.
+        </p>
+      </div>
+    </div>
+
+    <div class="lg:col-span-8">
+      <dl class="border-y border-line">
+        {
+          core.map((skill) => (
+            <div class="reveal grid gap-x-6 gap-y-1.5 border-t border-line py-5 first:border-t-0 sm:grid-cols-[11rem_1fr] sm:items-baseline">
+              <dt class="text-h3 font-semibold tracking-[-0.015em] text-ink">{skill.name}</dt>
+              <dd>
+                <ul class="flex flex-wrap gap-x-5 gap-y-1 text-[0.9375rem]">
+                  {skill.usedIn.map((p) => (
+                    <li>
+                      {p.href ? (
+                        <a href={p.href} class="jump">
+                          {p.label}
+                        </a>
+                      ) : (
+                        p.label
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      {
+        groups.length > 0 && (
+          <div class="mt-14">
+            <h3 class="text-h3 font-semibold tracking-[-0.015em]">Also in the toolkit</h3>
+            <dl class="mt-5 divide-y divide-line border-y border-line">
+              {groups.map((group) => (
+                <div class="grid gap-1 py-4 sm:grid-cols-[11rem_1fr] sm:gap-6">
+                  <dt class="pt-0.5 text-sm text-ink-3">{group.group}</dt>
+                  <dd>
+                    <ul class="stack text-[0.9375rem] text-ink">
+                      {group.items.map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>

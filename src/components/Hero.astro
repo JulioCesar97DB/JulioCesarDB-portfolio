@@ -7,7 +7,7 @@ import { basics as rawBasics, work as rawWork } from "@cv";
 const basics = rawBasics as CV["basics"];
 const work = rawWork as CV["work"];
 
-const { name, label, tagline, location, resume, profiles } = basics;
+const { name, label, tagline, location, resume, profiles, coreSkills = [] } = basics;
 
 const firstYear = Math.min(...work.map((job) => new Date(job.startDate).getUTCFullYear()));
 const links = profiles.filter((p) => p.network === "GitHub" || p.network === "LinkedIn");
@@ -24,7 +24,17 @@ const links = profiles.filter((p) => p.network === "GitHub" || p.network === "Li
     <span class="text-ink-2">{tagline}</span>
   </p>
 
-  <ul class="mt-5 flex flex-wrap gap-x-6 gap-y-1 text-[0.9375rem] text-ink-3">
+  {
+    coreSkills.length > 0 && (
+      <ul class="mt-6 flex flex-wrap gap-x-5 gap-y-1 text-[0.9375rem] font-medium text-ink" aria-label="Core stack">
+        {coreSkills.map((skill) => (
+          <li>{skill.name}</li>
+        ))}
+      </ul>
+    )
+  }
+
+  <ul class="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-[0.9375rem] text-ink-3">
     <li>{location.city}, {location.region}</li>
     <li>English &amp; Spanish</li>
     <li>Shipping since <span class="tabular">{firstYear}</span></li>

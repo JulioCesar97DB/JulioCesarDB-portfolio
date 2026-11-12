@@ -8,6 +8,7 @@ const { name, resume } = basics;
 const navItems = [
   { id: "work", label: "Work" },
   { id: "experience", label: "Experience" },
+  { id: "skills", label: "Skills" },
   { id: "about", label: "About" },
 ];
 ---
@@ -28,7 +29,7 @@ const navItems = [
     <a
       href="#top"
       data-glass-target
-      class="wordmark flex min-h-11 flex-none items-center rounded-full px-2 font-semibold tracking-tight whitespace-nowrap text-ink max-[359px]:hidden"
+      class="wordmark flex min-h-11 flex-none items-center rounded-full px-2 font-semibold tracking-tight whitespace-nowrap text-ink max-[479px]:hidden"
       aria-label={`${name}, back to top`}
     >
       <span class="wordmark-text hidden sm:inline" data-wordmark-full>{name}</span>
@@ -44,7 +45,7 @@ const navItems = [
                 href={`#${item.id}`}
                 data-nav-link
                 data-glass-target
-                class="nav-link flex min-h-11 items-center rounded-full px-1.5 text-sm whitespace-nowrap text-ink-3 transition-colors hover:text-ink min-[400px]:px-2.5 min-[400px]:text-[0.9375rem] sm:px-3"
+                class="nav-link flex min-h-11 items-center rounded-full px-1 text-sm whitespace-nowrap text-ink-3 transition-colors hover:text-ink min-[440px]:px-2.5 min-[440px]:text-[0.9375rem] md:px-3"
               >
                 {item.label}
               </a>
@@ -320,12 +321,9 @@ const navItems = [
       visibility 0s;
   }
 
-  /* Narrow phones: a tighter wordmark so "JCD" fits down to 360px. */
-  @media (max-width: 399px) {
-    .wordmark {
-      padding-inline: 0.5rem;
-    }
-  }
+  /* Narrow phones: with four section links the bar has no room for "JCD"
+     below 480px, so the wordmark is dropped there (max-[479px]:hidden) and
+     the links stay tight until 440px. */
 
   /* Name morph (large screens, html.name-morph): the hero name itself flies
      into this slot. The slot is open from the start so the landing name is

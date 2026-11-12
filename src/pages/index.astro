@@ -5,6 +5,7 @@ import Hero from "@/components/Hero.astro";
 import ParticleBackground from "@/components/ParticleBackground.astro";
 import Work from "@/components/sections/Work.astro";
 import Experience from "@/components/sections/Experience.astro";
+import Skills from "@/components/sections/Skills.astro";
 import About from "@/components/sections/About.astro";
 import Contact from "@/components/sections/Contact.astro";
 import { basics } from "@cv";
@@ -17,7 +18,8 @@ const year = new Date().getFullYear();
   <TopBar />
   <main id="main-content">
     <!-- Particle fields: one across the hero and Selected work (ending where
-         Experience begins), one behind About, between the two tinted bands. -->
+         Experience begins), one behind Skills and About, between the two
+         tinted bands. -->
     <div class="relative" data-bg-region>
       <ParticleBackground />
       <Hero />
@@ -26,6 +28,7 @@ const year = new Date().getFullYear();
     <Experience />
     <div class="relative" data-bg-region>
       <ParticleBackground fade="both" />
+      <Skills />
       <About />
     </div>
     <Contact />
