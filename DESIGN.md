@@ -216,10 +216,10 @@ Glass is the material of controls and floating chrome; content surfaces (product
 - **Edges:** `--glass-edge` (the 1px contour), `--glass-rim` (light on the top edge, inset), `--glass-low` (shade inside the bottom edge, a hard 1px line plus a soft inner falloff), `--glass-sheen` (a highlight fading out over the upper half), `--glass-drop` (the shadow colour). `--glass-bevel` and `--glass-lift` / `--glass-lift-hover` compose them; use those rather than rebuilding the stack.
 - **Backdrop:** panel `blur(22-24px) saturate(1.9)`, lens `blur(12px) saturate(1.8)`. Nothing inside the bar blurs again (a nested backdrop only sees the bar's interior). Without `backdrop-filter` every glass surface falls back to the opaque raised plate.
 
-**The bar as a lens (Chromium only).** Where the browser can run an SVG filter on a backdrop, `html.lens` swaps the bar's blur for `#bar-lens`: a displacement map painted on a canvas for the settled pill (red/green = offset along the inward normal, growing toward the rim across a bezel of half the radius, 13px at most) bends what passes under the rounded edge, and the map's blue channel masks the frost so the rim stays crisp while the middle, where the labels sit, is fully blurred (13px). Bend (18px) and frost follow the same scroll phases as the rest of the material. Safari and Firefox keep the plain blur; the difference is decoration, never legibility.
+**The bar as a lens (Chromium only).** Where the browser can run an SVG filter on a backdrop, `html.lens` swaps the bar's blur for `#bar-lens`: a displacement map painted on a canvas for the settled pill (red/green = offset along the inward normal, growing toward the rim across a narrow bezel, 8px at most) bends what passes under the rounded edge, and the map's blue channel masks the frost so the rim stays crisp while the middle, where the labels sit, is fully blurred (13px). Bend (12px) and frost follow the same scroll phases as the rest of the material. Safari and Firefox keep the plain blur; the difference is decoration, never legibility. The bar's contour is a single 1px hairline with the rim ring lighting part of it; no other line is drawn along its edge.
 
 Three more layers sit inside the bar, all scaled by `--glass`:
-- **Rim:** a 1.5px gradient ring (masked to the border) bright at the top left, fading along the sides and catching light again at the bottom right, like the bevel of thick glass.
+- **Rim:** a 1px gradient ring (masked to the border) bright at the top left, fading along the sides and catching light again at the bottom right, like the bevel of thick glass.
 - **Specular:** a soft 9×4rem radial highlight (white 50% / 10%) that follows a fine pointer across the bar while it is hovered. Kept weak in light so it never washes out the capsule.
 - **Hover capsule:** a lens (`--glass-lens-hover`, sheen, bevel, 1px contour, soft drop) that appears under the hovered or keyboard-focused control (wordmark, nav links, theme button) and flows between controls: its two edges animate separately on an exponential ease-out, the leading edge in the direction of travel at 0.35s and the trailing edge at 0.7s, so it stretches as it travels and draws back in on arrival, with no overshoot. It blooms in place on first appearance and tracks its control while the bar contracts. It replaces the lens bar icon buttons would form on their own.
 - **Resume sheen:** on hover a diagonal highlight sweeps across the button (0.7s, expo-out).
@@ -241,7 +241,7 @@ Gently rounded and consistent: controls are capsules (full radius; icon buttons 
 Quiet and hairline-bound; the fill is earned only by the primary action.
 - **Shape:** a capsule, 2.75rem minimum height, 1.125rem horizontal padding, 0.9375rem label at weight 540, 0.5rem icon gap.
 - **Default:** a glass lens: `--glass-lens` fill with the sheen, 1px contour, the bevel and `--glass-lift`; ink label. Hover brightens the fill to `--glass-lens-hover`, deepens the drop and lifts 1px.
-- **Primary:** the same glass tinted with ink (90%), a paper label, a light top rim; hover retints to ink secondary. Used once per action group (the hero Resume).
+- **Primary:** solid ink with the bevel of glass: a paper label, a faint top rim and a short sheen (`--primary-rim`, `--primary-sheen`; white 16% and 9% in light). Ink stays opaque: a white sheen over translucent ink turns it a milky grey. Hover retints to ink secondary. The bar's Resume fades from the clear-glass highlights to these as it fills. Used once per action group (the hero Resume).
 - **Active:** a 1px downward press and a 1.5% squeeze with the drop collapsing (0.12s).
 - **Icon button:** a 2.75rem circle, bare ink-tertiary glyph at rest; on hover or keyboard focus a lens forms under it (fill, bevel, contour, drop, blur easing in over 0.25s) and the glyph darkens to ink.
 
@@ -312,7 +312,7 @@ Text selection is accent on paper. The scrollbar is hairline-strong on the page 
 
 ### Do:
 - **Do** reserve ultramarine for links, focus, frame hover glow and action confirmations.
-- **Do** fill the primary action with ink-tinted glass and keep every other button a clear glass lens.
+- **Do** fill the primary action with solid ink and keep every other button a clear glass lens.
 - **Do** get display hierarchy from Mona Sans's width axis (118% name, 108-110% headlines) with negative tracking.
 - **Do** set dates and years in Geist Mono with tabular figures, and nothing else.
 - **Do** separate sections with hairlines and surface-tone bands rather than cards.
