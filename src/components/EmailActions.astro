@@ -12,14 +12,14 @@ const { email } = basics;
 
 <!-- The address is visible text and a mailto link, so it works without a mail
      client or JavaScript; the copy button is an enhancement on top. -->
-<div class:list={["inline-flex items-center", className]} data-copy-root>
-  <a href={`mailto:${email}`} class="btn rounded-r-none pr-3.5">
+<div class:list={["btn-group", className]} data-copy-root>
+  <a href={`mailto:${email}`} class="btn-seg">
     <Icon name="mail" class="size-4 text-ink-3" />
     <span>{email}</span>
   </a>
   <button
     type="button"
-    class="btn -ml-px w-11 justify-center rounded-l-none px-0 text-ink-3 hover:text-ink"
+    class="btn-seg"
     data-copy-email={email}
     aria-label="Copy email address"
   >
