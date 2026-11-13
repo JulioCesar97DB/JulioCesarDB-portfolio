@@ -35,7 +35,7 @@
      the bottom edge, --glass-edge the contour, --glass-sheen the highlight
      across the upper half and --glass-drop the colour of the shadow cast. */
   --glass-fill: light-dark(oklch(0.93 0.008 270 / 0.66), oklch(0.2 0.008 270 / 0.68));
-  --glass-lens: light-dark(oklch(1 0 0 / 0.7), oklch(1 0 0 / 0.08));
+  --glass-lens: light-dark(oklch(1 0 0 / 0.5), oklch(1 0 0 / 0.08));
   --glass-lens-hover: light-dark(oklch(1 0 0 / 0.92), oklch(1 0 0 / 0.13));
   --glass-rim: light-dark(oklch(1 0 0), oklch(1 0 0 / 0.2));
   --glass-low: light-dark(oklch(0.25 0.02 270 / 0.09), oklch(0 0 0 / 0.4));
@@ -93,7 +93,7 @@
     --shade-2: oklch(0.25 0.02 270 / 0.06);
     --shade-3: oklch(0.25 0.02 270 / 0.16);
     --glass-fill: oklch(0.93 0.008 270 / 0.66);
-    --glass-lens: oklch(1 0 0 / 0.7);
+    --glass-lens: oklch(1 0 0 / 0.5);
     --glass-lens-hover: oklch(1 0 0 / 0.92);
     --glass-rim: oklch(1 0 0);
     --glass-low: oklch(0.25 0.02 270 / 0.09);
@@ -317,8 +317,8 @@
     background-color: var(--glass-lens);
     background-image: linear-gradient(to bottom, var(--glass-sheen), transparent 58%);
     background-origin: border-box;
-    -webkit-backdrop-filter: blur(12px) saturate(1.8);
-    backdrop-filter: blur(12px) saturate(1.8);
+    -webkit-backdrop-filter: blur(7px) saturate(2);
+    backdrop-filter: blur(7px) saturate(2);
     box-shadow: var(--glass-bevel), var(--glass-lift);
     transition:
       border-color 0.25s ease,
