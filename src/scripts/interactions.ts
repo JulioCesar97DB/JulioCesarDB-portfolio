@@ -31,9 +31,11 @@ function initTopBar(): void {
 
   const apply = () => {
     const p = clamp01((smoothY - BAR_START) / (BAR_END - BAR_START));
-    bar.style.setProperty("--glass", smoothstep(0, 0.5, p).toFixed(4));
-    bar.style.setProperty("--shrink", smoothstep(0.12, 1, p).toFixed(4));
-    bar.dispatchEvent(new CustomEvent("topbar:frame", { detail: { smoothY } }));
+    const glass = smoothstep(0, 0.5, p);
+    const shrink = smoothstep(0.12, 1, p);
+    bar.style.setProperty("--glass", glass.toFixed(4));
+    bar.style.setProperty("--shrink", shrink.toFixed(4));
+    bar.dispatchEvent(new CustomEvent("topbar:frame", { detail: { smoothY, glass, shrink } }));
   };
 
   const tick = (time: number) => {
@@ -275,6 +277,130 @@ function initNavGlass(): void {
   }
 }
 
+/** Blur of the lens's frosted middle and its edge displacement, in px. */
+const LENS_FROST = 13;
+const LENS_BEND = 18;
+
+/**
+ * Paints the lens map for a w x h capsule as a data URL. Red and green hold
+ * the displacement (128 = none): inside a bezel along the edge every pixel
+ * samples from further in, growing toward the rim, so what passes under the
+ * edge is squeezed and bent the way a thick, rounded pane would bend it.
+ * Blue holds how much frost that pixel gets: little at the rim, where the
+ * refraction should stay crisp, full in the middle, where the labels sit.
+ */
+function paintLensMap(w: number, h: number, radius: number): string {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return "";
+  const image = ctx.createImageData(w, h);
+  const r = Math.min(radius, w / 2, h / 2);
+  const bezel = Math.min(r * 0.5, 13);
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const px = x + 0.5 - w / 2;
+      const py = y + 0.5 - h / 2;
+      // Signed distance to the rounded rectangle's edge and its outward normal.
+      const ax = Math.abs(px) - (w / 2 - r);
+      const ay = Math.abs(py) - (h / 2 - r);
+      let depth: number;
+      let nx = 0;
+      let ny = 0;
+      if (ax > 0 && ay > 0) {
+        const len = Math.hypot(ax, ay);
+        depth = r - len;
+        nx = (ax / len) * Math.sign(px);
+        ny = (ay / len) * Math.sign(py);
+      } else if (ax > ay) {
+        depth = r - ax;
+        nx = Math.sign(px);
+      } else {
+        depth = r - ay;
+        ny = Math.sign(py);
+      }
+      const t = clamp01(1 - Math.max(0, depth) / bezel);
+      const bend = t * t;
+      const i = (y * w + x) * 4;
+      image.data[i] = 128 - nx * bend * 127;
+      image.data[i + 1] = 128 - ny * bend * 127;
+      image.data[i + 2] = 255 * (0.5 + 0.5 * smoothstep(0, 0.6, depth / bezel));
+      image.data[i + 3] = 255;
+    }
+  }
+  ctx.putImageData(image, 0, 0);
+  return canvas.toDataURL();
+}
+
+/**
+ * The bar as a lens. Only Chromium runs SVG filters on a backdrop, so this is
+ * an enhancement there (html.lens swaps the bar's backdrop-filter for
+ * #bar-lens); everywhere else the bar keeps its plain blur. The map is painted
+ * for the settled pill and stretched over the bar while it contracts, when
+ * the bend is still weak; bend and frost follow the same scroll phases as the
+ * rest of the bar's material.
+ */
+function initBarLens(): void {
+  const header = document.querySelector<HTMLElement>("[data-topbar]");
+  const bar = header?.querySelector<HTMLElement>("[data-bar]");
+  const map = header?.querySelector<SVGFEImageElement>("[data-lens-map]");
+  const bend = header?.querySelector<SVGFEDisplacementMapElement>("[data-lens-bend]");
+  const frost = header?.querySelector<SVGFEGaussianBlurElement>("[data-lens-frost]");
+  const brands = (navigator as Navigator & { userAgentData?: { brands: { brand: string }[] } }).userAgentData?.brands;
+  if (!header || !bar || !map || !bend || !frost || !brands?.some((b) => b.brand === "Chromium")) return;
+
+  let mapW = 0;
+  let mapH = 0;
+  const paint = (w: number, h: number) => {
+    w = Math.round(w);
+    h = Math.round(h);
+    if (w < 1 || h < 1 || (w === mapW && h === mapH)) return;
+    const url = paintLensMap(w, h, h / 2);
+    if (!url) return;
+    mapW = w;
+    mapH = h;
+    map.setAttribute("href", url);
+  };
+
+  /** The pill's size once fully contracted, from the same numbers as the CSS. */
+  const settledSize = () => {
+    const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    const style = getComputedStyle(header);
+    const inner = header.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+    return { w: Math.min(46 * rem, inner), h: 3.25 * rem };
+  };
+
+  const update = (glass: number, shrink: number) => {
+    const { width, height } = bar.getBoundingClientRect();
+    if (shrink === 1) paint(width, height);
+    map.setAttribute("width", width.toFixed(1));
+    map.setAttribute("height", height.toFixed(1));
+    bend.setAttribute("scale", (LENS_BEND * shrink * shrink).toFixed(2));
+    frost.setAttribute("stdDeviation", (LENS_FROST * glass).toFixed(2));
+  };
+
+  const read = (name: string) => parseFloat(header.style.getPropertyValue(name)) || 0;
+  const { w, h } = settledSize();
+  paint(w, h);
+  update(read("--glass"), read("--shrink"));
+  document.documentElement.classList.add("lens");
+
+  header.addEventListener("topbar:frame", (e) => {
+    const { glass, shrink } = (e as CustomEvent<{ glass: number; shrink: number }>).detail;
+    update(glass, shrink);
+  });
+  let resizing = 0;
+  window.addEventListener("resize", () => {
+    cancelAnimationFrame(resizing);
+    resizing = requestAnimationFrame(() => {
+      const size = settledSize();
+      paint(size.w, size.h);
+      update(read("--glass"), read("--shrink"));
+    });
+  });
+}
+
 /**
  * One-shot reveals: each .reveal / .reveal-solid gets .is-in the first time it
  * enters the viewport and keeps it, so text always ends fully opaque.
@@ -420,6 +546,7 @@ function initCopyEmail(): void {
 export function initInteractions(): void {
   initTopBar();
   initNavGlass();
+  initBarLens();
   initReveals();
   initScrollSpy();
   initFrames();
