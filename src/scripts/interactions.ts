@@ -282,8 +282,8 @@ function initNavGlass(): void {
 }
 
 /** Blur of the lens's frosted middle and its edge displacement, in px. */
-const LENS_FROST = 13;
-const LENS_BEND = 12;
+const LENS_FROST = 9;
+const LENS_BEND = 24;
 
 /**
  * Paints the lens map for a w x h capsule as a data URL. Red and green hold
@@ -301,7 +301,7 @@ function paintLensMap(w: number, h: number, radius: number): string {
   if (!ctx) return "";
   const image = ctx.createImageData(w, h);
   const r = Math.min(radius, w / 2, h / 2);
-  const bezel = Math.min(r * 0.32, 8);
+  const bezel = Math.min(r * 0.5, 13);
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
       const px = x + 0.5 - w / 2;
@@ -329,7 +329,7 @@ function paintLensMap(w: number, h: number, radius: number): string {
       const i = (y * w + x) * 4;
       image.data[i] = 128 - nx * bend * 127;
       image.data[i + 1] = 128 - ny * bend * 127;
-      image.data[i + 2] = 255 * (0.7 + 0.3 * smoothstep(0, 0.6, depth / bezel));
+      image.data[i + 2] = 255 * (0.4 + 0.6 * smoothstep(0, 0.8, depth / bezel));
       image.data[i + 3] = 255;
     }
   }
