@@ -64,9 +64,9 @@ const navItems = [
       class="wordmark flex min-h-11 flex-none items-center rounded-full px-2 font-semibold tracking-tight whitespace-nowrap text-ink"
       aria-label={`${name}, back to top`}
     >
-      <span class="wordmark-text hidden sm:inline" data-wordmark-full>{name}</span>
-      <span class="hidden min-[375px]:max-sm:inline">JCD</span>
-      <span class="min-[375px]:hidden">{name.charAt(0)}</span>
+      <span class="wordmark-text hidden sm:inline" data-wordmark>{name}</span>
+      <span class="wordmark-text hidden min-[375px]:max-sm:inline" data-wordmark>JCD</span>
+      <span class="wordmark-text min-[375px]:hidden" data-wordmark>{name.charAt(0)}</span>
     </a>
 
     <nav class="ml-auto" aria-label="Sections">
@@ -414,7 +414,7 @@ const navItems = [
     color: inherit;
   }
 
-  /* Wordmark, small screens: fades and rises in once the hero name has
+  /* Wordmark, reduced motion: fades and rises in once the hero name has
      scrolled away. Its slot is always reserved (the nav is pushed right
      anyway), so only opacity and translate animate, never layout. Until it
      shows it is hidden from pointer and keyboard too. */
@@ -481,8 +481,8 @@ const navItems = [
     }
   }
 
-  /* Name morph (large screens, html.name-morph): the hero name itself flies
-     into this slot. The slot is open from the start so the landing name is
+  /* Name morph (html.name-morph, every width): the hero name itself flies
+     into this slot, as the full name or, on phones, as its initials. The slot is open from the start so the landing name is
      never clipped; its own text appears only once the name has landed on it
      (data-named). */
   :global(html.name-morph) .wordmark {

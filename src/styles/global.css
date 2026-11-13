@@ -578,7 +578,7 @@
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     /* The hero name recedes as you scroll past it, where it does not instead
-       fly into the top bar (html.name-morph, large screens). */
+       fly into the top bar (html.name-morph). */
     html:not(.name-morph) .hero-name {
       animation: recede linear both;
       animation-timeline: view();
@@ -608,6 +608,19 @@ html.name-morph .hero-name {
   z-index: 50;
   white-space: nowrap;
   transform-origin: left center;
+  will-change: transform;
+}
+
+/* On phones the bar holds only the initials, so the name is split into words
+   (scripts/interactions.ts) and each one flies to its own initial while the
+   rest of the word fades. The words move, not the heading, so it may wrap. */
+html.name-mono .hero-name {
+  white-space: normal;
+  will-change: auto;
+}
+.hero-name .name-word {
+  display: inline-block;
+  transform-origin: 0 50%;
   will-change: transform;
 }
 
