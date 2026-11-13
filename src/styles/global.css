@@ -25,11 +25,46 @@
     0 4px 10px -2px var(--shade-2),
     0 24px 48px -16px var(--shade-3);
 
-  /* Glass: the floating top bar. A translucent fill over a heavy blur, a bright
-     top edge (light catching the rim) and a soft drop. */
-  --glass-fill: light-dark(oklch(1 0 0 / 0.72), oklch(0.2 0.008 270 / 0.74));
-  --glass-rim: light-dark(oklch(1 0 0 / 0.9), oklch(1 0 0 / 0.14));
-  --glass-edge: light-dark(oklch(0.25 0.02 270 / 0.1), oklch(1 0 0 / 0.08));
+  /* Glass. Two materials share one set of edges:
+       panel  (--glass-fill)  floating chrome: the top bar and the theme menu.
+              In light it is a cool tint rather than white, so it reads as a
+              surface on white paper and a brighter lens can sit on it.
+       lens   (--glass-lens)  controls: buttons and the capsule under the
+              hovered nav item; brighter than whatever it sits on.
+     --glass-rim is light caught on the top edge, --glass-low the shade inside
+     the bottom edge, --glass-edge the contour, --glass-sheen the highlight
+     across the upper half and --glass-drop the colour of the shadow cast. */
+  --glass-fill: light-dark(oklch(0.93 0.008 270 / 0.66), oklch(0.2 0.008 270 / 0.68));
+  --glass-lens: light-dark(oklch(1 0 0 / 0.5), oklch(1 0 0 / 0.08));
+  --glass-lens-hover: light-dark(oklch(1 0 0 / 0.92), oklch(1 0 0 / 0.13));
+  --glass-rim: light-dark(oklch(1 0 0), oklch(1 0 0 / 0.2));
+  --glass-low: light-dark(oklch(0.25 0.02 270 / 0.09), oklch(0 0 0 / 0.4));
+  --glass-edge: light-dark(oklch(0.25 0.02 270 / 0.13), oklch(1 0 0 / 0.09));
+  --glass-sheen: light-dark(oklch(1 0 0 / 0.75), oklch(1 0 0 / 0.07));
+  --glass-drop: light-dark(oklch(0.25 0.03 270 / 0.16), oklch(0.03 0.01 270 / 0.6));
+  /* The bar is the clearest glass on the page: it is defined by the light on
+     its edge and the bend of what passes behind, not by a tint. */
+  --glass-clear: light-dark(oklch(0.975 0.005 270 / 0.4), oklch(0.2 0.008 270 / 0.46));
+  /* Light gathered just inside the edge of a pane, and the glow that rises
+     under the pointer. */
+  --glass-glow: light-dark(oklch(1 0 0 / 0.7), oklch(1 0 0 / 0.1));
+  /* Whatever sits on glass is a thin fill, never a second pane. */
+  --glass-tint: light-dark(oklch(0.25 0.02 270 / 0.075), oklch(1 0 0 / 0.12));
+  /* The highlights of the ink-filled (primary) button. */
+  --primary-sheen: light-dark(oklch(1 0 0 / 0.09), oklch(1 0 0 / 0.5));
+  --primary-rim: light-dark(oklch(1 0 0 / 0.16), oklch(1 0 0 / 0.9));
+  /* The bevel every piece of glass shares, and the shadow a control casts. */
+  --glass-bevel:
+    inset 0 1px 0 var(--glass-rim),
+    inset 0 -1px 0 var(--glass-low),
+    inset 0 -0.5rem 0.75rem -0.625rem var(--glass-low),
+    inset 0 0 0.5rem -0.0625rem var(--glass-glow);
+  --glass-lift:
+    0 1px 2px -1px var(--glass-drop),
+    0 0.5rem 1rem -0.5rem var(--glass-drop);
+  --glass-lift-hover:
+    0 1px 2px -1px var(--glass-drop),
+    0 0.875rem 1.5rem -0.625rem var(--glass-drop);
 }
 
 :root[data-theme="light"] {
@@ -57,9 +92,19 @@
     --shade-1: oklch(0.25 0.02 270 / 0.04);
     --shade-2: oklch(0.25 0.02 270 / 0.06);
     --shade-3: oklch(0.25 0.02 270 / 0.16);
-    --glass-fill: oklch(1 0 0 / 0.72);
-    --glass-rim: oklch(1 0 0 / 0.9);
-    --glass-edge: oklch(0.25 0.02 270 / 0.1);
+    --glass-fill: oklch(0.93 0.008 270 / 0.66);
+    --glass-lens: oklch(1 0 0 / 0.5);
+    --glass-lens-hover: oklch(1 0 0 / 0.92);
+    --glass-rim: oklch(1 0 0);
+    --glass-low: oklch(0.25 0.02 270 / 0.09);
+    --glass-edge: oklch(0.25 0.02 270 / 0.13);
+    --glass-sheen: oklch(1 0 0 / 0.75);
+    --glass-drop: oklch(0.25 0.03 270 / 0.16);
+    --glass-clear: oklch(0.975 0.005 270 / 0.4);
+    --glass-glow: oklch(1 0 0 / 0.7);
+    --glass-tint: oklch(0.25 0.02 270 / 0.075);
+    --primary-sheen: oklch(1 0 0 / 0.09);
+    --primary-rim: oklch(1 0 0 / 0.16);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -76,9 +121,19 @@
       --shade-1: oklch(0.05 0.01 270 / 0.3);
       --shade-2: oklch(0.05 0.01 270 / 0.4);
       --shade-3: oklch(0.05 0.01 270 / 0.7);
-      --glass-fill: oklch(0.2 0.008 270 / 0.74);
-      --glass-rim: oklch(1 0 0 / 0.14);
-      --glass-edge: oklch(1 0 0 / 0.08);
+      --glass-fill: oklch(0.2 0.008 270 / 0.68);
+      --glass-lens: oklch(1 0 0 / 0.08);
+      --glass-lens-hover: oklch(1 0 0 / 0.13);
+      --glass-rim: oklch(1 0 0 / 0.2);
+      --glass-low: oklch(0 0 0 / 0.4);
+      --glass-edge: oklch(1 0 0 / 0.09);
+      --glass-sheen: oklch(1 0 0 / 0.07);
+      --glass-drop: oklch(0.03 0.01 270 / 0.6);
+      --glass-clear: oklch(0.2 0.008 270 / 0.46);
+      --glass-glow: oklch(1 0 0 / 0.1);
+      --glass-tint: oklch(1 0 0 / 0.12);
+      --primary-sheen: oklch(1 0 0 / 0.5);
+      --primary-rim: oklch(1 0 0 / 0.9);
     }
   }
   :root[data-theme="dark"] {
@@ -95,9 +150,19 @@
     --shade-1: oklch(0.05 0.01 270 / 0.3);
     --shade-2: oklch(0.05 0.01 270 / 0.4);
     --shade-3: oklch(0.05 0.01 270 / 0.7);
-    --glass-fill: oklch(0.2 0.008 270 / 0.74);
-    --glass-rim: oklch(1 0 0 / 0.14);
-    --glass-edge: oklch(1 0 0 / 0.08);
+    --glass-fill: oklch(0.2 0.008 270 / 0.68);
+    --glass-lens: oklch(1 0 0 / 0.08);
+    --glass-lens-hover: oklch(1 0 0 / 0.13);
+    --glass-rim: oklch(1 0 0 / 0.2);
+    --glass-low: oklch(0 0 0 / 0.4);
+    --glass-edge: oklch(1 0 0 / 0.09);
+    --glass-sheen: oklch(1 0 0 / 0.07);
+    --glass-drop: oklch(0.03 0.01 270 / 0.6);
+    --glass-clear: oklch(0.2 0.008 270 / 0.46);
+    --glass-glow: oklch(1 0 0 / 0.1);
+    --glass-tint: oklch(1 0 0 / 0.12);
+    --primary-sheen: oklch(1 0 0 / 0.5);
+    --primary-rim: oklch(1 0 0 / 0.9);
   }
 }
 
@@ -241,55 +306,187 @@
     text-decoration-color: currentColor;
   }
 
-  /* Quiet buttons: hairline border, no fill until hover. */
+  /* Buttons are lenses of glass: a translucent capsule that blurs what passes
+     behind it (the particle field, mostly), with a bright top rim, a shaded
+     bottom edge and a soft drop. The fill colour and the sheen are separate
+     properties so a variant can retint the glass and keep its highlight. */
+  .btn,
+  .btn-group {
+    border-radius: 9999px;
+    border: 1px solid var(--glass-edge);
+    background-color: var(--glass-lens);
+    background-image: linear-gradient(to bottom, var(--glass-sheen), transparent 58%);
+    background-origin: border-box;
+    -webkit-backdrop-filter: blur(7px) saturate(2);
+    backdrop-filter: blur(7px) saturate(2);
+    box-shadow: var(--glass-bevel), var(--glass-lift);
+    transition:
+      border-color 0.25s ease,
+      background-color 0.25s ease,
+      color 0.2s ease,
+      box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  /* Illumination: under a fine pointer the glass lights from within, starting
+     where the pointer is (--px/--py, scripts/interactions.ts) and brightening
+     on press. */
+  .btn,
+  .btn-group {
+    position: relative;
+    isolation: isolate;
+    --glow: var(--glass-glow);
+  }
+  .btn::before,
+  .btn-group::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(7rem 3.5rem at var(--px, 50%) var(--py, 0%), var(--glow), transparent 72%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+  }
+  .btn:hover::before,
+  .btn-group:hover::before {
+    opacity: 0.7;
+  }
+  .btn:active::before,
+  .btn-group:active::before {
+    opacity: 1;
+    transition-duration: 0.1s;
+  }
   .btn {
     display: inline-flex;
     min-height: 2.75rem;
     align-items: center;
     gap: 0.5rem;
-    border-radius: 0.625rem;
-    border: 1px solid var(--line-strong);
-    background: var(--raised);
-    padding: 0 1rem;
+    padding: 0 1.125rem;
+    color: var(--ink);
+    font-size: 0.9375rem;
+    font-weight: 540;
+  }
+  .btn:hover,
+  .btn-group:hover {
+    background-color: var(--glass-lens-hover);
+    box-shadow: var(--glass-bevel), var(--glass-lift-hover);
+  }
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+  .btn:active {
+    transform: translateY(1px) scale(0.985);
+    box-shadow: var(--glass-bevel), 0 1px 2px -1px var(--glass-drop);
+    transition-duration: 0.12s;
+  }
+
+  /* Primary: solid ink with the bevel of glass. Ink is opaque here on purpose:
+     a white sheen over translucent ink turns it a milky grey. The highlight
+     is a short, faint one at the top edge only. */
+  .btn-primary {
+    border-color: var(--ink);
+    background-color: var(--ink);
+    background-image: linear-gradient(to bottom, var(--primary-sheen), transparent 58%);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow:
+      inset 0 1px 0 var(--primary-rim),
+      var(--glass-lift);
+    color: var(--bg);
+    --glow: light-dark(oklch(1 0 0 / 0.2), oklch(1 0 0 / 0.7));
+  }
+  .btn-primary:hover {
+    border-color: var(--ink-2);
+    background-color: var(--ink-2);
+    box-shadow:
+      inset 0 1px 0 var(--primary-rim),
+      var(--glass-lift-hover);
+  }
+
+  /* A joined pair (the email address and its copy button) is one piece of
+     glass; its segments are flat and split by a hairline. */
+  .btn-group {
+    display: inline-flex;
+    align-items: stretch;
+  }
+  .btn-seg {
+    display: inline-flex;
+    min-height: 2.625rem;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 1rem 0 1.125rem;
+    border-radius: 9999px 0 0 9999px;
     color: var(--ink);
     font-size: 0.9375rem;
     font-weight: 540;
     transition:
-      border-color 0.2s ease,
-      background-color 0.2s ease,
-      transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      color 0.2s ease,
+      background-color 0.2s ease;
   }
-  .btn:hover {
-    border-color: var(--ink-3);
+  .btn-seg + .btn-seg {
+    width: 2.75rem;
+    justify-content: center;
+    padding: 0 0.125rem 0 0;
+    border-left: 1px solid var(--glass-edge);
+    border-radius: 0 9999px 9999px 0;
+    color: var(--ink-3);
   }
-  .btn:active {
-    transform: translateY(1px);
+  .btn-seg:hover {
+    color: var(--ink);
+    background-color: light-dark(oklch(0.25 0.02 270 / 0.045), oklch(1 0 0 / 0.07));
   }
-  .btn-primary {
-    border-color: var(--ink);
-    background: var(--ink);
-    color: var(--bg);
-  }
-  .btn-primary:hover {
-    border-color: var(--ink-2);
-    background: var(--ink-2);
+  .btn-seg:focus-visible {
+    outline-offset: -3px;
   }
 
+  /* Icon buttons are bare glyphs until hovered or focused, when a round lens
+     of the same glass forms under them. */
   .icon-btn {
     display: inline-flex;
     width: 2.75rem;
     height: 2.75rem;
     align-items: center;
     justify-content: center;
-    border-radius: 0.625rem;
+    border-radius: 9999px;
     color: var(--ink-3);
+    box-shadow:
+      inset 0 1px 0 transparent,
+      inset 0 -1px 0 transparent,
+      inset 0 0 0 1px transparent,
+      0 0.5rem 1rem -0.5rem transparent;
+    -webkit-backdrop-filter: blur(0) saturate(1);
+    backdrop-filter: blur(0) saturate(1);
     transition:
       color 0.2s ease,
-      background-color 0.2s ease;
+      background-color 0.25s ease,
+      box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      -webkit-backdrop-filter 0.25s ease,
+      backdrop-filter 0.25s ease;
   }
-  .icon-btn:hover {
+  .icon-btn:hover,
+  .icon-btn:focus-visible {
     color: var(--ink);
-    background: var(--surface);
+    background-color: var(--glass-lens);
+    -webkit-backdrop-filter: blur(10px) saturate(1.8);
+    backdrop-filter: blur(10px) saturate(1.8);
+    box-shadow:
+      inset 0 1px 0 var(--glass-rim),
+      inset 0 -1px 0 var(--glass-low),
+      inset 0 0 0 1px var(--glass-edge),
+      0 0.5rem 1rem -0.5rem var(--glass-drop);
+  }
+  .icon-btn:active {
+    scale: 0.94;
+  }
+
+  /* Without backdrop-filter a translucent lens would let whatever is behind
+     show through sharp; fall back to the opaque raised plate. */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .btn,
+    .btn-group {
+      background-color: var(--raised);
+    }
   }
 
   /* Product frame: a raised plate holding a screenshot. A hairline highlight

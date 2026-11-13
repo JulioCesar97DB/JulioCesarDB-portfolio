@@ -31,9 +31,11 @@ function initTopBar(): void {
 
   const apply = () => {
     const p = clamp01((smoothY - BAR_START) / (BAR_END - BAR_START));
-    bar.style.setProperty("--glass", smoothstep(0, 0.5, p).toFixed(4));
-    bar.style.setProperty("--shrink", smoothstep(0.12, 1, p).toFixed(4));
-    bar.dispatchEvent(new CustomEvent("topbar:frame", { detail: { smoothY } }));
+    const glass = smoothstep(0, 0.5, p);
+    const shrink = smoothstep(0.12, 1, p);
+    bar.style.setProperty("--glass", glass.toFixed(4));
+    bar.style.setProperty("--shrink", shrink.toFixed(4));
+    bar.dispatchEvent(new CustomEvent("topbar:frame", { detail: { smoothY, glass, shrink } }));
   };
 
   const tick = (time: number) => {
@@ -126,6 +128,7 @@ function createNameMorph(bar: HTMLElement, name: HTMLElement) {
     name.style.fontWeight = "";
     name.style.letterSpacing = "";
     name.style.opacity = "";
+    name.style.pointerEvents = "";
   };
 
   const measure = () => {
@@ -169,6 +172,9 @@ function createNameMorph(bar: HTMLElement, name: HTMLElement) {
 
     const landed = progress >= 1;
     name.style.opacity = landed ? "0" : "";
+    // Once it has left its place the name sits over the bar (invisibly, after
+    // landing); it must not take the pointer from the wordmark underneath.
+    name.style.pointerEvents = progress > 0 ? "none" : "";
     bar.toggleAttribute("data-named", landed);
   };
 
@@ -273,6 +279,264 @@ function initNavGlass(): void {
     );
     bar.addEventListener("pointerleave", () => header.removeAttribute("data-hovering"));
   }
+}
+
+/** Blur of the lens's frosted middle and its edge displacement, in px. */
+const LENS_FROST = 6;
+const LENS_BEND = 28;
+
+/**
+ * Paints the lens map for a w x h capsule as a data URL. Red and green hold
+ * the displacement (128 = none): inside a bezel along the edge every pixel
+ * samples from further in, growing toward the rim, so what passes under the
+ * edge is squeezed and bent the way a thick, rounded pane would bend it.
+ * Blue holds how much frost that pixel gets: little at the rim, where the
+ * refraction should stay crisp, full in the middle, where the labels sit.
+ */
+function paintLensMap(w: number, h: number, radius: number): string {
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return "";
+  const image = ctx.createImageData(w, h);
+  const r = Math.min(radius, w / 2, h / 2);
+  const bezel = Math.min(r * 0.5, 13);
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const px = x + 0.5 - w / 2;
+      const py = y + 0.5 - h / 2;
+      // Signed distance to the rounded rectangle's edge and its outward normal.
+      const ax = Math.abs(px) - (w / 2 - r);
+      const ay = Math.abs(py) - (h / 2 - r);
+      let depth: number;
+      let nx = 0;
+      let ny = 0;
+      if (ax > 0 && ay > 0) {
+        const len = Math.hypot(ax, ay);
+        depth = r - len;
+        nx = (ax / len) * Math.sign(px);
+        ny = (ay / len) * Math.sign(py);
+      } else if (ax > ay) {
+        depth = r - ax;
+        nx = Math.sign(px);
+      } else {
+        depth = r - ay;
+        ny = Math.sign(py);
+      }
+      const t = clamp01(1 - Math.max(0, depth) / bezel);
+      const bend = t * t;
+      const i = (y * w + x) * 4;
+      image.data[i] = 128 - nx * bend * 127;
+      image.data[i + 1] = 128 - ny * bend * 127;
+      image.data[i + 2] = 255 * (0.4 + 0.6 * smoothstep(0, 0.8, depth / bezel));
+      image.data[i + 3] = 255;
+    }
+  }
+  ctx.putImageData(image, 0, 0);
+  return canvas.toDataURL();
+}
+
+/**
+ * The bar as a lens. Only Chromium runs SVG filters on a backdrop, so this is
+ * an enhancement there (html.lens swaps the bar's backdrop-filter for
+ * #bar-lens); everywhere else the bar keeps its plain blur. The map is painted
+ * for the settled pill and stretched over the bar while it contracts, when
+ * the bend is still weak; bend and frost follow the same scroll phases as the
+ * rest of the bar's material.
+ */
+function initBarLens(): void {
+  const header = document.querySelector<HTMLElement>("[data-topbar]");
+  const bar = header?.querySelector<HTMLElement>("[data-bar]");
+  const map = header?.querySelector<SVGFEImageElement>("[data-lens-map]");
+  const bend = header?.querySelector<SVGFEDisplacementMapElement>("[data-lens-bend]");
+  const frost = header?.querySelector<SVGFEGaussianBlurElement>("[data-lens-frost]");
+  const brands = (navigator as Navigator & { userAgentData?: { brands: { brand: string }[] } }).userAgentData?.brands;
+  if (!header || !bar || !map || !bend || !frost || !brands?.some((b) => b.brand === "Chromium")) return;
+
+  let mapW = 0;
+  let mapH = 0;
+  const paint = (w: number, h: number) => {
+    w = Math.round(w);
+    h = Math.round(h);
+    if (w < 1 || h < 1 || (w === mapW && h === mapH)) return;
+    const url = paintLensMap(w, h, h / 2);
+    if (!url) return;
+    mapW = w;
+    mapH = h;
+    map.setAttribute("href", url);
+  };
+
+  /** The pill's size once fully contracted, from the same numbers as the CSS. */
+  const settledSize = () => {
+    const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    const style = getComputedStyle(header);
+    const inner = header.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+    return { w: Math.min(46 * rem, inner), h: 3.25 * rem };
+  };
+
+  const update = (glass: number, shrink: number) => {
+    const { width, height } = bar.getBoundingClientRect();
+    if (shrink === 1) paint(width, height);
+    map.setAttribute("width", width.toFixed(1));
+    map.setAttribute("height", height.toFixed(1));
+    bend.setAttribute("scale", (LENS_BEND * shrink * shrink).toFixed(2));
+    frost.setAttribute("stdDeviation", (LENS_FROST * glass).toFixed(2));
+  };
+
+  const read = (name: string) => parseFloat(header.style.getPropertyValue(name)) || 0;
+  const { w, h } = settledSize();
+  paint(w, h);
+  update(read("--glass"), read("--shrink"));
+  document.documentElement.classList.add("lens");
+
+  header.addEventListener("topbar:frame", (e) => {
+    const { glass, shrink } = (e as CustomEvent<{ glass: number; shrink: number }>).detail;
+    update(glass, shrink);
+  });
+  let resizing = 0;
+  window.addEventListener("resize", () => {
+    cancelAnimationFrame(resizing);
+    resizing = requestAnimationFrame(() => {
+      const size = settledSize();
+      paint(size.w, size.h);
+      update(read("--glass"), read("--shrink"));
+    });
+  });
+}
+
+/**
+ * Adaptive glass. The bar is clear enough that a dark screenshot passing
+ * behind would swallow dark labels, so, like a small Liquid Glass bar, it
+ * flips to the other scheme when what is behind it calls for it. Each product
+ * screenshot is reduced once to a small grid of luminance; while scrolling,
+ * the cells under the bar are averaged with the page colour around them, and
+ * the bar flips when the mean crosses a threshold (with hysteresis, so it
+ * does not flicker at the boundary).
+ */
+function initBarAdapt(): void {
+  const header = document.querySelector<HTMLElement>("[data-topbar]");
+  const bar = header?.querySelector<HTMLElement>("[data-bar]");
+  if (!header || !bar || !("IntersectionObserver" in window)) return;
+
+  const COLS = 16;
+  const ROWS = 10;
+  const root = document.documentElement;
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+  const grids = new WeakMap<HTMLImageElement, Float32Array>();
+  const near = new Set<HTMLImageElement>();
+
+  const sample = (img: HTMLImageElement) => {
+    if (!img.naturalWidth) return;
+    try {
+      const canvas = document.createElement("canvas");
+      canvas.width = COLS;
+      canvas.height = ROWS;
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      if (!ctx) return;
+      ctx.drawImage(img, 0, 0, COLS, ROWS);
+      const { data } = ctx.getImageData(0, 0, COLS, ROWS);
+      const grid = new Float32Array(COLS * ROWS);
+      for (let i = 0; i < grid.length; i++) {
+        grid[i] = (0.2126 * data[i * 4] + 0.7152 * data[i * 4 + 1] + 0.0722 * data[i * 4 + 2]) / 255;
+      }
+      grids.set(img, grid);
+    } catch {
+      // A canvas the image has tainted cannot be read; the bar just stays as it is.
+    }
+  };
+
+  const pageIsDark = () => (root.dataset.theme ? root.dataset.theme === "dark" : prefersDark.matches);
+
+  let over: "light" | "dark" | null = null;
+  let flipTimer = 0;
+  const evaluate = () => {
+    const page = pageIsDark() ? "dark" : "light";
+    const b = bar.getBoundingClientRect();
+    let lit = 0;
+    let covered = 0;
+    for (const img of near) {
+      const grid = grids.get(img);
+      if (!grid) continue;
+      const r = img.getBoundingClientRect();
+      const x0 = Math.max(b.left, r.left);
+      const x1 = Math.min(b.right, r.right);
+      const y0 = Math.max(b.top, r.top);
+      const y1 = Math.min(b.bottom, r.bottom);
+      if (x1 <= x0 || y1 <= y0) continue;
+      const c0 = Math.floor(((x0 - r.left) / r.width) * COLS);
+      const c1 = Math.min(COLS - 1, Math.floor(((x1 - r.left) / r.width) * COLS));
+      const r0 = Math.floor(((y0 - r.top) / r.height) * ROWS);
+      const r1 = Math.min(ROWS - 1, Math.floor(((y1 - r.top) / r.height) * ROWS));
+      let sum = 0;
+      let count = 0;
+      for (let row = r0; row <= r1; row++) {
+        for (let col = c0; col <= c1; col++) {
+          sum += grid[row * COLS + col];
+          count++;
+        }
+      }
+      const area = (x1 - x0) * (y1 - y0);
+      lit += (sum / count) * area;
+      covered += area;
+    }
+    const total = b.width * b.height;
+    const mean = total > 0 ? (lit + (total - covered) * (page === "dark" ? 0.1 : 0.98)) / total : 1;
+    const current = over ?? page;
+    const next = mean < 0.42 ? "dark" : mean > 0.56 ? "light" : current;
+    const value = next === page ? null : next;
+    if (value === over) return;
+    over = value;
+    header.setAttribute("data-flipping", "");
+    window.clearTimeout(flipTimer);
+    flipTimer = window.setTimeout(() => header.removeAttribute("data-flipping"), 500);
+    if (value) header.setAttribute("data-over", value);
+    else header.removeAttribute("data-over");
+  };
+
+  // Only screenshots near the top of the viewport can be under the bar.
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        const img = entry.target as HTMLImageElement;
+        if (entry.isIntersecting) near.add(img);
+        else near.delete(img);
+      }
+      evaluate();
+    },
+    { rootMargin: "0px 0px -80% 0px" },
+  );
+  for (const img of document.querySelectorAll<HTMLImageElement>(".frame img")) {
+    if (img.complete) sample(img);
+    img.addEventListener("load", () => {
+      sample(img);
+      evaluate();
+    });
+    io.observe(img);
+  }
+
+  header.addEventListener("topbar:frame", evaluate);
+  prefersDark.addEventListener("change", evaluate);
+  new MutationObserver(evaluate).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+}
+
+/**
+ * Illumination: glass buttons light from within under a fine pointer. This
+ * only reports where the pointer is over the button; the glow is CSS.
+ */
+function initGlassGlow(): void {
+  if (!window.matchMedia("(pointer: fine)").matches) return;
+  document.addEventListener(
+    "pointermove",
+    (e) => {
+      const el = (e.target as Element | null)?.closest?.<HTMLElement>(".btn, .btn-group");
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      el.style.setProperty("--px", `${(e.clientX - r.left).toFixed(0)}px`);
+      el.style.setProperty("--py", `${(e.clientY - r.top).toFixed(0)}px`);
+    },
+    { passive: true },
+  );
 }
 
 /**
@@ -420,6 +684,9 @@ function initCopyEmail(): void {
 export function initInteractions(): void {
   initTopBar();
   initNavGlass();
+  initBarLens();
+  initBarAdapt();
+  initGlassGlow();
   initReveals();
   initScrollSpy();
   initFrames();

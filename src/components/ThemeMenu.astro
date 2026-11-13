@@ -53,14 +53,17 @@ const options = [
     right: max(1rem, calc((100vw - var(--container-page)) / 2 + 1rem));
     margin: 0;
     width: 11rem;
-    border-radius: 0.875rem;
+    border-radius: 1.125rem;
     border: 1px solid var(--glass-edge);
-    background: var(--glass-fill);
-    -webkit-backdrop-filter: blur(24px) saturate(1.8);
-    backdrop-filter: blur(24px) saturate(1.8);
+    background-color: var(--glass-fill);
+    background-image: linear-gradient(to bottom, var(--glass-sheen), transparent 40%);
+    background-origin: border-box;
+    -webkit-backdrop-filter: blur(24px) saturate(1.9);
+    backdrop-filter: blur(24px) saturate(1.9);
     box-shadow:
-      inset 0 1px 0 var(--glass-rim),
-      0 12px 32px -8px var(--shade-3);
+      var(--glass-bevel),
+      0 2px 4px -2px var(--glass-drop),
+      0 1.25rem 2.5rem -0.875rem var(--glass-drop);
     padding: 0.3rem;
     color: var(--ink);
     opacity: 0;
@@ -73,6 +76,18 @@ const options = [
       scale 0.25s cubic-bezier(0.16, 1, 0.3, 1),
       overlay 0.25s allow-discrete,
       display 0.25s allow-discrete;
+  }
+  /* The menu is a child of the bar, which may have flipped its scheme to
+     suit what is behind it; the menu is too large to flip and keeps the
+     page's own. */
+  .theme-popover {
+    color-scheme: light dark;
+  }
+  :global(:root[data-theme="light"]) .theme-popover {
+    color-scheme: light;
+  }
+  :global(:root[data-theme="dark"]) .theme-popover {
+    color-scheme: dark;
   }
   /* Hidden unless the browser opens it as a popover. Browsers without the
      Popover API (Safari before 17) never match :popover-open, so the menu
@@ -93,6 +108,11 @@ const options = [
       scale: 0.98;
     }
   }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .theme-popover {
+      background-color: var(--raised);
+    }
+  }
   @supports (position-anchor: --a) {
     .theme-menu [data-theme-trigger] {
       anchor-name: --theme-trigger;
@@ -110,15 +130,26 @@ const options = [
     min-height: 2.5rem;
     align-items: center;
     gap: 0.6rem;
-    border-radius: 0.6rem;
+    border-radius: 0.8125rem;
     padding: 0 0.7rem;
     font-size: 0.9375rem;
     color: var(--ink-2);
     text-align: left;
+    box-shadow:
+      inset 0 1px 0 transparent,
+      inset 0 0 0 1px transparent;
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease,
+      box-shadow 0.25s ease;
   }
+  /* The option under the pointer or the keyboard is a thin fill on the panel. */
   .theme-option:hover,
   .theme-option:focus-visible {
-    background: var(--accent-soft);
+    background-color: var(--glass-tint);
+    box-shadow:
+      inset 0 1px 0 light-dark(oklch(1 0 0 / 0.75), oklch(1 0 0 / 0.14)),
+      inset 0 0 0 1px light-dark(oklch(1 0 0 / 0.35), oklch(1 0 0 / 0.05));
     color: var(--ink);
     outline: none;
   }

@@ -23,6 +23,36 @@ const navItems = [
     <!-- Liquid glass layers: a light-catching rim, a specular highlight that
          follows the pointer, and a capsule that slides under the hovered or
          focused control. Purely decorative. -->
+    <!-- The lens: where the browser can run an SVG filter on the backdrop
+         (Chromium), the bar refracts what passes under its rounded edge and
+         frosts only its middle. scripts/interactions.ts builds the map. -->
+    <svg class="bar-lens" width="0" height="0" aria-hidden="true" focusable="false">
+      <filter id="bar-lens" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+        <feImage data-lens-map x="0" y="0" width="1" height="1" preserveAspectRatio="none" result="map"></feImage>
+        <feDisplacementMap
+          data-lens-bend
+          in="SourceGraphic"
+          in2="map"
+          scale="0"
+          xChannelSelector="R"
+          yChannelSelector="G"
+          result="bent"></feDisplacementMap>
+        <feGaussianBlur data-lens-frost in="bent" stdDeviation="0" result="soft"></feGaussianBlur>
+        <!-- A blur fades to transparent toward the filter's edge, which would
+             let the sharp backdrop show through the frost along the whole
+             rim; restoring full alpha keeps the frost opaque to its edge. -->
+        <feComponentTransfer in="soft" result="frost">
+          <feFuncA type="discrete" tableValues="1 1"></feFuncA>
+        </feComponentTransfer>
+        <feColorMatrix in="map" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 1 0 0" result="mask"
+        ></feColorMatrix>
+        <feComposite in="frost" in2="mask" operator="in" result="middle"></feComposite>
+        <feMerge>
+          <feMergeNode in="bent"></feMergeNode>
+          <feMergeNode in="middle"></feMergeNode>
+        </feMerge>
+      </filter>
+    </svg>
     <span class="bar-rim" aria-hidden="true"></span>
     <span class="bar-specular" aria-hidden="true"></span>
     <span class="nav-glass" aria-hidden="true" data-nav-glass></span>
@@ -47,7 +77,7 @@ const navItems = [
                 href={`#${item.id}`}
                 data-nav-link
                 data-glass-target
-                class="nav-link flex min-h-11 items-center rounded-full px-1 text-sm whitespace-nowrap text-ink-3 transition-colors hover:text-ink min-[480px]:px-2.5 min-[480px]:text-[0.9375rem] md:px-3"
+                class="nav-link flex min-h-11 items-center rounded-full px-1 text-sm whitespace-nowrap transition-colors min-[480px]:px-2.5 min-[480px]:text-[0.9375rem] md:px-3"
               >
                 {item.label}
               </a>
@@ -119,29 +149,61 @@ const navItems = [
     --bar-inset: 0.375rem;
     --bar-pad: clamp(0.75rem, 4vw, 2.5rem);
     padding-inline: calc(var(--bar-pad) - (var(--bar-pad) - var(--bar-inset)) * var(--shrink));
-    border: 1px solid color-mix(in oklch, var(--glass-edge) calc(var(--glass) * 100%), transparent);
+    /* --g is the share of the glass material present at this scroll position. */
+    --g: calc(var(--glass) * 100%);
+    /* One hairline is the whole contour: the rim ring below lights part of
+       it, and nothing else is drawn along the edge. */
+    border: 1px solid color-mix(in oklch, var(--glass-edge) calc(var(--glass) * 75%), transparent);
     border-radius: 1.75rem;
-    background: color-mix(in oklch, var(--glass-fill) calc(var(--glass) * 100%), transparent);
-    -webkit-backdrop-filter: blur(calc(20px * var(--glass))) saturate(calc(1 + 0.8 * var(--glass)));
-    backdrop-filter: blur(calc(20px * var(--glass))) saturate(calc(1 + 0.8 * var(--glass)));
+    background: color-mix(in oklch, var(--glass-clear) var(--g), transparent);
+    -webkit-backdrop-filter: blur(calc(10px * var(--glass))) saturate(calc(1 + 1 * var(--glass)));
+    backdrop-filter: blur(calc(10px * var(--glass))) saturate(calc(1 + 1 * var(--glass)));
     box-shadow:
-      inset 0 1px 0 color-mix(in oklch, var(--glass-rim) calc(var(--glass) * 100%), transparent),
-      inset 0 -1px 0 color-mix(in oklch, var(--glass-edge) calc(var(--glass) * 100%), transparent),
-      0 calc(10px * var(--glass)) 30px -10px
-        color-mix(in oklch, var(--shade-3) calc(var(--glass) * 100%), transparent),
-      0 2px 6px -2px color-mix(in oklch, var(--shade-2) calc(var(--glass) * 100%), transparent);
+      inset 0 0 0.625rem -0.0625rem color-mix(in oklch, var(--glass-glow) var(--g), transparent),
+      inset 0 -0.625rem 0.875rem -0.75rem color-mix(in oklch, var(--glass-low) var(--g), transparent),
+      0 1px 2px -1px color-mix(in oklch, var(--glass-drop) var(--g), transparent),
+      0 calc(0.625rem * var(--glass)) 1.25rem -0.625rem color-mix(in oklch, var(--glass-drop) var(--g), transparent),
+      0 calc(1.75rem * var(--glass)) 3rem -1.25rem color-mix(in oklch, var(--glass-drop) var(--g), transparent);
   }
-  /* A faint specular sheen across the upper half of the glass. */
+  /* Adaptive glass: like a small Liquid Glass bar, it flips between its
+     light and dark style to suit what is behind it (data-over, set by
+     scripts/interactions.ts from the screenshots passing under it). Every
+     colour inside is a light-dark() token, so one property flips them all. */
+  .topbar[data-over="dark"] .bar {
+    color-scheme: dark;
+  }
+  .topbar[data-over="light"] .bar {
+    color-scheme: light;
+  }
+  .topbar[data-flipping] .bar,
+  .topbar[data-flipping] .wordmark,
+  .topbar[data-flipping] .nav-link,
+  .topbar[data-flipping] .nav-glass,
+  .topbar[data-flipping] .bar :global(.icon-btn) {
+    transition:
+      color 0.45s ease,
+      background-color 0.45s ease,
+      border-color 0.45s ease,
+      box-shadow 0.45s ease;
+  }
+
+  /* The lens replaces the plain blur: its filter bends the backdrop along the
+     bar's edge and blurs it itself (strength set from the same scroll phases). */
+  :global(html.lens) .bar {
+    -webkit-backdrop-filter: url(#bar-lens) saturate(calc(1 + 1 * var(--glass)));
+    backdrop-filter: url(#bar-lens) saturate(calc(1 + 1 * var(--glass)));
+  }
+  .bar-lens {
+    position: absolute !important;
+    pointer-events: none;
+  }
+  /* A sheen across the upper half of the glass. */
   .bar::before {
     content: "";
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: linear-gradient(
-      to bottom,
-      light-dark(oklch(1 0 0 / 0.45), oklch(1 0 0 / 0.06)),
-      transparent 55%
-    );
+    background: linear-gradient(to bottom, var(--glass-sheen), transparent 52%);
     opacity: var(--glass);
     pointer-events: none;
   }
@@ -149,9 +211,9 @@ const navItems = [
     position: relative;
   }
 
-  /* Liquid glass, layer 1: the rim. A 1px gradient ring, bright at the top
-     left where light enters, fading along the sides, catching a little light
-     again at the bottom right, like the bevel of a thick glass edge. */
+  /* Liquid glass, layer 1: the rim. A gradient ring over the contour, bright
+     at the top left where light enters, fading along the sides, catching a
+     little light again at the bottom right, like the bevel of thick glass. */
   .bar-rim {
     position: absolute !important;
     inset: -1px;
@@ -159,10 +221,10 @@ const navItems = [
     padding: 1px;
     background: linear-gradient(
       135deg,
-      light-dark(oklch(1 0 0 / 0.95), oklch(1 0 0 / 0.28)),
-      transparent 38%,
-      transparent 62%,
-      light-dark(oklch(1 0 0 / 0.6), oklch(1 0 0 / 0.12))
+      light-dark(oklch(1 0 0), oklch(1 0 0 / 0.3)),
+      transparent 36%,
+      transparent 64%,
+      light-dark(oklch(1 0 0 / 0.8), oklch(1 0 0 / 0.14))
     );
     -webkit-mask:
       linear-gradient(#000 0 0) content-box,
@@ -182,7 +244,7 @@ const navItems = [
     border-radius: inherit;
     background: radial-gradient(
       9rem 4rem at var(--sx, 50%) var(--sy, 0%),
-      light-dark(oklch(1 0 0 / 0.75), oklch(1 0 0 / 0.1)),
+      light-dark(oklch(1 0 0 / 0.5), oklch(1 0 0 / 0.1)),
       transparent 70%
     );
     opacity: 0;
@@ -193,7 +255,7 @@ const navItems = [
     opacity: var(--glass);
   }
 
-  /* Layer 3: the hover capsule. A small lens of glass that appears under the
+  /* Layer 3: the hover capsule. A brighter lens that appears under the
      hovered or focused control and flows between controls. Its two edges are
      positioned separately (--gl, --gr, from scripts/interactions.ts) and the
      leading edge in the direction of travel moves faster than the trailing
@@ -206,16 +268,13 @@ const navItems = [
     right: var(--gr, 100%);
     height: 2.5rem;
     border-radius: 9999px;
-    background: light-dark(oklch(1 0 0 / 0.6), oklch(1 0 0 / 0.09));
-    -webkit-backdrop-filter: blur(8px) saturate(1.8) brightness(1.05);
-    backdrop-filter: blur(8px) saturate(1.8) brightness(1.05);
+    /* A thin fill with a lit edge: Liquid Glass never stacks a pane on a
+       pane, so what sits on the bar is part of it. */
+    background-color: var(--glass-tint);
     box-shadow:
-      inset 0 1px 0 light-dark(oklch(1 0 0 / 1), oklch(1 0 0 / 0.2)),
-      inset 0 -1px 0 light-dark(oklch(0.25 0.02 270 / 0.07), oklch(0 0 0 / 0.35)),
-      inset 0 0 0 1px light-dark(oklch(0.25 0.02 270 / 0.05), oklch(1 0 0 / 0.06)),
-      0 1px 2px var(--shade-1),
-      0 6px 16px -6px var(--shade-2);
-    transform: translateY(-50%) scale(0.92);
+      inset 0 1px 0 light-dark(oklch(1 0 0 / 0.75), oklch(1 0 0 / 0.14)),
+      inset 0 0 0 1px light-dark(oklch(1 0 0 / 0.35), oklch(1 0 0 / 0.05));
+    transform: translateY(-50%) scale(0.9);
     opacity: 0;
     pointer-events: none;
     --lead: 0.35s;
@@ -244,9 +303,18 @@ const navItems = [
       transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
       opacity 0.22s ease;
   }
-  /* The capsule replaces the plain hover fill on bar controls. */
-  .bar :global(.icon-btn:hover) {
-    background: transparent;
+  /* The capsule replaces the lens an icon button would form on its own. And
+     nothing inside the bar blurs again: the bar has already frosted what is
+     behind it, and a nested backdrop would only see the bar's own interior. */
+  .bar :global(.icon-btn),
+  .bar :global(.btn) {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .bar :global(.icon-btn:hover),
+  .bar :global(.icon-btn:focus-visible) {
+    background-color: transparent;
+    box-shadow: none;
   }
 
   /* Resume: a sheen sweeps across the button on hover. */
@@ -289,10 +357,36 @@ const navItems = [
     }
   }
 
+  /* Resume in the bar: a lens that fills with ink (--fill). The highlights
+     of clear glass (white sheen, white rim) would turn ink milky, so they
+     fade to the quiet ones of the primary button as the fill comes in. */
   .resume-btn {
-    border-color: color-mix(in oklch, var(--line-strong) calc((1 - var(--fill)) * 100%), transparent);
-    background: color-mix(in oklch, var(--ink) calc(var(--fill) * 100%), var(--raised));
-    color: color-mix(in oklch, var(--bg) calc(var(--fill) * 100%), var(--ink));
+    --f: calc(var(--fill) * 100%);
+    border-color: color-mix(in oklch, var(--ink) var(--f), transparent);
+    background-color: color-mix(in oklch, var(--ink) var(--f), var(--glass-tint));
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--primary-sheen) var(--f), transparent),
+      transparent 58%
+    );
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklch, var(--primary-rim) var(--f), light-dark(oklch(1 0 0 / 0.75), oklch(1 0 0 / 0.14))),
+      0 0.5rem 1rem -0.5rem color-mix(in oklch, var(--glass-drop) var(--f), transparent);
+    color: color-mix(in oklch, var(--bg) var(--f), var(--ink));
+    --glow: color-mix(in oklch, light-dark(oklch(1 0 0 / 0.2), oklch(1 0 0 / 0.7)) var(--f), var(--glass-glow));
+  }
+  .resume-btn:hover {
+    background-color: color-mix(
+      in oklch,
+      var(--ink-2) var(--f),
+      light-dark(oklch(0.25 0.02 270 / 0.12), oklch(1 0 0 / 0.18))
+    );
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklch, var(--primary-rim) var(--f), light-dark(oklch(1 0 0 / 0.75), oklch(1 0 0 / 0.14))),
+      0 0.75rem 1.25rem -0.625rem color-mix(in oklch, var(--glass-drop) var(--f), transparent);
+  }
+  .resume-btn::after {
+    opacity: calc(1 - 0.55 * var(--fill));
   }
   .resume-btn :global(svg) {
     color: inherit;
@@ -384,6 +478,17 @@ const navItems = [
     opacity: 1;
   }
 
+  /* On glass the links and the theme glyph carry more ink than on bare
+     paper: the bar is clear enough that a dark screenshot passing behind
+     shows through, and tertiary ink would sink into it. */
+  .nav-link,
+  .bar :global(.icon-btn) {
+    color: color-mix(in oklch, var(--ink) calc(var(--glass) * 62%), var(--ink-3));
+  }
+  .bar :global(.icon-btn:hover) {
+    color: var(--ink);
+  }
+  .nav-link:hover,
   .nav-link[aria-current="true"] {
     color: var(--ink);
   }

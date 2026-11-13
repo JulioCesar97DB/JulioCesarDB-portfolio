@@ -72,7 +72,7 @@ typography:
 rounded:
   focus: "4px"
   nav: "0.5rem"
-  control: "0.625rem"
+  control: "9999px"
   frame-inner: "0.6875rem"
   frame: "1rem"
   menu: "0.875rem"
@@ -91,7 +91,7 @@ components:
     backgroundColor: "{colors.paper-raised}"
     textColor: "{colors.ink}"
     rounded: "{rounded.control}"
-    padding: "0 1rem"
+    padding: "0 1.125rem"
     height: "2.75rem"
   button-hover:
     backgroundColor: "{colors.paper-raised}"
@@ -100,7 +100,7 @@ components:
     backgroundColor: "{colors.ink}"
     textColor: "{colors.paper}"
     rounded: "{rounded.control}"
-    padding: "0 1rem"
+    padding: "0 1.125rem"
     height: "2.75rem"
   button-primary-hover:
     backgroundColor: "{colors.ink-secondary}"
@@ -110,7 +110,7 @@ components:
     rounded: "{rounded.control}"
     size: "2.75rem"
   icon-button-hover:
-    backgroundColor: "{colors.paper-surface}"
+    backgroundColor: "{colors.paper-raised}"
     textColor: "{colors.ink}"
   link:
     textColor: "{colors.ultramarine}"
@@ -162,12 +162,12 @@ A restrained cool-grey ladder with a single saturated ultramarine-violet voice; 
 ### Neutral
 - **Cool Paper** (`paper` / `night`): page background.
 - **Paper Band** (`paper-surface` / `night-surface`): full-bleed tonal bands that separate the Experience and Contact sections, icon-button hover fill, and the image placeholder inside frames.
-- **Raised Plate** (`paper-raised` / `night-raised`): the face of buttons and product frames, one step lighter than the page.
+- **Raised Plate** (`paper-raised` / `night-raised`): the face of product frames, one step lighter than the page; also the opaque fallback for glass where `backdrop-filter` is missing.
 - **Ink** (`ink` / `night-ink`): headings, primary-button fill, emphasised body (lead paragraph, metrics, positions, definition values).
 - **Ink Secondary** (`ink-secondary` / `night-ink-secondary`): default body text and fact items; primary-button hover fill.
 - **Ink Tertiary** (`ink-tertiary` / `night-ink-tertiary`): metadata, roles, tech stacks, definition terms, nav links at rest, icon-button glyphs.
 - **Hairline** (`hairline` / `night-hairline`): every structural rule: list dividers, section borders, frame edge, the scrolled top-bar underline.
-- **Hairline Strong** (`hairline-strong` / `night-hairline-strong`): button borders, the scrollbar thumb, and the short dash that marks Experience highlights.
+- **Hairline Strong** (`hairline-strong` / `night-hairline-strong`): the scrollbar thumb, jump-link underlines, and the short dash that marks Experience highlights.
 
 ### Named Rules
 **The Reserved Accent Rule.** Ultramarine is spent only on things a visitor can act on (links, focus, the frame a pointer is over, an action's confirmation). Headings, metrics, markers and backgrounds stay neutral.
@@ -207,15 +207,26 @@ The hero is left-aligned with deep top padding (8 → 10 → 12rem) so the top e
 
 ## Elevation & Depth
 
-Flat by default. Depth is carried by tonal steps (page, band, raised plate) and hairlines. Content casts exactly one shadow: the product frame, with a three-layer soft shadow whose colour is a tinted cool grey in light and a near-black in dark. Chrome that floats above content (the glass top bar once scrolled, and the theme menu) is the only other lifted layer, and it is glass, not a plate.
+Depth is carried by tonal steps (page, band, raised plate) and hairlines. Two kinds of thing are lifted. Content casts exactly one shadow: the product frame, with a three-layer soft shadow whose colour is a tinted cool grey in light and a near-black in dark. Everything a visitor operates (the top bar once scrolled, the theme menu, buttons) is glass, and glass casts its own soft drop.
 
 ### Glass
-The one place the page uses glass, because the bar genuinely floats over moving content. Fill `--glass-fill` (white 72% / ink 74%), `backdrop-filter: blur(20px) saturate(1.8)`, a 1px edge `--glass-edge`, a bright inset top rim `--glass-rim` (light catching the edge), a faint specular gradient over the upper half, and a soft drop (`0 10px 30px -10px` + `0 2px 6px -2px`). Without backdrop-filter support it falls back to the opaque raised plate. The theme menu uses the same recipe at blur 24px.
+Glass is the material of controls and floating chrome; content surfaces (product frames, text, sections) stay solid. Chosen 2026-11-12 at the owner's request, after Apple's Liquid Glass. There are two fills over one set of edges, all `light-dark()` tokens in global.css:
+- **Panel** (`--glass-fill`: cool grey 93% lightness at 66% / ink at 68%): the top bar and the theme menu. In light it is a tint, not white, so it reads as a surface on white paper and a brighter lens can sit on it, the way a segmented control's thumb sits on its track.
+- **Lens** (`--glass-lens` white 50% / white 8%, `--glass-lens-hover` white 92% / white 13%): buttons over the page, and the lens an icon button forms on hover.
+- **Edges:** `--glass-edge` (the 1px contour), `--glass-rim` (light on the top edge, inset), `--glass-low` (shade inside the bottom edge, a hard 1px line plus a soft inner falloff), `--glass-sheen` (a highlight fading out over the upper half), `--glass-drop` (the shadow colour). `--glass-bevel` and `--glass-lift` / `--glass-lift-hover` compose them; use those rather than rebuilding the stack.
+- **Clear** (`--glass-clear`: near-white at 40% / ink at 46%): the top bar only. Following Apple's own account of Liquid Glass, the bar is defined by light on its edge and the bend of what passes behind, not by a tint, so content scrolling under it shows through and colours it.
+- **Fill on glass** (`--glass-tint`: ink 7.5% / white 12%): anything that sits on a pane (the hover capsule, the hovered menu option, the bar's Resume before it fills) is a thin fill with a lit top edge, never a second pane. No glass on glass.
+- **Glow** (`--glass-glow`): light gathered just inside a pane's edge (part of `--glass-bevel`), and the illumination that rises under a fine pointer on buttons (`--px/--py`, 70% on hover, full on press).
+- **Backdrop:** the menu `blur(24px) saturate(1.9)`, lenses `blur(7px) saturate(2)`, the bar `blur(10px) saturate(2)` (6px of frost where the lens runs). Nothing inside the bar blurs again. Without `backdrop-filter` every glass surface falls back to the opaque raised plate.
 
-Three liquid-glass layers sit inside the bar, all scaled by `--glass`:
+**Adaptive bar.** Like a small Liquid Glass bar, it flips between its light and dark style to suit what is behind it. Each product screenshot is reduced once to a 16×10 luminance grid; while scrolling, the cells under the bar are averaged with the page colour around them, and below 0.42 the bar takes the dark scheme, above 0.56 the light one (hysteresis between). The flip is `color-scheme` on `.bar` (`data-over` on the header), so every `light-dark()` token inside follows, eased over 0.45s. The theme menu is too large to flip and keeps the page's scheme.
+
+**The bar as a lens (Chromium only).** Where the browser can run an SVG filter on a backdrop, `html.lens` swaps the bar's blur for `#bar-lens`: a displacement map painted on a canvas for the settled pill (red/green = offset along the inward normal, growing toward the rim across a bezel of half the radius, 13px at most) bends what passes under the rounded edge, and the map's blue channel masks the frost so the rim stays crisp while the middle, where the labels sit, is fully blurred (6px). Bend (28px) and frost follow the same scroll phases as the rest of the material. Safari and Firefox keep the plain blur; the difference is decoration, never legibility. The bar's contour is a single 1px hairline with the rim ring lighting part of it; no other line is drawn along its edge.
+
+Three more layers sit inside the bar, all scaled by `--glass`:
 - **Rim:** a 1px gradient ring (masked to the border) bright at the top left, fading along the sides and catching light again at the bottom right, like the bevel of thick glass.
-- **Specular:** a soft 9×4rem radial highlight that follows a fine pointer across the bar while it is hovered.
-- **Hover capsule:** a small lens of glass (white 60% / white 9%, blur 8px, saturate 1.8, bright inset top rim, faint inner ring, soft drop) that appears under the hovered or keyboard-focused control (wordmark, nav links, theme button) and flows between controls: its two edges animate separately on an exponential ease-out, the leading edge in the direction of travel at 0.35s and the trailing edge at 0.7s, so it stretches as it travels and draws back in on arrival, with no overshoot. It blooms in place on first appearance and tracks its control while the bar contracts. It replaces the plain hover fill of bar icon buttons.
+- **Specular:** a soft 9×4rem radial highlight (white 50% / 10%) that follows a fine pointer across the bar while it is hovered. Kept weak in light so it never washes out the capsule.
+- **Hover capsule:** a thin fill (`--glass-tint`, lit top edge) that appears under the hovered or keyboard-focused control (wordmark, nav links, theme button) and flows between controls: its two edges animate separately on an exponential ease-out, the leading edge in the direction of travel at 0.35s and the trailing edge at 0.7s, so it stretches as it travels and draws back in on arrival, with no overshoot. It blooms in place on first appearance and tracks its control while the bar contracts. It replaces the lens bar icon buttons would form on their own.
 - **Resume sheen:** on hover a diagonal highlight sweeps across the button (0.7s, expo-out).
 
 ### Shadow Vocabulary
@@ -223,24 +234,24 @@ Three liquid-glass layers sit inside the bar, all scaled by `--glass`:
 - **Frame lift, dark** (`box-shadow: 0 1px 1px hsl(270 30% 2% / 0.3), 0 6px 14px -4px hsl(270 30% 2% / 0.4), 0 30px 60px -20px hsl(270 30% 2% / 0.7)`): the same frames in dark mode.
 
 ### Named Rules
-**The One Lifted Object Rule.** Among content, only screenshots of real work are raised. Text, buttons, lists and sections never cast shadows; only floating chrome (glass bar, theme menu) may.
+**The One Lifted Object Rule.** Among content, only screenshots of real work are raised. Text, lists and sections never cast shadows; glass (bar, menu, buttons) casts the soft `--glass-drop` and nothing harder.
 
 ## Shapes
 
-Gently rounded and consistent: controls at 10px (0.625rem), nav and wordmark hit areas at 8px, product frames at 16px with the screenshot inset at 11px so the inner corner stays concentric inside the 6px mat. The focus ring is a 2px accent outline offset 3px with a 4px radius. Borders are always 1px. Screenshots hold a fixed 900:560 ratio. List markers are short 8px horizontal dashes, never bullets or glyphs. Icons are one inline stroke set on a 24px grid at 1.75 stroke; GitHub, LinkedIn and the technology marks in Skills are the only filled marks; technology marks are always one colour (ink tertiary, ink when their row is hovered), never their brand colour.
+Gently rounded and consistent: controls are capsules (full radius; icon buttons are circles), the theme menu 18px with 13px options, product frames at 16px with the screenshot inset at 11px so the inner corner stays concentric inside the 6px mat. The focus ring is a 2px accent outline offset 3px with a 4px radius. Borders are always 1px. Screenshots hold a fixed 900:560 ratio. List markers are short 8px horizontal dashes, never bullets or glyphs. Icons are one inline stroke set on a 24px grid at 1.75 stroke; GitHub, LinkedIn and the technology marks in Skills are the only filled marks; technology marks are always one colour (ink tertiary, ink when their row is hovered), never their brand colour.
 
 ## Components
 
 ### Buttons
 Quiet and hairline-bound; the fill is earned only by the primary action.
-- **Shape:** gently rounded (0.625rem), 2.75rem minimum height, 1rem horizontal padding, 0.9375rem label at weight 540, 0.5rem icon gap.
-- **Default:** raised-plate face, hairline-strong border, ink label. Hover shifts the border to ink tertiary.
-- **Primary:** ink fill and border with a paper label; hover lightens fill and border to ink secondary. Used once per action group (the hero Resume).
-- **Active:** a 1px downward press on an expo-out curve (0.2s, cubic-bezier(0.16, 1, 0.3, 1)).
-- **Icon button:** 2.75rem square, no border, ink-tertiary glyph; hover fills with the surface tone and darkens the glyph to ink.
+- **Shape:** a capsule, 2.75rem minimum height, 1.125rem horizontal padding, 0.9375rem label at weight 540, 0.5rem icon gap.
+- **Default:** a glass lens: `--glass-lens` fill with the sheen, 1px contour, the bevel and `--glass-lift`; ink label. Hover brightens the fill to `--glass-lens-hover`, deepens the drop and lifts 1px.
+- **Primary:** solid ink with the bevel of glass: a paper label, a faint top rim and a short sheen (`--primary-rim`, `--primary-sheen`; white 16% and 9% in light). Ink stays opaque: a white sheen over translucent ink turns it a milky grey. Hover retints to ink secondary. The bar's Resume fades from the clear-glass highlights to these as it fills. Used once per action group (the hero Resume).
+- **Active:** a 1px downward press and a 1.5% squeeze with the drop collapsing (0.12s).
+- **Icon button:** a 2.75rem circle, bare ink-tertiary glyph at rest; on hover or keyboard focus a lens forms under it (fill, bevel, contour, drop, blur easing in over 0.25s) and the glyph darkens to ink.
 
 ### Email action (signature)
-A joined pair: a button showing the visible address as a mailto link, fused (negative 1px margin, squared inner corners) to a 2.75rem copy button. On copy the glyph swaps to an accent check for 2s, the label changes to "Email address copied", and a polite live region announces it. On clipboard failure the live region speaks the address instead. Works without JavaScript as a plain mailto.
+A joined pair in one piece of glass (`.btn-group`): the visible address as a mailto link and a 2.75rem copy segment, flat inside the capsule and split by a 1px contour line; each segment tints faintly on hover. On copy the glyph swaps to an accent check for 2s, the label changes to "Email address copied", and a polite live region announces it. On clipboard failure the live region speaks the address instead. Works without JavaScript as a plain mailto.
 
 ### Links
 - **Text link:** accent colour, underline invisible at rest (1px, offset 0.22em) and fading in on hover over 0.2s.
@@ -282,7 +293,7 @@ Geist Mono 0.8125rem, ink tertiary, tabular figures; date ranges and years only.
 ### Navigation
 A fixed top bar, invisible chrome spanning the 72rem container at the top of the page. Its transformation into a floating glass pill (max 46rem wide, 3.25rem tall, 0.75rem from the top, 1.75rem radius; see Glass) is scroll-linked rather than toggled: between 24px and 260px of scroll a smoothed scroll position (eased toward the real one each frame, so stepped wheels glide) drives three overlapping phases written as CSS custom properties: `--glass` (material fades in over the first half), `--shrink` (contraction from 12% to the end) plus `--fill` (the Resume button fills with ink, animated over 0.45s, only once the hero's own Resume button has scrolled out of view, so two ink buttons never share the screen). Every visual property of the bar interpolates from them. On large screens the hero name morph completes at the same 260px (or when the name reaches the bar, if later), so name and pill settle together. On phones Resume collapses to a round icon button. Nav links (Work, Experience, About) are body-small ink tertiary, ink on hover, and ink when their section crosses the top third of the viewport.
 ### Theme menu
-An icon button in the bar (sun, moon or monitor for the current choice) opens a native `popover` menu of three `menuitemradio` options: Light, Dark, System, with an accent check on the active one. Open, close, Escape and light-dismiss come from the Popover API; it is anchored under its trigger with CSS anchor positioning (fixed top-right fallback), enters with a 0.25s fade, lift and scale via `@starting-style`, and supports arrow-key movement.
+An icon button in the bar (sun, moon or monitor for the current choice) opens a native `popover` menu of three `menuitemradio` options: Light, Dark, System, with an accent check on the active one. Open, close, Escape and light-dismiss come from the Popover API; it is anchored under its trigger with CSS anchor positioning (fixed top-right fallback), enters with a 0.25s fade, lift and scale via `@starting-style`, and supports arrow-key movement. The menu is a glass panel; the option under the pointer or the keyboard is a thin fill on it.
 
 ### Scroll motion
 Transform-only effects may be scroll-driven (`animation-timeline: view()`, inside `@supports` and `prefers-reduced-motion: no-preference`); anything that changes opacity is one-shot.
@@ -306,7 +317,7 @@ Text selection is accent on paper. The scrollbar is hairline-strong on the page 
 
 ### Do:
 - **Do** reserve ultramarine for links, focus, frame hover glow and action confirmations.
-- **Do** fill the primary action with ink and keep every other button a hairline-bordered raised plate.
+- **Do** fill the primary action with solid ink and keep every other button a clear glass lens.
 - **Do** get display hierarchy from Mona Sans's width axis (118% name, 108-110% headlines) with negative tracking.
 - **Do** set dates and years in Geist Mono with tabular figures, and nothing else.
 - **Do** separate sections with hairlines and surface-tone bands rather than cards.
@@ -320,7 +331,7 @@ Text selection is accent on paper. The scrollbar is hairline-strong on the page 
 - **Don't** use monospace for labels, nav, buttons or decoration.
 - **Don't** use the accent for headings, markers, numbers or background fills.
 - **Don't** return to the sticky-sidebar, dark-navy portfolio template or its section titles.
-- **Don't** put shadows on text, buttons, lists or sections.
+- **Don't** put shadows on text, lists or sections; glass casts only the soft `--glass-drop`.
 - **Don't** use glyph or emoji icons; use the single inline stroke set.
-- **Don't** spread glass beyond floating chrome (top bar, menus); content surfaces stay solid.
+- **Don't** put glass on content: product frames, text blocks and sections stay solid. Glass is for what a visitor operates (bar, menus, buttons).
 - **Don't** animate on scroll outside the three motions above, or without the reduced-motion and `@supports` guards.
