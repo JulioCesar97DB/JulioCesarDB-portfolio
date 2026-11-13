@@ -53,6 +53,7 @@ const navItems = [
         </feMerge>
       </filter>
     </svg>
+    <span class="bar-bezel" aria-hidden="true"></span>
     <span class="bar-rim" aria-hidden="true"></span>
     <span class="bar-specular" aria-hidden="true"></span>
     <span class="nav-glass" aria-hidden="true" data-nav-glass></span>
@@ -156,14 +157,14 @@ const navItems = [
     border: 1px solid color-mix(in oklch, var(--glass-edge) calc(var(--glass) * 75%), transparent);
     border-radius: 1.75rem;
     background: color-mix(in oklch, var(--glass-clear) var(--g), transparent);
-    -webkit-backdrop-filter: blur(calc(10px * var(--glass))) saturate(calc(1 + 1 * var(--glass)));
-    backdrop-filter: blur(calc(10px * var(--glass))) saturate(calc(1 + 1 * var(--glass)));
+    -webkit-backdrop-filter: blur(calc(5px * var(--glass))) saturate(calc(1 + 1.2 * var(--glass)));
+    backdrop-filter: blur(calc(5px * var(--glass))) saturate(calc(1 + 1.2 * var(--glass)));
     box-shadow:
-      inset 0 0 0.625rem -0.0625rem color-mix(in oklch, var(--glass-glow) var(--g), transparent),
+      inset 0 0 0.5rem -0.125rem color-mix(in oklch, var(--glass-glow) calc(var(--glass) * 70%), transparent),
       inset 0 -0.625rem 0.875rem -0.75rem color-mix(in oklch, var(--glass-low) var(--g), transparent),
       0 1px 2px -1px color-mix(in oklch, var(--glass-drop) var(--g), transparent),
       0 calc(0.625rem * var(--glass)) 1.25rem -0.625rem color-mix(in oklch, var(--glass-drop) var(--g), transparent),
-      0 calc(1.75rem * var(--glass)) 3rem -1.25rem color-mix(in oklch, var(--glass-drop) var(--g), transparent);
+      0 calc(1.25rem * var(--glass)) 2.25rem -1.25rem color-mix(in oklch, var(--glass-drop) var(--g), transparent);
   }
   /* Adaptive glass: like a small Liquid Glass bar, it flips between its
      light and dark style to suit what is behind it (data-over, set by
@@ -197,6 +198,26 @@ const navItems = [
     position: absolute !important;
     pointer-events: none;
   }
+  /* Where the lens cannot run (WebKit, so every browser on iOS), a bezel
+     stands in for it: along the top and bottom edges the backdrop is taken
+     again almost unblurred and brighter, fading into the frosted middle, so
+     the edge still reads as the thick rim of a pane. WebKit lets a nested
+     backdrop see the page; engines that do not simply show nothing here. */
+  .bar-bezel {
+    position: absolute !important;
+    inset: 0;
+    border-radius: inherit;
+    -webkit-backdrop-filter: blur(1px) saturate(2.4) brightness(1.1) contrast(1.08);
+    backdrop-filter: blur(1px) saturate(2.4) brightness(1.1) contrast(1.08);
+    -webkit-mask-image: linear-gradient(to bottom, #000, transparent 34%, transparent 66%, #000);
+    mask-image: linear-gradient(to bottom, #000, transparent 34%, transparent 66%, #000);
+    opacity: var(--glass);
+    pointer-events: none;
+  }
+  :global(html.lens) .bar-bezel {
+    display: none;
+  }
+
   /* A sheen across the upper half of the glass. */
   .bar::before {
     content: "";
@@ -204,7 +225,8 @@ const navItems = [
     inset: 0;
     border-radius: inherit;
     background: linear-gradient(to bottom, var(--glass-sheen), transparent 52%);
-    opacity: var(--glass);
+    /* Faint: a full sheen would whiten out what shows through. */
+    opacity: calc(var(--glass) * 0.4);
     pointer-events: none;
   }
   .bar > * {
