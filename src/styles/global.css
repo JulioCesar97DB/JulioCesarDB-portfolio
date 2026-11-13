@@ -42,6 +42,9 @@
   --glass-edge: light-dark(oklch(0.25 0.02 270 / 0.13), oklch(1 0 0 / 0.09));
   --glass-sheen: light-dark(oklch(1 0 0 / 0.75), oklch(1 0 0 / 0.07));
   --glass-drop: light-dark(oklch(0.25 0.03 270 / 0.16), oklch(0.03 0.01 270 / 0.6));
+  /* The highlights of the ink-filled (primary) button. */
+  --primary-sheen: light-dark(oklch(1 0 0 / 0.09), oklch(1 0 0 / 0.5));
+  --primary-rim: light-dark(oklch(1 0 0 / 0.16), oklch(1 0 0 / 0.9));
   /* The bevel every piece of glass shares, and the shadow a control casts. */
   --glass-bevel:
     inset 0 1px 0 var(--glass-rim),
@@ -88,6 +91,8 @@
     --glass-edge: oklch(0.25 0.02 270 / 0.13);
     --glass-sheen: oklch(1 0 0 / 0.75);
     --glass-drop: oklch(0.25 0.03 270 / 0.16);
+    --primary-sheen: oklch(1 0 0 / 0.09);
+    --primary-rim: oklch(1 0 0 / 0.16);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -112,6 +117,8 @@
       --glass-edge: oklch(1 0 0 / 0.09);
       --glass-sheen: oklch(1 0 0 / 0.07);
       --glass-drop: oklch(0.03 0.01 270 / 0.6);
+      --primary-sheen: oklch(1 0 0 / 0.5);
+      --primary-rim: oklch(1 0 0 / 0.9);
     }
   }
   :root[data-theme="dark"] {
@@ -136,6 +143,8 @@
     --glass-edge: oklch(1 0 0 / 0.09);
     --glass-sheen: oklch(1 0 0 / 0.07);
     --glass-drop: oklch(0.03 0.01 270 / 0.6);
+    --primary-sheen: oklch(1 0 0 / 0.5);
+    --primary-rim: oklch(1 0 0 / 0.9);
   }
 }
 
@@ -324,28 +333,25 @@
     transition-duration: 0.12s;
   }
 
-  /* Primary: the same glass, tinted with ink. */
+  /* Primary: solid ink with the bevel of glass. Ink is opaque here on purpose:
+     a white sheen over translucent ink turns it a milky grey. The highlight
+     is a short, faint one at the top edge only. */
   .btn-primary {
-    --tint: var(--ink);
-    border-color: color-mix(in oklch, var(--tint) 92%, transparent);
-    background-color: color-mix(in oklch, var(--tint) 90%, transparent);
-    background-image: linear-gradient(
-      to bottom,
-      light-dark(oklch(1 0 0 / 0.2), oklch(1 0 0 / 0.5)),
-      transparent 58%
-    );
+    border-color: var(--ink);
+    background-color: var(--ink);
+    background-image: linear-gradient(to bottom, var(--primary-sheen), transparent 58%);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
     box-shadow:
-      inset 0 1px 0 light-dark(oklch(1 0 0 / 0.3), oklch(1 0 0 / 0.9)),
-      inset 0 -1px 0 light-dark(oklch(0 0 0 / 0.5), oklch(0 0 0 / 0.12)),
+      inset 0 1px 0 var(--primary-rim),
       var(--glass-lift);
     color: var(--bg);
   }
   .btn-primary:hover {
-    --tint: var(--ink-2);
-    background-color: color-mix(in oklch, var(--tint) 90%, transparent);
+    border-color: var(--ink-2);
+    background-color: var(--ink-2);
     box-shadow:
-      inset 0 1px 0 light-dark(oklch(1 0 0 / 0.3), oklch(1 0 0 / 0.9)),
-      inset 0 -1px 0 light-dark(oklch(0 0 0 / 0.5), oklch(0 0 0 / 0.12)),
+      inset 0 1px 0 var(--primary-rim),
       var(--glass-lift-hover);
   }
 
@@ -431,9 +437,6 @@
     .btn,
     .btn-group {
       background-color: var(--raised);
-    }
-    .btn-primary {
-      background-color: var(--tint);
     }
   }
 

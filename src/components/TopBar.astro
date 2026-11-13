@@ -37,7 +37,13 @@ const navItems = [
           xChannelSelector="R"
           yChannelSelector="G"
           result="bent"></feDisplacementMap>
-        <feGaussianBlur data-lens-frost in="bent" stdDeviation="0" result="frost"></feGaussianBlur>
+        <feGaussianBlur data-lens-frost in="bent" stdDeviation="0" result="soft"></feGaussianBlur>
+        <!-- A blur fades to transparent toward the filter's edge, which would
+             let the sharp backdrop show through the frost along the whole
+             rim; restoring full alpha keeps the frost opaque to its edge. -->
+        <feComponentTransfer in="soft" result="frost">
+          <feFuncA type="discrete" tableValues="1 1"></feFuncA>
+        </feComponentTransfer>
         <feColorMatrix in="map" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 1 0 0" result="mask"
         ></feColorMatrix>
         <feComposite in="frost" in2="mask" operator="in" result="middle"></feComposite>
@@ -145,14 +151,14 @@ const navItems = [
     padding-inline: calc(var(--bar-pad) - (var(--bar-pad) - var(--bar-inset)) * var(--shrink));
     /* --g is the share of the glass material present at this scroll position. */
     --g: calc(var(--glass) * 100%);
-    border: 1px solid color-mix(in oklch, var(--glass-edge) var(--g), transparent);
+    /* One hairline is the whole contour: the rim ring below lights part of
+       it, and nothing else is drawn along the edge. */
+    border: 1px solid color-mix(in oklch, var(--glass-edge) calc(var(--glass) * 75%), transparent);
     border-radius: 1.75rem;
     background: color-mix(in oklch, var(--glass-fill) var(--g), transparent);
     -webkit-backdrop-filter: blur(calc(22px * var(--glass))) saturate(calc(1 + 0.9 * var(--glass)));
     backdrop-filter: blur(calc(22px * var(--glass))) saturate(calc(1 + 0.9 * var(--glass)));
     box-shadow:
-      inset 0 1px 0 color-mix(in oklch, var(--glass-rim) var(--g), transparent),
-      inset 0 -1px 0 color-mix(in oklch, var(--glass-low) var(--g), transparent),
       inset 0 -0.625rem 0.875rem -0.75rem color-mix(in oklch, var(--glass-low) var(--g), transparent),
       0 1px 2px -1px color-mix(in oklch, var(--glass-drop) var(--g), transparent),
       0 calc(0.625rem * var(--glass)) 1.25rem -0.625rem color-mix(in oklch, var(--glass-drop) var(--g), transparent),
@@ -189,13 +195,13 @@ const navItems = [
     position: absolute !important;
     inset: -1px;
     border-radius: inherit;
-    padding: 1.5px;
+    padding: 1px;
     background: linear-gradient(
       135deg,
-      light-dark(oklch(1 0 0), oklch(1 0 0 / 0.34)),
+      light-dark(oklch(1 0 0), oklch(1 0 0 / 0.3)),
       transparent 36%,
       transparent 64%,
-      light-dark(oklch(1 0 0 / 0.85), oklch(1 0 0 / 0.16))
+      light-dark(oklch(1 0 0 / 0.8), oklch(1 0 0 / 0.14))
     );
     -webkit-mask:
       linear-gradient(#000 0 0) content-box,
@@ -330,18 +336,33 @@ const navItems = [
     }
   }
 
-  /* Resume in the bar: a lens that fills with ink (--fill). */
+  /* Resume in the bar: a lens that fills with ink (--fill). The highlights
+     of clear glass (white sheen, white rim) would turn ink milky, so they
+     fade to the quiet ones of the primary button as the fill comes in. */
   .resume-btn {
-    border-color: color-mix(in oklch, var(--ink) calc(var(--fill) * 92%), var(--glass-edge));
-    background-color: color-mix(in oklch, var(--ink) calc(var(--fill) * 90%), var(--glass-lens-hover));
-    color: color-mix(in oklch, var(--bg) calc(var(--fill) * 100%), var(--ink));
+    --f: calc(var(--fill) * 100%);
+    border-color: color-mix(in oklch, var(--ink) var(--f), var(--glass-edge));
+    background-color: color-mix(in oklch, var(--ink) var(--f), var(--glass-lens-hover));
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--primary-sheen) var(--f), var(--glass-sheen)),
+      transparent 58%
+    );
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklch, var(--primary-rim) var(--f), var(--glass-rim)),
+      inset 0 -1px 0 color-mix(in oklch, transparent var(--f), var(--glass-low)),
+      var(--glass-lift);
+    color: color-mix(in oklch, var(--bg) var(--f), var(--ink));
   }
   .resume-btn:hover {
-    background-color: color-mix(
-      in oklch,
-      var(--ink-2) calc(var(--fill) * 90%),
-      light-dark(oklch(1 0 0), oklch(1 0 0 / 0.18))
-    );
+    background-color: color-mix(in oklch, var(--ink-2) var(--f), light-dark(oklch(1 0 0), oklch(1 0 0 / 0.18)));
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklch, var(--primary-rim) var(--f), var(--glass-rim)),
+      inset 0 -1px 0 color-mix(in oklch, transparent var(--f), var(--glass-low)),
+      var(--glass-lift-hover);
+  }
+  .resume-btn::after {
+    opacity: calc(1 - 0.55 * var(--fill));
   }
   .resume-btn :global(svg) {
     color: inherit;
