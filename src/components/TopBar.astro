@@ -155,17 +155,38 @@ const navItems = [
        it, and nothing else is drawn along the edge. */
     border: 1px solid color-mix(in oklch, var(--glass-edge) calc(var(--glass) * 75%), transparent);
     border-radius: 1.75rem;
-    /* Thinner than the panel fill the menu uses, so more of what passes
-       behind comes through. */
-    background: color-mix(in oklch, var(--glass-fill) calc(var(--glass) * 76%), transparent);
-    -webkit-backdrop-filter: blur(calc(14px * var(--glass))) saturate(calc(1 + 1 * var(--glass)));
-    backdrop-filter: blur(calc(14px * var(--glass))) saturate(calc(1 + 1 * var(--glass)));
+    background: color-mix(in oklch, var(--glass-clear) var(--g), transparent);
+    -webkit-backdrop-filter: blur(calc(10px * var(--glass))) saturate(calc(1 + 1 * var(--glass)));
+    backdrop-filter: blur(calc(10px * var(--glass))) saturate(calc(1 + 1 * var(--glass)));
     box-shadow:
+      inset 0 0 0.625rem -0.0625rem color-mix(in oklch, var(--glass-glow) var(--g), transparent),
       inset 0 -0.625rem 0.875rem -0.75rem color-mix(in oklch, var(--glass-low) var(--g), transparent),
       0 1px 2px -1px color-mix(in oklch, var(--glass-drop) var(--g), transparent),
       0 calc(0.625rem * var(--glass)) 1.25rem -0.625rem color-mix(in oklch, var(--glass-drop) var(--g), transparent),
       0 calc(1.75rem * var(--glass)) 3rem -1.25rem color-mix(in oklch, var(--glass-drop) var(--g), transparent);
   }
+  /* Adaptive glass: like a small Liquid Glass bar, it flips between its
+     light and dark style to suit what is behind it (data-over, set by
+     scripts/interactions.ts from the screenshots passing under it). Every
+     colour inside is a light-dark() token, so one property flips them all. */
+  .topbar[data-over="dark"] .bar {
+    color-scheme: dark;
+  }
+  .topbar[data-over="light"] .bar {
+    color-scheme: light;
+  }
+  .topbar[data-flipping] .bar,
+  .topbar[data-flipping] .wordmark,
+  .topbar[data-flipping] .nav-link,
+  .topbar[data-flipping] .nav-glass,
+  .topbar[data-flipping] .bar :global(.icon-btn) {
+    transition:
+      color 0.45s ease,
+      background-color 0.45s ease,
+      border-color 0.45s ease,
+      box-shadow 0.45s ease;
+  }
+
   /* The lens replaces the plain blur: its filter bends the backdrop along the
      bar's edge and blurs it itself (strength set from the same scroll phases). */
   :global(html.lens) .bar {
@@ -247,14 +268,12 @@ const navItems = [
     right: var(--gr, 100%);
     height: 2.5rem;
     border-radius: 9999px;
-    background-color: var(--glass-lens-hover);
-    background-image: linear-gradient(to bottom, var(--glass-sheen), transparent 60%);
+    /* A thin fill with a lit edge: Liquid Glass never stacks a pane on a
+       pane, so what sits on the bar is part of it. */
+    background-color: var(--glass-tint);
     box-shadow:
-      var(--glass-bevel),
-      inset 0 0 0 1px light-dark(oklch(1 0 0 / 0.7), oklch(1 0 0 / 0.07)),
-      0 0 0 1px var(--glass-edge),
-      0 1px 2px -1px var(--glass-drop),
-      0 0.5rem 1rem -0.375rem var(--glass-drop);
+      inset 0 1px 0 light-dark(oklch(1 0 0 / 0.75), oklch(1 0 0 / 0.14)),
+      inset 0 0 0 1px light-dark(oklch(1 0 0 / 0.35), oklch(1 0 0 / 0.05));
     transform: translateY(-50%) scale(0.9);
     opacity: 0;
     pointer-events: none;
@@ -343,25 +362,28 @@ const navItems = [
      fade to the quiet ones of the primary button as the fill comes in. */
   .resume-btn {
     --f: calc(var(--fill) * 100%);
-    border-color: color-mix(in oklch, var(--ink) var(--f), var(--glass-edge));
-    background-color: color-mix(in oklch, var(--ink) var(--f), var(--glass-lens-hover));
+    border-color: color-mix(in oklch, var(--ink) var(--f), transparent);
+    background-color: color-mix(in oklch, var(--ink) var(--f), var(--glass-tint));
     background-image: linear-gradient(
       to bottom,
-      color-mix(in oklch, var(--primary-sheen) var(--f), var(--glass-sheen)),
+      color-mix(in oklch, var(--primary-sheen) var(--f), transparent),
       transparent 58%
     );
     box-shadow:
-      inset 0 1px 0 color-mix(in oklch, var(--primary-rim) var(--f), var(--glass-rim)),
-      inset 0 -1px 0 color-mix(in oklch, transparent var(--f), var(--glass-low)),
-      var(--glass-lift);
+      inset 0 1px 0 color-mix(in oklch, var(--primary-rim) var(--f), light-dark(oklch(1 0 0 / 0.75), oklch(1 0 0 / 0.14))),
+      0 0.5rem 1rem -0.5rem color-mix(in oklch, var(--glass-drop) var(--f), transparent);
     color: color-mix(in oklch, var(--bg) var(--f), var(--ink));
+    --glow: color-mix(in oklch, light-dark(oklch(1 0 0 / 0.2), oklch(1 0 0 / 0.7)) var(--f), var(--glass-glow));
   }
   .resume-btn:hover {
-    background-color: color-mix(in oklch, var(--ink-2) var(--f), light-dark(oklch(1 0 0), oklch(1 0 0 / 0.18)));
+    background-color: color-mix(
+      in oklch,
+      var(--ink-2) var(--f),
+      light-dark(oklch(0.25 0.02 270 / 0.12), oklch(1 0 0 / 0.18))
+    );
     box-shadow:
-      inset 0 1px 0 color-mix(in oklch, var(--primary-rim) var(--f), var(--glass-rim)),
-      inset 0 -1px 0 color-mix(in oklch, transparent var(--f), var(--glass-low)),
-      var(--glass-lift-hover);
+      inset 0 1px 0 color-mix(in oklch, var(--primary-rim) var(--f), light-dark(oklch(1 0 0 / 0.75), oklch(1 0 0 / 0.14))),
+      0 0.75rem 1.25rem -0.625rem color-mix(in oklch, var(--glass-drop) var(--f), transparent);
   }
   .resume-btn::after {
     opacity: calc(1 - 0.55 * var(--fill));

@@ -282,8 +282,8 @@ function initNavGlass(): void {
 }
 
 /** Blur of the lens's frosted middle and its edge displacement, in px. */
-const LENS_FROST = 9;
-const LENS_BEND = 24;
+const LENS_FROST = 6;
+const LENS_BEND = 28;
 
 /**
  * Paints the lens map for a w x h capsule as a data URL. Red and green hold
@@ -403,6 +403,140 @@ function initBarLens(): void {
       update(read("--glass"), read("--shrink"));
     });
   });
+}
+
+/**
+ * Adaptive glass. The bar is clear enough that a dark screenshot passing
+ * behind would swallow dark labels, so, like a small Liquid Glass bar, it
+ * flips to the other scheme when what is behind it calls for it. Each product
+ * screenshot is reduced once to a small grid of luminance; while scrolling,
+ * the cells under the bar are averaged with the page colour around them, and
+ * the bar flips when the mean crosses a threshold (with hysteresis, so it
+ * does not flicker at the boundary).
+ */
+function initBarAdapt(): void {
+  const header = document.querySelector<HTMLElement>("[data-topbar]");
+  const bar = header?.querySelector<HTMLElement>("[data-bar]");
+  if (!header || !bar || !("IntersectionObserver" in window)) return;
+
+  const COLS = 16;
+  const ROWS = 10;
+  const root = document.documentElement;
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+  const grids = new WeakMap<HTMLImageElement, Float32Array>();
+  const near = new Set<HTMLImageElement>();
+
+  const sample = (img: HTMLImageElement) => {
+    if (!img.naturalWidth) return;
+    try {
+      const canvas = document.createElement("canvas");
+      canvas.width = COLS;
+      canvas.height = ROWS;
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      if (!ctx) return;
+      ctx.drawImage(img, 0, 0, COLS, ROWS);
+      const { data } = ctx.getImageData(0, 0, COLS, ROWS);
+      const grid = new Float32Array(COLS * ROWS);
+      for (let i = 0; i < grid.length; i++) {
+        grid[i] = (0.2126 * data[i * 4] + 0.7152 * data[i * 4 + 1] + 0.0722 * data[i * 4 + 2]) / 255;
+      }
+      grids.set(img, grid);
+    } catch {
+      // A canvas the image has tainted cannot be read; the bar just stays as it is.
+    }
+  };
+
+  const pageIsDark = () => (root.dataset.theme ? root.dataset.theme === "dark" : prefersDark.matches);
+
+  let over: "light" | "dark" | null = null;
+  let flipTimer = 0;
+  const evaluate = () => {
+    const page = pageIsDark() ? "dark" : "light";
+    const b = bar.getBoundingClientRect();
+    let lit = 0;
+    let covered = 0;
+    for (const img of near) {
+      const grid = grids.get(img);
+      if (!grid) continue;
+      const r = img.getBoundingClientRect();
+      const x0 = Math.max(b.left, r.left);
+      const x1 = Math.min(b.right, r.right);
+      const y0 = Math.max(b.top, r.top);
+      const y1 = Math.min(b.bottom, r.bottom);
+      if (x1 <= x0 || y1 <= y0) continue;
+      const c0 = Math.floor(((x0 - r.left) / r.width) * COLS);
+      const c1 = Math.min(COLS - 1, Math.floor(((x1 - r.left) / r.width) * COLS));
+      const r0 = Math.floor(((y0 - r.top) / r.height) * ROWS);
+      const r1 = Math.min(ROWS - 1, Math.floor(((y1 - r.top) / r.height) * ROWS));
+      let sum = 0;
+      let count = 0;
+      for (let row = r0; row <= r1; row++) {
+        for (let col = c0; col <= c1; col++) {
+          sum += grid[row * COLS + col];
+          count++;
+        }
+      }
+      const area = (x1 - x0) * (y1 - y0);
+      lit += (sum / count) * area;
+      covered += area;
+    }
+    const total = b.width * b.height;
+    const mean = total > 0 ? (lit + (total - covered) * (page === "dark" ? 0.1 : 0.98)) / total : 1;
+    const current = over ?? page;
+    const next = mean < 0.42 ? "dark" : mean > 0.56 ? "light" : current;
+    const value = next === page ? null : next;
+    if (value === over) return;
+    over = value;
+    header.setAttribute("data-flipping", "");
+    window.clearTimeout(flipTimer);
+    flipTimer = window.setTimeout(() => header.removeAttribute("data-flipping"), 500);
+    if (value) header.setAttribute("data-over", value);
+    else header.removeAttribute("data-over");
+  };
+
+  // Only screenshots near the top of the viewport can be under the bar.
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        const img = entry.target as HTMLImageElement;
+        if (entry.isIntersecting) near.add(img);
+        else near.delete(img);
+      }
+      evaluate();
+    },
+    { rootMargin: "0px 0px -80% 0px" },
+  );
+  for (const img of document.querySelectorAll<HTMLImageElement>(".frame img")) {
+    if (img.complete) sample(img);
+    img.addEventListener("load", () => {
+      sample(img);
+      evaluate();
+    });
+    io.observe(img);
+  }
+
+  header.addEventListener("topbar:frame", evaluate);
+  prefersDark.addEventListener("change", evaluate);
+  new MutationObserver(evaluate).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+}
+
+/**
+ * Illumination: glass buttons light from within under a fine pointer. This
+ * only reports where the pointer is over the button; the glow is CSS.
+ */
+function initGlassGlow(): void {
+  if (!window.matchMedia("(pointer: fine)").matches) return;
+  document.addEventListener(
+    "pointermove",
+    (e) => {
+      const el = (e.target as Element | null)?.closest?.<HTMLElement>(".btn, .btn-group");
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      el.style.setProperty("--px", `${(e.clientX - r.left).toFixed(0)}px`);
+      el.style.setProperty("--py", `${(e.clientY - r.top).toFixed(0)}px`);
+    },
+    { passive: true },
+  );
 }
 
 /**
@@ -551,6 +685,8 @@ export function initInteractions(): void {
   initTopBar();
   initNavGlass();
   initBarLens();
+  initBarAdapt();
+  initGlassGlow();
   initReveals();
   initScrollSpy();
   initFrames();

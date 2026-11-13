@@ -42,6 +42,14 @@
   --glass-edge: light-dark(oklch(0.25 0.02 270 / 0.13), oklch(1 0 0 / 0.09));
   --glass-sheen: light-dark(oklch(1 0 0 / 0.75), oklch(1 0 0 / 0.07));
   --glass-drop: light-dark(oklch(0.25 0.03 270 / 0.16), oklch(0.03 0.01 270 / 0.6));
+  /* The bar is the clearest glass on the page: it is defined by the light on
+     its edge and the bend of what passes behind, not by a tint. */
+  --glass-clear: light-dark(oklch(0.975 0.005 270 / 0.4), oklch(0.2 0.008 270 / 0.46));
+  /* Light gathered just inside the edge of a pane, and the glow that rises
+     under the pointer. */
+  --glass-glow: light-dark(oklch(1 0 0 / 0.7), oklch(1 0 0 / 0.1));
+  /* Whatever sits on glass is a thin fill, never a second pane. */
+  --glass-tint: light-dark(oklch(0.25 0.02 270 / 0.075), oklch(1 0 0 / 0.12));
   /* The highlights of the ink-filled (primary) button. */
   --primary-sheen: light-dark(oklch(1 0 0 / 0.09), oklch(1 0 0 / 0.5));
   --primary-rim: light-dark(oklch(1 0 0 / 0.16), oklch(1 0 0 / 0.9));
@@ -49,7 +57,8 @@
   --glass-bevel:
     inset 0 1px 0 var(--glass-rim),
     inset 0 -1px 0 var(--glass-low),
-    inset 0 -0.5rem 0.75rem -0.625rem var(--glass-low);
+    inset 0 -0.5rem 0.75rem -0.625rem var(--glass-low),
+    inset 0 0 0.5rem -0.0625rem var(--glass-glow);
   --glass-lift:
     0 1px 2px -1px var(--glass-drop),
     0 0.5rem 1rem -0.5rem var(--glass-drop);
@@ -91,6 +100,9 @@
     --glass-edge: oklch(0.25 0.02 270 / 0.13);
     --glass-sheen: oklch(1 0 0 / 0.75);
     --glass-drop: oklch(0.25 0.03 270 / 0.16);
+    --glass-clear: oklch(0.975 0.005 270 / 0.4);
+    --glass-glow: oklch(1 0 0 / 0.7);
+    --glass-tint: oklch(0.25 0.02 270 / 0.075);
     --primary-sheen: oklch(1 0 0 / 0.09);
     --primary-rim: oklch(1 0 0 / 0.16);
   }
@@ -117,6 +129,9 @@
       --glass-edge: oklch(1 0 0 / 0.09);
       --glass-sheen: oklch(1 0 0 / 0.07);
       --glass-drop: oklch(0.03 0.01 270 / 0.6);
+      --glass-clear: oklch(0.2 0.008 270 / 0.46);
+      --glass-glow: oklch(1 0 0 / 0.1);
+      --glass-tint: oklch(1 0 0 / 0.12);
       --primary-sheen: oklch(1 0 0 / 0.5);
       --primary-rim: oklch(1 0 0 / 0.9);
     }
@@ -143,6 +158,9 @@
     --glass-edge: oklch(1 0 0 / 0.09);
     --glass-sheen: oklch(1 0 0 / 0.07);
     --glass-drop: oklch(0.03 0.01 270 / 0.6);
+    --glass-clear: oklch(0.2 0.008 270 / 0.46);
+    --glass-glow: oklch(1 0 0 / 0.1);
+    --glass-tint: oklch(1 0 0 / 0.12);
     --primary-sheen: oklch(1 0 0 / 0.5);
     --primary-rim: oklch(1 0 0 / 0.9);
   }
@@ -309,6 +327,36 @@
       box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
       transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
+  /* Illumination: under a fine pointer the glass lights from within, starting
+     where the pointer is (--px/--py, scripts/interactions.ts) and brightening
+     on press. */
+  .btn,
+  .btn-group {
+    position: relative;
+    isolation: isolate;
+    --glow: var(--glass-glow);
+  }
+  .btn::before,
+  .btn-group::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(7rem 3.5rem at var(--px, 50%) var(--py, 0%), var(--glow), transparent 72%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+  }
+  .btn:hover::before,
+  .btn-group:hover::before {
+    opacity: 0.7;
+  }
+  .btn:active::before,
+  .btn-group:active::before {
+    opacity: 1;
+    transition-duration: 0.1s;
+  }
   .btn {
     display: inline-flex;
     min-height: 2.75rem;
@@ -346,6 +394,7 @@
       inset 0 1px 0 var(--primary-rim),
       var(--glass-lift);
     color: var(--bg);
+    --glow: light-dark(oklch(1 0 0 / 0.2), oklch(1 0 0 / 0.7));
   }
   .btn-primary:hover {
     border-color: var(--ink-2);
