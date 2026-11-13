@@ -18,7 +18,7 @@ const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 
  * The Resume button fills with ink (data-filled, an animated --fill) only
  * once the hero's own Resume button has left the viewport, so two black
  * Resume buttons are never on screen together.
- * Each frame also emits "topbar:frame" so the name morph can stay in step.
+ * Each frame also emits "topbar:frame", which the name morph redraws on.
  */
 function initTopBar(): void {
   const bar = document.querySelector<HTMLElement>("[data-topbar]");
@@ -73,8 +73,8 @@ function initTopBar(): void {
     return;
   }
 
-  // Small screens / reduced motion: the wordmark simply fades in once the
-  // hero name has scrolled under the bar.
+  // Reduced motion: the wordmark simply fades in once the hero name has
+  // scrolled under the bar.
   let named = false;
   new IntersectionObserver(
     ([entry]) => {
@@ -84,13 +84,13 @@ function initTopBar(): void {
     { rootMargin: "-64px 0px 0px 0px" },
   ).observe(name);
 
-  // Large screens: the hero name itself flies into the bar.
+  // Otherwise, at every width, the hero name itself flies into the bar.
   let morphing = false;
-  const query = window.matchMedia("(min-width: 1024px) and (prefers-reduced-motion: no-preference)");
+  const query = window.matchMedia("(prefers-reduced-motion: no-preference)");
   const morph = createNameMorph(bar, name);
   const sync = () => {
     morphing = query.matches && !!morph;
-    if (morphing) morph?.enable(smoothY);
+    if (morphing) morph?.enable();
     else {
       morph?.disable();
       bar.toggleAttribute("data-named", named);
@@ -103,24 +103,37 @@ function initTopBar(): void {
 /**
  * Scroll-linked handoff of the hero name into the top bar's wordmark.
  *
- * Horizontally the name slides to the wordmark, scales to its size and eases
- * its width axis, weight and tracking to the wordmark's values, finishing at
- * BAR_END together with the bar, so name and pill settle as one. Vertically it
- * scrolls with the page until its centre meets the wordmark's, then rides
- * inside the bar while the bar finishes contracting. When it lands it hides
- * and the real wordmark shows in the same place. Scrolling up reverses it.
+ * Everything follows the real scroll position, the same one that moves the
+ * name up the page, so however fast the page scrolls the name has finished
+ * shrinking by the time it reaches the bar: it is nearly wordmark-sized when
+ * its centre meets the wordmark's, rides inside the bar for the last stretch,
+ * then hides as the real wordmark shows in the same place. Scrolling up
+ * reverses it.
+ *
+ * Where the bar shows the full name the heading moves as one piece, easing its
+ * width axis, weight and tracking to the wordmark's. Where it shows initials
+ * (phones) the heading is split into words: each word flies to its own initial
+ * while the rest of the word fades out.
  */
 function createNameMorph(bar: HTMLElement, name: HTMLElement) {
-  const target = bar.querySelector<HTMLElement>("[data-wordmark-full]");
-  if (!target) return null;
+  const marks = Array.from(bar.querySelectorAll<HTMLElement>("[data-wordmark]"));
+  const text = name.textContent?.trim() ?? "";
+  if (!marks.length || !text) return null;
 
   const root = document.documentElement;
   const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+  /** The name lands once it has scrolled this far past meeting the bar. */
+  const OVERRUN = 1.25;
 
+  type Word = { el: HTMLElement; rest: HTMLElement; left: number; centerY: number };
+
+  let target: HTMLElement | null = null;
+  let active = false;
+  let mono = false;
+  let words: Word[] = [];
+  let initials: Range[] = [];
   // Hero name at rest, measured without any morph styles applied.
   let base = { left: 0, centerY: 0, size: 1, stretch: 118, weight: 640, tracking: -0.04 };
-  let active = false;
-  let smoothY = 0;
 
   const clear = () => {
     name.style.transform = "";
@@ -129,10 +142,49 @@ function createNameMorph(bar: HTMLElement, name: HTMLElement) {
     name.style.letterSpacing = "";
     name.style.opacity = "";
     name.style.pointerEvents = "";
+    for (const w of words) {
+      w.el.style.transform = "";
+      w.el.style.opacity = "";
+      w.rest.style.opacity = "";
+    }
+  };
+
+  /** Splits the heading into words, or puts its plain text back. */
+  const setMono = (on: boolean) => {
+    if (on === mono) return;
+    mono = on;
+    root.classList.toggle("name-mono", on);
+    words = [];
+    if (!on) {
+      name.textContent = text;
+      return;
+    }
+    // Screen readers get the name as one string; the pieces are for the eye.
+    const spoken = document.createElement("span");
+    spoken.className = "sr-only";
+    spoken.textContent = text;
+    const shown = document.createElement("span");
+    shown.setAttribute("aria-hidden", "true");
+    text.split(/\s+/).forEach((part, i) => {
+      const el = document.createElement("span");
+      el.className = "name-word";
+      const rest = document.createElement("span");
+      rest.textContent = part.slice(1);
+      el.append(part.charAt(0), rest);
+      if (i) shown.append(" ");
+      shown.append(el);
+      words.push({ el, rest, left: 0, centerY: 0 });
+    });
+    name.replaceChildren(spoken, shown);
   };
 
   const measure = () => {
     clear();
+    target = marks.find((m) => m.getClientRects().length > 0) ?? null;
+    if (!target) return;
+    const label = target.textContent?.trim() ?? "";
+    setMono(label !== text);
+
     const r = name.getBoundingClientRect();
     const cs = getComputedStyle(name);
     const size = parseFloat(cs.fontSize);
@@ -144,19 +196,47 @@ function createNameMorph(bar: HTMLElement, name: HTMLElement) {
       weight: parseFloat(cs.fontWeight) || 640,
       tracking: (parseFloat(cs.letterSpacing) || -0.04 * size) / size,
     };
+    if (!mono) return;
+
+    for (const w of words) {
+      const wr = w.el.getBoundingClientRect();
+      w.left = wr.left;
+      w.centerY = wr.top + window.scrollY + wr.height / 2;
+    }
+    const node = target.firstChild;
+    initials = [];
+    if (node?.nodeType === Node.TEXT_NODE) {
+      const offset = (node.textContent ?? "").indexOf(label);
+      for (let i = 0; i < label.length; i++) {
+        const range = document.createRange();
+        range.setStart(node, offset + i);
+        range.setEnd(node, offset + i + 1);
+        initials.push(range);
+      }
+    }
   };
 
-  const frame = () => {
-    if (!active) return;
-    const t = target.getBoundingClientRect();
-    const ts = getComputedStyle(target);
+  /** 0..1 over the scroll it takes a name centred at `centerY` to land. */
+  const progressTo = (centerY: number, targetCenterY: number) =>
+    clamp01(window.scrollY / Math.max(1, (centerY - targetCenterY) * OVERRUN));
+
+  const land = (progress: number) => {
+    const landed = progress >= 1;
+    name.style.opacity = landed ? "0" : "";
+    // Once it has left its place the name sits over the bar (invisibly, after
+    // landing); it must not take the pointer from the wordmark underneath.
+    name.style.pointerEvents = progress > 0 ? "none" : "";
+    bar.toggleAttribute("data-named", landed);
+  };
+
+  const frameFull = (el: HTMLElement) => {
+    const t = el.getBoundingClientRect();
+    const ts = getComputedStyle(el);
     const targetSize = parseFloat(ts.fontSize);
     const targetCenterY = t.top + t.height / 2;
     const targetTracking = (parseFloat(ts.letterSpacing) || 0) / targetSize;
 
-    // Finish with the bar, but never before the name has risen to the bar.
-    const meet = base.centerY - targetCenterY;
-    const progress = clamp01(smoothY / Math.max(BAR_END, meet));
+    const progress = progressTo(base.centerY, targetCenterY);
     const e = easeInOut(progress);
 
     // Vertical: follow the page, then ride inside the bar once it gets there.
@@ -169,18 +249,41 @@ function createNameMorph(bar: HTMLElement, name: HTMLElement) {
     name.style.fontStretch = `${lerp(base.stretch, 100, e).toFixed(1)}%`;
     name.style.fontWeight = lerp(base.weight, 600, e).toFixed(0);
     name.style.letterSpacing = `${lerp(base.tracking, targetTracking, e).toFixed(4)}em`;
-
-    const landed = progress >= 1;
-    name.style.opacity = landed ? "0" : "";
-    // Once it has left its place the name sits over the bar (invisibly, after
-    // landing); it must not take the pointer from the wordmark underneath.
-    name.style.pointerEvents = progress > 0 ? "none" : "";
-    bar.toggleAttribute("data-named", landed);
+    land(progress);
   };
 
-  const onBarFrame = (event: Event) => {
-    smoothY = (event as CustomEvent<{ smoothY: number }>).detail.smoothY;
-    frame();
+  const frameMono = (el: HTMLElement) => {
+    const first = words[0];
+    const rects = initials.map((range) => range.getBoundingClientRect());
+    if (!first || !rects.length) return;
+    const targetSize = parseFloat(getComputedStyle(el).fontSize);
+    const targetCenterY = rects[0].top + rects[0].height / 2;
+
+    const progress = progressTo(first.centerY, targetCenterY);
+    const e = easeInOut(progress);
+    const scale = lerp(1, targetSize / base.size, e);
+    // The rest of each word is gone before the initials close up.
+    const fade = (1 - smoothstep(0, 0.45, e)).toFixed(3);
+
+    words.forEach((w, i) => {
+      // A word with no initial in the bar folds into the end of the monogram.
+      const kept = i < rects.length;
+      const slot = rects[Math.min(i, rects.length - 1)];
+      const dx = ((kept ? slot.left : slot.right) - w.left) * e;
+      // Lines of a wrapped name close up into one as they rise.
+      const centerY = lerp(w.centerY, first.centerY, e) - window.scrollY;
+      const dy = Math.max(targetCenterY, centerY) - (w.centerY - window.scrollY);
+      w.el.style.transform = `translate3d(${dx.toFixed(2)}px, ${dy.toFixed(2)}px, 0) scale(${scale.toFixed(4)})`;
+      w.rest.style.opacity = fade;
+      w.el.style.opacity = kept ? "" : fade;
+    });
+    land(progress);
+  };
+
+  const frame = () => {
+    if (!active || !target) return;
+    if (mono) frameMono(target);
+    else frameFull(target);
   };
   const onResize = () => {
     measure();
@@ -188,24 +291,24 @@ function createNameMorph(bar: HTMLElement, name: HTMLElement) {
   };
 
   return {
-    enable(initialY: number) {
+    enable() {
       if (active) return;
       active = true;
-      smoothY = initialY;
       root.classList.add("name-morph");
       measure();
-      bar.addEventListener("topbar:frame", onBarFrame);
+      bar.addEventListener("topbar:frame", frame);
       window.addEventListener("resize", onResize, { passive: true });
-      document.fonts?.ready.then(onResize);
+      document.fonts?.ready.then(() => active && onResize());
       frame();
     },
     disable() {
       if (!active) return;
       active = false;
-      root.classList.remove("name-morph");
-      bar.removeEventListener("topbar:frame", onBarFrame);
+      bar.removeEventListener("topbar:frame", frame);
       window.removeEventListener("resize", onResize);
       clear();
+      setMono(false);
+      root.classList.remove("name-morph");
     },
   };
 }
