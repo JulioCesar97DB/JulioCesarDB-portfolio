@@ -601,22 +601,33 @@
   }
 }
 
-/* Name morph: the hero name renders above the glass bar while it flies in,
-   scaling from its left edge, on one line. */
+/* Name morph (scripts/interactions.ts): the heading keeps its place but turns
+   invisible, and a copy fixed to the viewport, the flyer, is what flies into
+   the bar, above the glass. Being fixed, scrolling never moves it; only the
+   script does, once per frame. Nothing on the heading may transform, or the
+   flyer would be fixed to the heading instead of the viewport. */
 html.name-morph .hero-name {
   position: relative;
   z-index: 50;
   white-space: nowrap;
-  transform-origin: left center;
-  will-change: transform;
 }
-
-/* On phones the bar holds only the initials, so the name is split into words
-   (scripts/interactions.ts) and each one flies to its own initial while the
-   rest of the word fades. The words move, not the heading, so it may wrap. */
+.hero-name .name-rest {
+  opacity: 0;
+}
+.hero-name .name-fly {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: block;
+  transform-origin: 0 50%;
+  will-change: transform;
+  pointer-events: none;
+}
+/* On phones the bar holds only the initials, so the flyer is split into words
+   and each one flies to its own initial while the rest of the word fades. The
+   words move within the flyer, so the name may wrap. */
 html.name-mono .hero-name {
   white-space: normal;
-  will-change: auto;
 }
 .hero-name .name-word {
   display: inline-block;
