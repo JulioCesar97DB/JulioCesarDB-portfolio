@@ -37,44 +37,11 @@ All content lives in [`cv.json`](cv.json), imported through the `@cv` alias and 
 | `projects` | Selected work. `tier` decides placement: `lead`, `feature`, `more` (shown on its role) or `hidden` |
 | `education`, `languages` | The About facts and the resume footer |
 
-Change a date, a title or a stack in `cv.json` and the home page and the resume change together.
-
-### Adding a project
-
-1. Put a screenshot in `src/assets/projects/` (WebP, 900 × 560). The build turns it into AVIF and WebP at three widths.
-2. Add an entry to `projects` in `cv.json`:
-
-   ```json
-   {
-     "name": "Project name",
-     "title": "Project name",
-     "tier": "feature",
-     "kind": "What it is, in a few words",
-     "role": "Your part in it",
-     "image": "/projects/project-name.webp",
-     "imageAlt": "What the screenshot shows",
-     "description": "One or two sentences on what it does.",
-     "facts": ["A concrete thing it does", "Another"],
-     "keywords": ["Next.js", "TypeScript"],
-     "url": "https://example.com",
-     "year": "2026",
-     "madeAt": "Employer name, or Personal",
-     "isActive": true,
-     "highlights": []
-   }
-   ```
-
-Its `keywords` are what place it next to a skill, and `madeAt` is what attaches it to a role.
+The home page and the resume read the same data, so they never disagree. A project's `keywords` place it next to the skills it proves, and its `madeAt` attaches it to the role it was built in. Project screenshots live in `src/assets/projects/` and ship as AVIF with a WebP fallback at three widths.
 
 ## Resume
 
-[`src/pages/resume.astro`](src/pages/resume.astro) is a single column of real text, in reading order, so applicant tracking systems parse it cleanly. To refresh `public/resume.pdf` after editing `cv.json`:
-
-1. Run the site and open `/resume`.
-2. Print to PDF: Letter, default margins off (the page sets its own), background graphics on.
-3. Save over `public/resume.pdf`.
-
-The page is marked `noindex` and left out of the sitemap. The download buttons serve the PDF as `Julio-Cesar-Diaz-Resume.pdf`.
+[`src/pages/resume.astro`](src/pages/resume.astro) is a single column of real text, in reading order, so applicant tracking systems parse it cleanly. `public/resume.pdf` is that page printed to Letter, and the download buttons serve it as `Julio-Cesar-Diaz-Resume.pdf`. The page is marked `noindex` and left out of the sitemap.
 
 ## Search and sharing
 
@@ -82,23 +49,6 @@ The page is marked `noindex` and left out of the sitemap. The download buttons s
 - A `ProfilePage` / `Person` JSON-LD block is built from `cv.json` in the layout.
 - `/robots.txt` and `/sitemap.xml` are generated at build time; the site URL is set once, as `site` in `astro.config.mjs`.
 - The stylesheet is inlined, the text font is preloaded, and screenshots ship as AVIF with a WebP fallback.
-
-## Getting started
-
-Requires Node.js 22.23 or newer.
-
-```bash
-npm install
-npm run dev
-```
-
-Then open [localhost:4321](http://localhost:4321).
-
-| Command | Action |
-| --- | --- |
-| `npm run dev` | Start the dev server |
-| `npm run build` | Type-check with `astro check`, then build to `dist/` |
-| `npm run preview` | Serve the production build locally |
 
 ## Project structure
 
