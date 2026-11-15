@@ -195,7 +195,7 @@ const host = (url: string) => {
                   data-steps
                 >
                   {p.architecture.layers.map((layer, i) => (
-                    <li class:list={{ "is-on": i === 0, "is-active": i === 0 }} tabindex="0">
+                    <li class:list={{ "is-active": i === 0 }} tabindex="0">
                       <span class="steps-dot" aria-hidden="true" />
                       <span class="steps-label">
                         <span class="steps-n" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
@@ -316,12 +316,11 @@ const host = (url: string) => {
   }
 
   /* The same path inside a project card, where five labels do not fit side
-     by side: the stops sit on one line and only the active one is named. The
-     line fills up to it. Hover, focus or tap picks a stop; left alone, the
-     path walks itself (see the script below). */
+     by side: the stops sit on one line and only the active one is named.
+     Hover, focus or tap picks a stop; left alone, a pulse travels the line
+     and names each stop as it passes (see the script below). */
   .steps {
     --dot: 0.4375rem;
-    --active: 0;
     --pad: 0.5rem;
     position: relative;
     display: grid;
@@ -335,22 +334,19 @@ const host = (url: string) => {
     content: "";
     position: absolute;
     left: 0;
+    right: calc(100% / var(--n) - var(--dot));
     top: calc(var(--pad) + var(--dot) / 2 - 0.5px);
     height: 1px;
   }
   .steps::before {
-    right: calc(100% / var(--n) - var(--dot));
     background: var(--line-strong);
   }
+  /* The same accent pulse as the lead strip, positioned by the script so it
+     travels the line at a constant pace and never rests on a stop. */
   .steps::after {
-    width: calc(var(--active) * 100% / var(--n) + var(--dot) / 2);
-    /* A soft trail: faint where the request started, clearer at the stop. */
-    background: linear-gradient(
-      to right,
-      color-mix(in oklch, var(--accent) 12%, transparent),
-      color-mix(in oklch, var(--accent) 60%, transparent)
-    );
-    transition: width 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(to right, transparent, var(--accent), transparent) no-repeat var(--x, 0%) 0 /
+      22% 100%;
+    opacity: var(--glow, 0);
   }
   .steps li {
     padding-block: var(--pad);
@@ -375,18 +371,14 @@ const host = (url: string) => {
     border: 1px solid var(--ink-3);
     background: var(--bg);
     transition:
-      border-color 0.7s ease,
-      background-color 0.7s ease,
-      box-shadow 0.7s ease;
+      border-color 0.5s ease,
+      background-color 0.5s ease,
+      box-shadow 0.5s ease;
   }
-  /* Stops already passed only take a tint; the active one is filled. */
-  .steps li.is-on .steps-dot {
-    border-color: color-mix(in oklch, var(--accent) 55%, var(--ink-3));
-    background: color-mix(in oklch, var(--accent) 28%, var(--bg));
-  }
+  /* The stop the pulse is passing lights up, like a hovered stop above. */
   .steps li.is-active .steps-dot {
-    border-color: color-mix(in oklch, var(--accent) 85%, var(--bg));
-    background: color-mix(in oklch, var(--accent) 85%, var(--bg));
+    border-color: var(--accent);
+    background: var(--accent);
     box-shadow: 0 0 0 0.2rem color-mix(in oklch, var(--accent) 9%, transparent);
   }
   .steps li:focus-visible .steps-dot {
@@ -407,7 +399,7 @@ const host = (url: string) => {
     text-overflow: ellipsis;
     opacity: 0;
     transform: translateY(0.25rem);
-    transition: opacity 0.25s ease;
+    transition: opacity 0.15s ease;
     pointer-events: none;
   }
   /* The old name leaves quickly; the new one eases in just after. */
@@ -415,8 +407,8 @@ const host = (url: string) => {
     opacity: 1;
     transform: none;
     transition:
-      opacity 0.6s ease 0.2s,
-      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+      opacity 0.35s ease 0.1s,
+      transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
   }
   .steps-n {
     font-family: var(--font-mono);
@@ -425,7 +417,6 @@ const host = (url: string) => {
     color: var(--ink-3);
   }
   @media (prefers-reduced-motion: reduce) {
-    .steps::after,
     .steps-label,
     .steps li.is-active .steps-label {
       transition: none;
@@ -479,46 +470,57 @@ const host = (url: string) => {
 </style>
 
 <script>
-  // Card request paths: one stop is active at a time. Pointer, focus or tap
-  // picks it. Left alone, every path follows one shared beat, so they all
-  // walk in step; a path someone was holding rejoins the beat when released.
+  // Card request paths. Left alone, an accent pulse travels each line at a
+  // constant pace and the stop it is passing is named. Every path reads the
+  // same clock, so they all move in step. Pointer, focus or tap picks a stop
+  // and holds that path; released, it rejoins the others.
   const still = matchMedia("(prefers-reduced-motion: reduce)");
-  const BEAT_MS = 2200;
+  const LOOP_MS = 6000;
   const TAP_HOLD_MS = 6000;
+  /** Pulse length as a share of the line; matches the CSS background-size. */
+  const PULSE = 0.22;
+  /** Share of the trip spent fading in, and again fading out. */
+  const FADE = 0.07;
 
-  let beat = 0;
-  let timer: number | undefined;
-  const followers: { visible: boolean; held: boolean; sync: () => void }[] = [];
+  const followers: { visible: boolean; held: boolean; draw: (progress: number) => void }[] = [];
+  let frame: number | undefined;
 
+  const tick = (now: number) => {
+    const progress = (now % LOOP_MS) / LOOP_MS;
+    followers.forEach((f) => f.visible && !f.held && f.draw(progress));
+    frame = requestAnimationFrame(tick);
+  };
   const clock = () => {
     const wanted = !still.matches && followers.some((f) => f.visible);
-    if (wanted && timer === undefined) {
-      timer = window.setInterval(() => {
-        beat += 1;
-        followers.forEach((f) => f.sync());
-      }, BEAT_MS);
-    } else if (!wanted && timer !== undefined) {
-      window.clearInterval(timer);
-      timer = undefined;
+    if (wanted && frame === undefined) {
+      frame = requestAnimationFrame(tick);
+    } else if (!wanted && frame !== undefined) {
+      cancelAnimationFrame(frame);
+      frame = undefined;
     }
   };
 
   document.querySelectorAll<HTMLElement>("[data-steps]").forEach((path) => {
     const stops = [...path.querySelectorAll<HTMLElement>("li")];
+    let active = 0;
 
     const show = (index: number) => {
-      path.style.setProperty("--active", String(index));
-      stops.forEach((stop, i) => {
-        stop.classList.toggle("is-on", i <= index);
-        stop.classList.toggle("is-active", i === index);
-      });
+      if (index === active) return;
+      active = index;
+      stops.forEach((stop, i) => stop.classList.toggle("is-active", i === index));
     };
 
     const follower = {
       visible: false,
       held: false,
-      sync: () => {
-        if (!follower.held && !still.matches) show(beat % stops.length);
+      draw: (progress: number) => {
+        // background-position percentages place the pulse's edge, not its
+        // centre; this puts the centre exactly `progress` along the line.
+        path.style.setProperty("--x", `${((progress - PULSE / 2) / (1 - PULSE)) * 100}%`);
+        path.style.setProperty("--glow", String(Math.min(1, progress / FADE, (1 - progress) / FADE)));
+        // Equal time per stop, so the first and last names stay up as long
+        // as the ones in between.
+        show(Math.min(stops.length - 1, Math.floor(progress * stops.length)));
       },
     };
     followers.push(follower);
@@ -526,7 +528,7 @@ const host = (url: string) => {
     let release: number | undefined;
     const hold = (value: boolean) => () => {
       follower.held = value;
-      follower.sync();
+      if (value) path.style.setProperty("--glow", "0");
     };
 
     stops.forEach((el, i) => {
@@ -535,7 +537,7 @@ const host = (url: string) => {
       // A tap has no hover to keep the stop held, so hold it for a while.
       el.addEventListener("click", () => {
         show(i);
-        follower.held = true;
+        hold(true)();
         window.clearTimeout(release);
         release = window.setTimeout(hold(false), TAP_HOLD_MS);
       });
