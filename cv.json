@@ -27,7 +27,7 @@
     "aboutParagraphs": [
       "I studied Software Engineering at UCLV in Santa Clara, Cuba, and wrote my first production code there, building internal tools for ETECSA, the national telecom. Since then I've worked from Alicante, Spain, and now West Palm Beach, Florida. The job has stayed the same at its core: take a product from an empty repo to something people use every day.",
       "Most of my time goes into the frontend: React, Next.js, and TypeScript, structured so a team can keep extending it. I'm just as comfortable on the other side of the API, with FastAPI and Node services, Postgres with row-level security on Supabase, and Docker deploys on Railway and AWS. Owning both sides means fewer handoffs and fewer surprises.",
-      "Day to day I build with AI in the loop. Claude Code is my main tool, extended with MCP servers, custom skills, and plugins, so the routine parts go fast and my attention goes to architecture, review, and the details people feel without noticing."
+      "Day to day I build with AI in the loop. Claude Code is my main tool, extended with MCP servers, custom skills, and plugins, so the routine parts go fast. I still read every change before it ships, and my attention goes to the things that are easy to skip: load times, keyboard access, and empty and error states."
     ],
     "location": {
       "address": "",
