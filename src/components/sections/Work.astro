@@ -322,6 +322,7 @@ const host = (url: string) => {
   .steps {
     --dot: 0.4375rem;
     --active: 0;
+    --pad: 0.5rem;
     position: relative;
     display: grid;
     grid-template-columns: repeat(var(--n), minmax(0, 1fr));
@@ -334,7 +335,7 @@ const host = (url: string) => {
     content: "";
     position: absolute;
     left: 0;
-    top: calc(0.5rem + var(--dot) / 2 - 0.5px);
+    top: calc(var(--pad) + var(--dot) / 2 - 0.5px);
     height: 1px;
   }
   .steps::before {
@@ -347,9 +348,17 @@ const host = (url: string) => {
     transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .steps li {
-    padding-block: 0.5rem;
+    padding-block: var(--pad);
     cursor: default;
     outline: none;
+  }
+  /* On touch screens each stop is a 44px target. */
+  @media (pointer: coarse) {
+    .steps {
+      --pad: 1.2rem;
+      margin-top: -0.7rem;
+      padding-bottom: 1.1rem;
+    }
   }
   .steps-dot {
     position: relative;
@@ -460,18 +469,33 @@ const host = (url: string) => {
 
 <script>
   // Card request paths: one stop is active at a time. Pointer, focus or tap
-  // picks it; otherwise the path advances on its own while it is on screen.
+  // picks it. Left alone, every path follows one shared beat, so they all
+  // walk in step; a path someone was holding rejoins the beat when released.
   const still = matchMedia("(prefers-reduced-motion: reduce)");
+  const BEAT_MS = 2200;
+  const TAP_HOLD_MS = 6000;
+
+  let beat = 0;
+  let timer: number | undefined;
+  const followers: { visible: boolean; held: boolean; sync: () => void }[] = [];
+
+  const clock = () => {
+    const wanted = !still.matches && followers.some((f) => f.visible);
+    if (wanted && timer === undefined) {
+      timer = window.setInterval(() => {
+        beat += 1;
+        followers.forEach((f) => f.sync());
+      }, BEAT_MS);
+    } else if (!wanted && timer !== undefined) {
+      window.clearInterval(timer);
+      timer = undefined;
+    }
+  };
 
   document.querySelectorAll<HTMLElement>("[data-steps]").forEach((path) => {
     const stops = [...path.querySelectorAll<HTMLElement>("li")];
-    let active = 0;
-    let timer: number | undefined;
-    let visible = false;
-    let held = false;
 
     const show = (index: number) => {
-      active = index;
       path.style.setProperty("--active", String(index));
       stops.forEach((stop, i) => {
         stop.classList.toggle("is-on", i <= index);
@@ -479,25 +503,32 @@ const host = (url: string) => {
       });
     };
 
-    const stop = () => {
-      window.clearInterval(timer);
-      timer = undefined;
+    const follower = {
+      visible: false,
+      held: false,
+      sync: () => {
+        if (!follower.held && !still.matches) show(beat % stops.length);
+      },
     };
-    const run = () => {
-      stop();
-      if (!visible || held || still.matches) return;
-      timer = window.setInterval(() => show((active + 1) % stops.length), 2200);
+    followers.push(follower);
+
+    let release: number | undefined;
+    const hold = (value: boolean) => () => {
+      follower.held = value;
+      follower.sync();
     };
 
     stops.forEach((el, i) => {
       el.addEventListener("pointerenter", () => show(i));
       el.addEventListener("focus", () => show(i));
-      el.addEventListener("click", () => show(i));
+      // A tap has no hover to keep the stop held, so hold it for a while.
+      el.addEventListener("click", () => {
+        show(i);
+        follower.held = true;
+        window.clearTimeout(release);
+        release = window.setTimeout(hold(false), TAP_HOLD_MS);
+      });
     });
-    const hold = (value: boolean) => () => {
-      held = value;
-      run();
-    };
     path.addEventListener("pointerenter", hold(true));
     path.addEventListener("pointerleave", hold(false));
     path.addEventListener("focusin", hold(true));
@@ -505,11 +536,12 @@ const host = (url: string) => {
 
     new IntersectionObserver(
       ([entry]) => {
-        visible = entry.isIntersecting;
-        run();
+        follower.visible = entry.isIntersecting;
+        clock();
       },
       { threshold: 0.6 },
     ).observe(path);
-    still.addEventListener("change", run);
   });
+
+  still.addEventListener("change", clock);
 </script>
