@@ -24,6 +24,7 @@
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "^1.1.2",
     "simple-icons": "^16.37.0",
-    "subset-font": "^2.9.0"
+    "subset-font": "^2.9.0",
+    "svgo": "^4.1.0"
   }
 }

@@ -3,6 +3,12 @@
 // size per context, so a row of them reads as a set and not as a logo wall.
 // Paths come from simple-icons at build time; nothing ships to the client
 // but the inline SVG. A name without a mark renders nothing.
+//
+// Two things keep the marks light, since together they are the largest part
+// of the page's HTML. Each path is rounded to the precision a 16-20px mark
+// can show. And a mark that appears more than once on a page is written once,
+// as a <symbol>; every later use points at it.
+import { optimize } from "svgo";
 import {
   siAstro,
   siClaude,
@@ -45,7 +51,7 @@ interface Props {
 
 const { name, class: className = "size-4" } = Astro.props;
 
-const simple: Record<string, { path: string }> = {
+const simple: Record<string, { slug: string; path: string }> = {
   React: siReact,
   "React Native": siReact,
   "Next.js": siNextdotjs,
@@ -89,16 +95,40 @@ const drawn: Record<string, string[]> = {
   "CI/CD": ["M4 12a8 8 0 0 1 13.66-5.66L20 8.5", "M20 4v4.5h-4.5", "M20 12a8 8 0 0 1-13.66 5.66L4 15.5", "M4 20v-4.5h4.5"],
 };
 
-const mark = simple[name]
-  ? { viewBox: "0 0 24 24", path: simple[name].path }
-  : (extraMarks[aliases[name] ?? name] ?? null);
+const source = simple[name]
+  ? { id: simple[name].slug, viewBox: "0 0 24 24", path: simple[name].path }
+  : extraMarks[aliases[name] ?? name]
+    ? { id: (aliases[name] ?? name).toLowerCase().replace(/[^a-z0-9]+/g, "-"), ...extraMarks[aliases[name] ?? name] }
+    : null;
 const strokes = drawn[name];
+
+/** A tenth of a unit on the 24 grid is 0.08px at the largest size the marks
+    are drawn; the 128 grid needs no decimals at all. */
+function slim(viewBox: string, path: string) {
+  const floatPrecision = viewBox === "0 0 24 24" ? 1 : 0;
+  const { data } = optimize(`<svg viewBox="${viewBox}"><path d="${path}"/></svg>`, {
+    plugins: [{ name: "convertPathData", params: { floatPrecision } }],
+  });
+  return data.match(/ d="([^"]*)"/)?.[1] ?? path;
+}
+
+// The marks already written on this page, kept on the request so each page
+// render starts empty.
+const written = (Astro.locals.techMarks ??= new Set<string>());
+const symbolId = source ? `mark-${source.id}` : "";
+const first = source ? !written.has(symbolId) : false;
+if (source) written.add(symbolId);
 ---
 
 {
-  mark ? (
-    <svg viewBox={mark.viewBox} class:list={["flex-none", className]} fill="currentColor" aria-hidden="true">
-      <path d={mark.path} />
+  source ? (
+    <svg class:list={["flex-none", className]} fill="currentColor" aria-hidden="true">
+      {first && (
+        <symbol id={symbolId} viewBox={source.viewBox}>
+          <path d={slim(source.viewBox, source.path)} />
+        </symbol>
+      )}
+      <use href={`#${symbolId}`} />
     </svg>
   ) : strokes ? (
     <svg

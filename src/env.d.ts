@@ -19,3 +19,10 @@ declare module "@cv" {
 
 /** Resume PDF size label (e.g. "1.5 MB"), injected at build time. */
 declare const __RESUME_SIZE__: string;
+
+declare namespace App {
+  interface Locals {
+    /** Ids of the technology marks already written on the page being rendered. */
+    techMarks?: Set<string>;
+  }
+}
