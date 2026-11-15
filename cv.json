@@ -711,7 +711,17 @@
         "Next.js web app and Expo mobile app on one Supabase backend",
         "Real-time availability and booking engine with Postgres RLS"
       ],
-      "imageAlt": "BookEasely landing page with the headline “The easiest way to book appointments”"
+      "imageAlt": "BookEasely landing page with the headline “The easiest way to book appointments”",
+      "architecture": {
+        "layers": [
+          "Booking flow",
+          "Server Actions",
+          "Zod validation and rate limit",
+          "Postgres with row-level security",
+          "Edge Functions for SMS and push"
+        ],
+        "note": "A Postgres exclusion constraint keeps a worker from being double-booked, whatever the client sends."
+      }
     },
     {
       "name": "ReviewBoost",
@@ -748,7 +758,17 @@
         "Google Business Profile OAuth to sync reviews and post replies",
         "AI-assisted replies and a pg_cron sync every 30 minutes"
       ],
-      "imageAlt": "ReviewBoost landing page with the headline “Turn happy customers into 5-star reviews” and a review stats dashboard"
+      "imageAlt": "ReviewBoost landing page with the headline “Turn happy customers into 5-star reviews” and a review stats dashboard",
+      "architecture": {
+        "layers": [
+          "Client Components",
+          "TanStack Query hooks",
+          "Service layer",
+          "Route handlers",
+          "Supabase, Google, and OpenAI"
+        ],
+        "note": "Reads go to Postgres under row-level security. Google and OpenAI calls only happen in route handlers."
+      }
     },
     {
       "name": "Turing Dream",
@@ -784,7 +804,17 @@
         "Two production React apps with multi-role Azure AD auth",
         "Stripe subscription billing linked to accounts and users"
       ],
-      "imageAlt": "Turing Dream landing page with the “Pioneering AI Innovation” wordmark"
+      "imageAlt": "Turing Dream landing page with the “Pioneering AI Innovation” wordmark",
+      "architecture": {
+        "layers": [
+          "Azure AD sign-in",
+          "Role-guarded routes",
+          "Zustand stores",
+          "REST API",
+          "Stripe webhooks"
+        ],
+        "note": "The role that comes back from Azure AD decides which routes and actions a user gets."
+      }
     },
     {
       "name": "Professional Portfolio",
