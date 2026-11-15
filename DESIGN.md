@@ -64,7 +64,7 @@ typography:
     fontWeight: 420
     lineHeight: 1.5
   meta:
-    fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, monospace"
+    fontFamily: "ui-monospace, SF Mono, Cascadia Mono, Roboto Mono, Menlo, Consolas, monospace"
     fontSize: "0.8125rem"
     fontWeight: 400
     lineHeight: 1.4
@@ -147,7 +147,7 @@ This world explicitly replaces the sticky-sidebar, dark-navy portfolio template 
 **Key Characteristics:**
 - Cool grey neutrals (hue 270) with one ultramarine-violet accent reserved for links and actions.
 - Light and dark both. Every token is a `light-dark()` pair; the scheme follows the OS unless the visitor pins Light or Dark in the theme menu (`data-theme` on `<html>`, remembered in localStorage, applied before first paint).
-- Mona Sans Variable throughout, with the width axis as the display lever; Geist Mono only for dates and years.
+- Mona Sans Variable throughout, with the width axis as the display lever; the system monospace only for dates and years.
 - Hairline 1px borders and tonal surface bands as structure; layered soft shadow only on product frames.
 - No pills, no eyebrows, no cards-as-structure, no decorative monospace.
 
@@ -180,7 +180,7 @@ A restrained cool-grey ladder with a single saturated ultramarine-violet voice; 
 
 **Display Font:** Mona Sans Variable (with ui-sans-serif, system-ui, -apple-system, sans-serif)
 **Body Font:** Mona Sans Variable (same stack)
-**Label/Mono Font:** Geist Mono Variable (with ui-monospace, SF Mono, monospace), dates and years only
+**Label/Mono Font:** the system monospace (ui-monospace, SF Mono, Cascadia Mono, Roboto Mono, Menlo, Consolas), dates and years only. The page loads no font file for it; the printed resume keeps Geist Mono Variable
 
 **Character:** One grotesque doing all the work, its width axis stretched for the name and section titles and left at 100% for reading. The mono is a data face, not a mood.
 
@@ -192,12 +192,12 @@ A restrained cool-grey ladder with a single saturated ultramarine-violet voice; 
 - **Body** (420, 1rem on a root that scales 16-18px, 1.6): paragraphs at 64-68ch, `text-wrap: pretty`. Emphasis is weight 560-600 in ink, never colour.
 - **Body small** (420, 0.9375rem, 1.55): fact lines, positions, role highlights, skill evidence, definition values, nav links, menu items, the hero meta line.
 - **Label** (420, 0.875rem): roles, stacks, definition terms, metadata lines.
-- **Meta** (Geist Mono, 0.8125rem, 1.4, tabular): employment date ranges and project years.
+- **Meta** (system monospace, 0.8125rem, 1.4, tabular): employment date ranges and project years.
 
 ### Named Rules
 **The Width-Axis Rule.** Display hierarchy comes from `font-stretch` on Mona Sans (118% name, 108-110% headlines), paired with tighter tracking. Don't reach for a second display family.
 
-**The Data-Only Mono Rule.** Geist Mono appears only where a value is a date or a year. Labels, nav, buttons and stacks stay in Mona Sans. All numerals in dates use tabular figures.
+**The Data-Only Mono Rule.** The monospace appears only where a value is a date or a year. Labels, nav, buttons and stacks stay in Mona Sans. All numerals in dates use tabular figures.
 
 ## Layout
 
@@ -277,7 +277,7 @@ Short proof lines under each project, inset 1.25rem with an 8px, 1px dash marker
 Technologies as plain words in ink tertiary at 0.875rem, separated by space alone (0.25rem row, 1.5rem column gap) so nothing dangles at a line end. No chips, no separators, no logos.
 
 ### Meta
-Geist Mono 0.8125rem, ink tertiary, tabular figures; date ranges and years only.
+System monospace 0.8125rem, ink tertiary, tabular figures; date ranges and years only.
 
 ### Disclosure
 "Show details / Hide details" summary in label size, ink tertiary to ink on hover, with a chevron that rotates 180° over 0.3s. Where the browser can interpolate to `auto`, the content eases open in height over 0.4s (expo-out) with a 0.3s fade; elsewhere it simply opens.
@@ -321,7 +321,7 @@ Text selection is accent on paper. The scrollbar is hairline-strong on the page 
 - **Do** reserve ultramarine for links, focus, frame hover glow and action confirmations.
 - **Do** fill the primary action with solid ink and keep every other button a clear glass lens.
 - **Do** get display hierarchy from Mona Sans's width axis (118% name, 108-110% headlines) with negative tracking.
-- **Do** set dates and years in Geist Mono with tabular figures, and nothing else.
+- **Do** set dates and years in the monospace with tabular figures, and nothing else.
 - **Do** separate sections with hairlines and surface-tone bands rather than cards.
 - **Do** raise only product screenshots, in the frame with its layered soft shadow.
 - **Do** define every new colour as a `light-dark()` pair so the OS setting and the theme menu both drive it, and mirror the pair in the `@supports not (color: light-dark(...))` fallback block in global.css (Safari before 17.5 / iOS 16.4-17.4).

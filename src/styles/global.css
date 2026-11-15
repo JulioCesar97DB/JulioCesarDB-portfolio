@@ -197,7 +197,9 @@
   --color-accent-soft: var(--accent-soft);
 
   --font-sans: "Mona Sans Variable", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-mono: "Geist Mono Variable", ui-monospace, "SF Mono", monospace;
+  /* Dates and years only, so the reader's own monospace does the job and the
+     page loads no second font. The printed resume keeps Geist Mono. */
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Menlo, Consolas, monospace;
 
   --text-meta: 0.8125rem;
   --text-meta--line-height: 1.4;
