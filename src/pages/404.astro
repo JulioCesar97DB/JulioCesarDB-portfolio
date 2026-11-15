@@ -1,0 +1,22 @@
+---
+// Served for any address the site does not have. It links with absolute
+// paths because it can be shown at any depth.
+import Layout from "@/layouts/Layout.astro";
+import { basics } from "@cv";
+
+const { name } = basics;
+---
+
+<Layout title={`Page not found | ${name}`} description="This page does not exist." noindex>
+  <main id="main-content" class="container-page flex min-h-svh flex-col justify-center py-24">
+    <p class="meta">404</p>
+    <h1 class="section-title mt-3">This page does not exist.</h1>
+    <p class="mt-4 max-w-[44ch] text-lead text-ink-2">
+      The address may be mistyped, or the page may have moved. Everything on this site is on one page.
+    </p>
+    <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
+      <a href="/" class="btn btn-primary">Back to the portfolio</a>
+      <a href="/#work" class="link">Selected work</a>
+    </div>
+  </main>
+</Layout>

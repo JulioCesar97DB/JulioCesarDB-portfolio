@@ -22,7 +22,7 @@ Light and dark themes follow the system and can be pinned from the top bar.
 | **Framework** | [Astro 7](https://astro.build), static output, no client framework |
 | **Styling** | [Tailwind CSS 4](https://tailwindcss.com), configured in CSS through `@theme` |
 | **Language** | TypeScript; `astro check` runs before every build |
-| **Type** | Mona Sans Variable and Geist Mono Variable, self-hosted through Fontsource |
+| **Type** | Mona Sans Variable, self-hosted and cut to the characters the page sets; the system monospace for dates. The resume also sets Geist Mono |
 | **Icons** | One hand-drawn stroke set, plus technology marks from [simple-icons](https://simpleicons.org) inlined at build time |
 | **Client JavaScript** | Three small modules, no dependencies: interactions, theme, and the particle field |
 
