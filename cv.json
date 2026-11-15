@@ -75,6 +75,7 @@
         "items": [
           "React",
           "Next.js",
+          "Astro",
           "TypeScript",
           "JavaScript",
           "Tailwind CSS",
@@ -143,6 +144,9 @@
         "name": "Next.js"
       },
       {
+        "name": "Astro"
+      },
+      {
         "name": "TypeScript"
       },
       {
@@ -204,6 +208,7 @@
       "skills": [
         "Next.js",
         "React",
+        "Astro",
         "TypeScript",
         "FastAPI",
         "Python",
@@ -839,10 +844,10 @@
       "keywords": [
         "Astro",
         "TypeScript",
-        "Tailwind CSS",
-        "GSAP"
+        "Tailwind CSS"
       ],
-      "tier": "hidden"
+      "tier": "more",
+      "title": "This site"
     },
     {
       "name": "Cloud Infrastructure Designer",
