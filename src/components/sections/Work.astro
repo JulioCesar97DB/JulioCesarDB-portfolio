@@ -110,7 +110,7 @@ const host = (url: string) => {
         {
           arch && (
             <figure class="arch reveal lg:col-span-7">
-              <ol class="arch-flow" style={`--n: ${arch.layers.length}`}>
+              <ol class="arch-flow" style={`--n: ${arch.layers.length}`} data-steps="nearest">
                 {arch.layers.map((layer) => (
                   <li>{layer}</li>
                 ))}
@@ -236,7 +236,7 @@ const host = (url: string) => {
   /* Architecture strip: the layers a request crosses, as stops on one line.
      Stacked top to bottom on small screens, left to right from lg. The line
      runs from the first stop to the last; a short accent pulse travels it
-     twice when the strip is revealed, and again while it is hovered. */
+     continuously, positioned by the script below. */
   .arch-flow {
     --dot: 0.4375rem;
     position: relative;
@@ -266,7 +266,9 @@ const host = (url: string) => {
       border-color 0.3s,
       background-color 0.3s;
   }
-  /* The stop under the pointer lights up. */
+  /* The stop under the pointer lights up, and so does the one the pulse is
+     passing. */
+  .arch-flow li.is-active::before,
   .arch-flow li:hover::before {
     border-color: var(--accent);
     background: var(--accent);
@@ -284,9 +286,9 @@ const host = (url: string) => {
     background: var(--line-strong);
   }
   .arch-flow::after {
-    background: linear-gradient(to bottom, transparent, var(--accent), transparent) no-repeat 0 -40% / 100%
-      28%;
-    opacity: 0;
+    background: linear-gradient(to bottom, transparent, var(--accent), transparent) no-repeat 0 var(--x, 0%) /
+      100% 22%;
+    opacity: var(--glow, 0);
   }
 
   @media (min-width: 1024px) {
@@ -310,8 +312,8 @@ const host = (url: string) => {
       height: 1px;
     }
     .arch-flow::after {
-      background: linear-gradient(to right, transparent, var(--accent), transparent) no-repeat -40% 0 / 28%
-        100%;
+      background: linear-gradient(to right, transparent, var(--accent), transparent) no-repeat var(--x, 0%) 0 /
+        22% 100%;
     }
   }
 
@@ -422,56 +424,12 @@ const host = (url: string) => {
       transition: none;
     }
   }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .arch.is-in .arch-flow::after {
-      animation: flow-y 2.4s cubic-bezier(0.45, 0, 0.55, 1) 0.5s 2;
-    }
-    .arch:hover .arch-flow::after {
-      animation: flow-y 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
-    }
-    @media (min-width: 1024px) {
-      .arch.is-in .arch-flow::after {
-        animation-name: flow-x;
-      }
-      .arch:hover .arch-flow::after {
-        animation-name: flow-x;
-      }
-    }
-  }
-  @keyframes flow-y {
-    0% {
-      opacity: 0;
-      background-position: 0 -40%;
-    }
-    15%,
-    85% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-      background-position: 0 140%;
-    }
-  }
-  @keyframes flow-x {
-    0% {
-      opacity: 0;
-      background-position: -40% 0;
-    }
-    15%,
-    85% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-      background-position: 140% 0;
-    }
-  }
 </style>
 
 <script>
-  // Card request paths. Left alone, an accent pulse travels each line at a
-  // constant pace and the stop it is passing is named. Every path reads the
+  // Request paths, the lead strip and the ones in the cards. Left alone, an
+  // accent pulse travels each line at a constant pace and the stop it is
+  // passing lights up (and, in the cards, is named). Every path reads the
   // same clock, so they all move in step. Pointer, focus or tap picks a stop
   // and holds that path; released, it rejoins the others.
   const still = matchMedia("(prefers-reduced-motion: reduce)");
@@ -502,7 +460,8 @@ const host = (url: string) => {
 
   document.querySelectorAll<HTMLElement>("[data-steps]").forEach((path) => {
     const stops = [...path.querySelectorAll<HTMLElement>("li")];
-    let active = 0;
+    const nearest = path.dataset.steps === "nearest";
+    let active = -1;
 
     const show = (index: number) => {
       if (index === active) return;
@@ -518,9 +477,13 @@ const host = (url: string) => {
         // centre; this puts the centre exactly `progress` along the line.
         path.style.setProperty("--x", `${((progress - PULSE / 2) / (1 - PULSE)) * 100}%`);
         path.style.setProperty("--glow", String(Math.min(1, progress / FADE, (1 - progress) / FADE)));
-        // Equal time per stop, so the first and last names stay up as long
-        // as the ones in between.
-        show(Math.min(stops.length - 1, Math.floor(progress * stops.length)));
+        // The lead strip lights the stop nearest the pulse. The cards name
+        // one stop at a time, so there each gets an equal share of the trip.
+        show(
+          nearest
+            ? Math.round(progress * (stops.length - 1))
+            : Math.min(stops.length - 1, Math.floor(progress * stops.length)),
+        );
       },
     };
     followers.push(follower);
