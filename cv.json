@@ -2,7 +2,7 @@
   "basics": {
     "name": "Julio César Díaz",
     "label": "Full-stack engineer",
-    "tagline": "I take web products from an empty repo to production. The frontend is where I go deepest.",
+    "tagline": "I lead the frontend of a SaaS that manages 240,000+ business listings across 5,800+ locations. Outside of that, I'm building two products of my own, for web and mobile.",
     "seo": {
       "title": "Julio César Díaz | Full-stack engineer (React, Next.js)",
       "description": "Julio César Díaz is a full-stack engineer in West Palm Beach, Florida, building production web apps with React, Next.js, TypeScript, and FastAPI."
@@ -27,7 +27,7 @@
     "aboutParagraphs": [
       "I studied Software Engineering at UCLV in Santa Clara, Cuba, and wrote my first production code there, building internal tools for ETECSA, the national telecom. Since then I've worked from Alicante, Spain, and now West Palm Beach, Florida. The job has stayed the same at its core: take a product from an empty repo to something people use every day.",
       "Most of my time goes into the frontend: React, Next.js, and TypeScript, structured so a team can keep extending it. I'm just as comfortable on the other side of the API, with FastAPI and Node services, Postgres with row-level security on Supabase, and Docker deploys on Railway and AWS. Owning both sides means fewer handoffs and fewer surprises.",
-      "I care about the details people feel without noticing: fast loads, accessible interfaces, and code that is pleasant to come back to."
+      "Day to day I build with AI in the loop. Claude Code is my main tool, extended with MCP servers, custom skills, and plugins, so the routine parts go fast and my attention goes to architecture, review, and the details people feel without noticing."
     ],
     "location": {
       "address": "",
@@ -61,6 +61,15 @@
     ],
     "resume": "/resume.pdf",
     "toolkit": [
+      {
+        "group": "AI tooling",
+        "items": [
+          "Claude Code",
+          "Claude",
+          "MCP servers",
+          "Skills & plugins"
+        ]
+      },
       {
         "group": "Frontend",
         "items": [
@@ -150,6 +159,9 @@
         "match": [
           "Supabase"
         ]
+      },
+      {
+        "name": "Claude Code"
       }
     ]
   },
@@ -162,11 +174,11 @@
       "url": "https://consumrbuzz.com/",
       "startDate": "2025-10-07",
       "endDate": null,
-      "summary": "Built ConsumrBuzz, a full-stack business intelligence dashboard for business listing management, automated publisher scanning, and analytics reporting — owning the frontend end to end and contributing across the backend.",
+      "summary": "Built ConsumrBuzz, a full-stack business intelligence dashboard for business listing management, automated publisher scanning, and analytics reporting — leading the frontend and contributing across the backend.",
       "highlights": [
-        "Architected and built the complete frontend from scratch using Next.js 15, React 19, and TypeScript",
+        "Architected the frontend from scratch and led its build with Next.js 15, React 19, and TypeScript",
         "Implemented a three-layer data flow architecture (Client Components → TanStack Query Hooks → Server Actions → DAL → API), ensuring secure authentication handling",
-        "Built a role-based access control system supporting 7 roles across Admin, Agency, and SMB dashboards",
+        "Built a role-based access control system supporting 8 roles across Admin, Agency, and SMB dashboards",
         "Integrated Kinde Auth with secure server-side token management, preventing client-side token exposure",
         "Implemented full internationalization (i18n) supporting English, Spanish, and French with next-intl",
         "Developed backend REST APIs with FastAPI (Python) for entity management, analytics, and authentication",
@@ -206,8 +218,8 @@
         "Docker",
         "Google Business Profile API"
       ],
-      "metric": "Sole frontend engineer, from first commit to production",
-      "resumeLead": "Owned the frontend as its sole engineer, from first commit to production"
+      "metric": "Lead frontend engineer on a platform managing 240,000+ listings across 5,800+ locations",
+      "resumeLead": "Led the frontend of a platform managing 240,000+ business listings across 5,800+ locations, from first commit to production"
     },
     {
       "name": "Second Window",
@@ -220,7 +232,8 @@
       "summary": "Led frontend development for AI-powered educational platforms and a multi-cloud infrastructure visualization tool, delivering two production applications end to end.",
       "highlights": [
         "Architected and shipped two production web applications for AI-driven educational services from concept to launch",
-        "Built an interactive drag-and-drop cloud infrastructure designer with XYFlow supporting AWS, Azure, and GCP resource provisioning",
+        "Built a drag-and-drop cloud infrastructure designer with XYFlow, in the spirit of draw.io: you draw the architecture and it deploys to AWS, Azure, or GCP through Terraform. It never reached production",
+        "The hard part of the designer: every cloud resource was its own kind of node with its own configuration, and the parent-child nesting between them ran deep",
         "Integrated Azure AD SSO authentication and Stripe subscription billing with webhook handling",
         "Implemented a real-time cost estimation engine calculating infrastructure pricing across three cloud providers"
       ],
@@ -232,8 +245,8 @@
         "Collaborate with backend engineers on REST API contracts and data integration patterns"
       ],
       "achievements": [
-        "Delivered a visual cloud architecture designer enabling non-technical users to design and deploy infrastructure",
-        "Built real-time multi-cloud cost calculator reducing client infrastructure planning time significantly",
+        "Built a visual cloud architecture designer for drawing infrastructure and deploying it through Terraform (not released)",
+        "Built a real-time multi-cloud cost calculator for the designer",
         "Established reusable component library and development standards that improved team velocity by 40%"
       ],
       "skills": [
@@ -621,9 +634,9 @@
       "isActive": true,
       "description": "Full-stack SaaS platform for business listing management with automated publisher scanning, analytics, and multi-tenant role-based dashboards, powered by a FastAPI backend deployed on Railway.",
       "highlights": [
-        "Built the entire frontend from scratch with Next.js 15, React 19, TypeScript, and Tailwind v4",
+        "Led the frontend build from scratch with Next.js 15, React 19, TypeScript, and Tailwind v4",
         "Three-layer secure architecture: Client → Server Actions → DAL → FastAPI backend",
-        "Role-based dashboards for 7 user roles across Admin, Agency, and SMB tenants",
+        "Role-based dashboards for 8 user roles across Admin, Agency, and SMB tenants",
         "Full i18n support (EN/ES/FR) with Kinde Auth and automated publisher scraping workflows",
         "Built backend REST APIs with FastAPI, containerized with Docker and deployed on Railway",
         "Integrated the Google Business Profile API for business listing synchronization"
@@ -645,9 +658,10 @@
       "tier": "lead",
       "title": "ConsumrBuzz",
       "kind": "Business intelligence SaaS",
-      "role": "Sole frontend engineer, backend contributor",
+      "role": "Lead frontend engineer, backend contributor",
       "facts": [
-        "Role-based dashboards for 7 roles across Admin, Agency, and SMB tenants",
+        "240,000+ business listings managed across 5,800+ locations",
+        "Role-based dashboards for 8 roles across Admin, Agency, and SMB tenants",
         "English, Spanish, and French with next-intl",
         "FastAPI services in Docker, deployed on Railway"
       ],
@@ -692,7 +706,7 @@
       "tier": "feature",
       "title": "BookEasely",
       "kind": "Appointment booking, web and mobile",
-      "role": "Personal product, built end to end",
+      "role": "Personal product, in development",
       "facts": [
         "Next.js web app and Expo mobile app on one Supabase backend",
         "Real-time availability and booking engine with Postgres RLS"
@@ -729,7 +743,7 @@
       "tier": "feature",
       "title": "ReviewBoost",
       "kind": "Review management for local businesses",
-      "role": "Personal product, built end to end",
+      "role": "Personal product, in development",
       "facts": [
         "Google Business Profile OAuth to sync reviews and post replies",
         "AI-assisted replies and a pg_cron sync every 30 minutes"
@@ -796,7 +810,7 @@
     {
       "name": "Cloud Infrastructure Designer",
       "isActive": true,
-      "description": "Interactive visual tool for designing cloud architectures across AWS, Azure, and GCP, estimating their costs, and deploying them.",
+      "description": "Visual tool for drawing cloud architectures across AWS, Azure, and GCP, estimating their costs, and deploying them through Terraform. Built at Second Window; it never reached production.",
       "highlights": [
         "Drag-and-drop canvas built with React and XYFlow for visual cloud architecture design",
         "Real-time cost estimation engine calculating pricing across three major cloud providers",
