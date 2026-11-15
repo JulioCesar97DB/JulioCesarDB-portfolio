@@ -68,6 +68,9 @@ interface Work {
   metric?: string;
   /** The metric as a full action sentence, for the resume's first bullet. */
   resumeLead?: string;
+  /** Which highlights the resume prints, by position, when it should not
+      simply take the first few (the site keeps showing them in order). */
+  resumeHighlights?: Array<number>;
 }
 
 type DateStr = `${string}-${string}-${string}`;
@@ -160,6 +163,8 @@ interface Projects {
   title?: string;
   kind?: string;
   role?: string;
+  /** Where an unfinished project stands, e.g. "In development". */
+  status?: string;
   facts?: Array<string>;
   /** Request path through the system, outermost layer first. */
   architecture?: { layers: Array<string>; note?: string };

@@ -22,9 +22,10 @@ const bullets = [5, 3, 3, 2, 2];
 const roles = work.map((job, i) => ({
   ...job,
   place: [job.location, job.location_type].filter(Boolean).join(" · "),
-  points: [job.resumeLead ?? job.metric, ...job.highlights.slice(0, bullets[i] ?? 2)].filter(
-    (point): point is string => !!point,
-  ),
+  points: [
+    job.resumeLead ?? job.metric,
+    ...(job.resumeHighlights?.map((n) => job.highlights[n]) ?? job.highlights.slice(0, bullets[i] ?? 2)),
+  ].filter((point): point is string => !!point),
   stack: (job.skills ?? []).slice(0, 10),
 }));
 
@@ -139,7 +140,11 @@ const langs = [...languages]
               <article class="role">
                 <div class="row">
                   <h3>
-                    {p.title}, <span class="sub">{p.kind?.toLowerCase()}</span>
+                    {p.title},{" "}
+                    <span class="sub">
+                      {p.kind?.toLowerCase()}
+                      {p.status && ` (${p.status.toLowerCase()})`}
+                    </span>
                   </h3>
                   <p class="dates">{p.url ? <a href={p.url}>{bare(p.url)}</a> : p.year}</p>
                 </div>
