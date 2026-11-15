@@ -2,9 +2,10 @@
 import "@fontsource-variable/mona-sans/standard.css";
 import "@fontsource-variable/geist-mono/wght.css";
 import "@/styles/global.css";
-// The Latin file of the text face, preloaded: the hero's name and statement
-// are the largest paint on the page, and they wait for this font.
-import monaSansLatin from "@fontsource-variable/mona-sans/files/mona-sans-latin-standard-normal.woff2?url";
+// The text face, preloaded: the hero's name and statement are the largest
+// paint on the page, and they wait for this font. It is the subset declared
+// in global.css, which covers every character the page sets.
+import monaSansLatin from "@/assets/fonts/mona-sans-subset.woff2?url";
 import type { CV } from "@/cv";
 import cvData from "@cv";
 

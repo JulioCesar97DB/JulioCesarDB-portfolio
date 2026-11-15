@@ -1,5 +1,23 @@
 @import "tailwindcss";
 
+/* The text face, cut to the characters and axis ranges the page sets
+   (scripts/subset-fonts.mjs): 47 KB where Fontsource's Latin file is 98 KB.
+   It carries the same descriptors as Fontsource's faces, so the two form one
+   family and this one, declared later, wins for the characters it lists. Any
+   other character falls through to the full file. The cut holds weights
+   400-700 and widths 100-125%; nothing on the page asks for more. */
+@font-face {
+  font-family: "Mona Sans Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 900;
+  font-stretch: 75% 125%;
+  src: url("../assets/fonts/mona-sans-subset.woff2") format("woff2-variations");
+  unicode-range:
+    U+0020-007E, U+00A0, U+00A1, U+00A9, U+00B7, U+00BF, U+00C1, U+00C9, U+00CD, U+00D1, U+00D3, U+00DA, U+00DC,
+    U+00E1, U+00E9, U+00ED, U+00F1, U+00F3, U+00FA, U+00FC, U+2013, U+2014, U+2018, U+2019, U+201C, U+201D, U+2026;
+}
+
 /* Every token is a light-dark() pair, so the theme is decided by one property:
    color-scheme. It follows the OS by default; data-theme on <html> (set by the
    theme menu and an inline head script) pins it to light or dark.
