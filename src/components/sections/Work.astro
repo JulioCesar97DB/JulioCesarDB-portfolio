@@ -110,7 +110,7 @@ const host = (url: string) => {
         {
           arch && (
             <figure class="arch reveal lg:col-span-7">
-              <ol class="arch-flow" style={`--n: ${arch.layers.length}`}>
+              <ol class="arch-flow" style={`--n: ${arch.layers.length}`} data-steps="nearest">
                 {arch.layers.map((layer) => (
                   <li>{layer}</li>
                 ))}
@@ -186,6 +186,29 @@ const host = (url: string) => {
                 <li>{k}</li>
               ))}
             </ul>
+            {p.architecture && (
+              <figure class="mt-6 border-t border-line pt-6">
+                <ol
+                  class="steps"
+                  style={`--n: ${p.architecture.layers.length}`}
+                  aria-label={`How a request travels through ${p.title}`}
+                  data-steps
+                >
+                  {p.architecture.layers.map((layer, i) => (
+                    <li class:list={{ "is-active": i === 0 }} tabindex="0">
+                      <span class="steps-dot" aria-hidden="true" />
+                      <span class="steps-label">
+                        <span class="steps-n" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                        {layer}
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+                <figcaption class="mt-4 text-sm text-ink-3">
+                  How a request travels through {p.title}.{p.architecture.note && ` ${p.architecture.note}`}
+                </figcaption>
+              </figure>
+            )}
             </div>
           </article>
         );
@@ -213,7 +236,7 @@ const host = (url: string) => {
   /* Architecture strip: the layers a request crosses, as stops on one line.
      Stacked top to bottom on small screens, left to right from lg. The line
      runs from the first stop to the last; a short accent pulse travels it
-     twice when the strip is revealed, and again while it is hovered. */
+     continuously, positioned by the script below. */
   .arch-flow {
     --dot: 0.4375rem;
     position: relative;
@@ -239,6 +262,16 @@ const host = (url: string) => {
     border-radius: 50%;
     border: 1px solid var(--ink-3);
     background: var(--bg);
+    transition:
+      border-color 0.3s,
+      background-color 0.3s;
+  }
+  /* The stop under the pointer lights up, and so does the one the pulse is
+     passing. */
+  .arch-flow li.is-active::before,
+  .arch-flow li:hover::before {
+    border-color: var(--accent);
+    background: var(--accent);
   }
   .arch-flow::before,
   .arch-flow::after {
@@ -253,9 +286,9 @@ const host = (url: string) => {
     background: var(--line-strong);
   }
   .arch-flow::after {
-    background: linear-gradient(to bottom, transparent, var(--accent), transparent) no-repeat 0 -40% / 100%
-      28%;
-    opacity: 0;
+    background: linear-gradient(to bottom, transparent, var(--accent), transparent) no-repeat 0 var(--x, 0%) /
+      100% 22%;
+    opacity: var(--glow, 0);
   }
 
   @media (min-width: 1024px) {
@@ -279,53 +312,212 @@ const host = (url: string) => {
       height: 1px;
     }
     .arch-flow::after {
-      background: linear-gradient(to right, transparent, var(--accent), transparent) no-repeat -40% 0 / 28%
-        100%;
+      background: linear-gradient(to right, transparent, var(--accent), transparent) no-repeat var(--x, 0%) 0 /
+        22% 100%;
     }
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    .arch.is-in .arch-flow::after {
-      animation: flow-y 2.4s cubic-bezier(0.45, 0, 0.55, 1) 0.5s 2;
-    }
-    .arch:hover .arch-flow::after {
-      animation: flow-y 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
-    }
-    @media (min-width: 1024px) {
-      .arch.is-in .arch-flow::after {
-        animation-name: flow-x;
-      }
-      .arch:hover .arch-flow::after {
-        animation-name: flow-x;
-      }
+  /* The same path inside a project card, where five labels do not fit side
+     by side: the stops sit on one line and only the active one is named.
+     Hover, focus or tap picks a stop; left alone, a pulse travels the line
+     and names each stop as it passes (see the script below). */
+  .steps {
+    --dot: 0.4375rem;
+    --pad: 0.5rem;
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+    padding-bottom: 1.75rem;
+    font-size: 0.875rem;
+    line-height: 1.35;
+  }
+  .steps::before,
+  .steps::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: calc(100% / var(--n) - var(--dot));
+    top: calc(var(--pad) + var(--dot) / 2 - 0.5px);
+    height: 1px;
+  }
+  .steps::before {
+    background: var(--line-strong);
+  }
+  /* The same accent pulse as the lead strip, positioned by the script so it
+     travels the line at a constant pace and never rests on a stop. */
+  .steps::after {
+    background: linear-gradient(to right, transparent, var(--accent), transparent) no-repeat var(--x, 0%) 0 /
+      22% 100%;
+    opacity: var(--glow, 0);
+  }
+  .steps li {
+    padding-block: var(--pad);
+    cursor: default;
+    outline: none;
+  }
+  /* On touch screens each stop is a 44px target. */
+  @media (pointer: coarse) {
+    .steps {
+      --pad: 1.2rem;
+      margin-top: -0.7rem;
+      padding-bottom: 1.1rem;
     }
   }
-  @keyframes flow-y {
-    0% {
-      opacity: 0;
-      background-position: 0 -40%;
-    }
-    15%,
-    85% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-      background-position: 0 140%;
-    }
+  .steps-dot {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: var(--dot);
+    height: var(--dot);
+    border-radius: 50%;
+    border: 1px solid var(--ink-3);
+    background: var(--bg);
+    transition:
+      border-color 0.5s ease,
+      background-color 0.5s ease,
+      box-shadow 0.5s ease;
   }
-  @keyframes flow-x {
-    0% {
-      opacity: 0;
-      background-position: -40% 0;
-    }
-    15%,
-    85% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-      background-position: 140% 0;
+  /* The stop the pulse is passing lights up, like a hovered stop above. */
+  .steps li.is-active .steps-dot {
+    border-color: var(--accent);
+    background: var(--accent);
+    box-shadow: 0 0 0 0.2rem color-mix(in oklch, var(--accent) 9%, transparent);
+  }
+  .steps li:focus-visible .steps-dot {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+  .steps-label {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.625rem;
+    overflow: hidden;
+    color: var(--ink);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    opacity: 0;
+    transform: translateY(0.25rem);
+    transition: opacity 0.15s ease;
+    pointer-events: none;
+  }
+  /* The old name leaves quickly; the new one eases in just after. */
+  .steps li.is-active .steps-label {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.35s ease 0.1s,
+      transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+  }
+  .steps-n {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-3);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .steps-label,
+    .steps li.is-active .steps-label {
+      transition: none;
     }
   }
 </style>
+
+<script>
+  // Request paths, the lead strip and the ones in the cards. Left alone, an
+  // accent pulse travels each line at a constant pace and the stop it is
+  // passing lights up (and, in the cards, is named). Every path reads the
+  // same clock, so they all move in step. Pointer, focus or tap picks a stop
+  // and holds that path; released, it rejoins the others.
+  const still = matchMedia("(prefers-reduced-motion: reduce)");
+  const LOOP_MS = 6000;
+  const TAP_HOLD_MS = 6000;
+  /** Pulse length as a share of the line; matches the CSS background-size. */
+  const PULSE = 0.22;
+  /** Share of the trip spent fading in, and again fading out. */
+  const FADE = 0.07;
+
+  const followers: { visible: boolean; held: boolean; draw: (progress: number) => void }[] = [];
+  let frame: number | undefined;
+
+  const tick = (now: number) => {
+    const progress = (now % LOOP_MS) / LOOP_MS;
+    followers.forEach((f) => f.visible && !f.held && f.draw(progress));
+    frame = requestAnimationFrame(tick);
+  };
+  const clock = () => {
+    const wanted = !still.matches && followers.some((f) => f.visible);
+    if (wanted && frame === undefined) {
+      frame = requestAnimationFrame(tick);
+    } else if (!wanted && frame !== undefined) {
+      cancelAnimationFrame(frame);
+      frame = undefined;
+    }
+  };
+
+  document.querySelectorAll<HTMLElement>("[data-steps]").forEach((path) => {
+    const stops = [...path.querySelectorAll<HTMLElement>("li")];
+    const nearest = path.dataset.steps === "nearest";
+    let active = -1;
+
+    const show = (index: number) => {
+      if (index === active) return;
+      active = index;
+      stops.forEach((stop, i) => stop.classList.toggle("is-active", i === index));
+    };
+
+    const follower = {
+      visible: false,
+      held: false,
+      draw: (progress: number) => {
+        // background-position percentages place the pulse's edge, not its
+        // centre; this puts the centre exactly `progress` along the line.
+        path.style.setProperty("--x", `${((progress - PULSE / 2) / (1 - PULSE)) * 100}%`);
+        path.style.setProperty("--glow", String(Math.min(1, progress / FADE, (1 - progress) / FADE)));
+        // The lead strip lights the stop nearest the pulse. The cards name
+        // one stop at a time, so there each gets an equal share of the trip.
+        show(
+          nearest
+            ? Math.round(progress * (stops.length - 1))
+            : Math.min(stops.length - 1, Math.floor(progress * stops.length)),
+        );
+      },
+    };
+    followers.push(follower);
+
+    let release: number | undefined;
+    const hold = (value: boolean) => () => {
+      follower.held = value;
+      if (value) path.style.setProperty("--glow", "0");
+    };
+
+    stops.forEach((el, i) => {
+      el.addEventListener("pointerenter", () => show(i));
+      el.addEventListener("focus", () => show(i));
+      // A tap has no hover to keep the stop held, so hold it for a while.
+      el.addEventListener("click", () => {
+        show(i);
+        hold(true)();
+        window.clearTimeout(release);
+        release = window.setTimeout(hold(false), TAP_HOLD_MS);
+      });
+    });
+    path.addEventListener("pointerenter", hold(true));
+    path.addEventListener("pointerleave", hold(false));
+    path.addEventListener("focusin", hold(true));
+    path.addEventListener("focusout", hold(false));
+
+    new IntersectionObserver(
+      ([entry]) => {
+        follower.visible = entry.isIntersecting;
+        clock();
+      },
+      { threshold: 0.6 },
+    ).observe(path);
+  });
+
+  still.addEventListener("change", clock);
+</script>
