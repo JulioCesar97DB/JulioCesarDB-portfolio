@@ -18,7 +18,7 @@ const bare = (url: string) => decodeURI(url).replace(/^https?:\/\/(www\.)?/, "")
 
 // Recent roles carry more detail than early ones. Each role leads with its
 // headline result, then its highlights.
-const bullets = [5, 4, 3, 2, 2];
+const bullets = [5, 3, 3, 2, 2];
 const roles = work.map((job, i) => ({
   ...job,
   place: [job.location, job.location_type].filter(Boolean).join(" · "),
