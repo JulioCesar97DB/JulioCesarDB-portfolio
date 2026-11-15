@@ -834,7 +834,7 @@
       "description": "Personal portfolio and CV website built for performance, accessibility, and SEO.",
       "highlights": [
         "Built with Astro achieving 100 Lighthouse performance score and fast static page loads",
-        "Dark/light mode toggle with multiple customizable themes",
+        "Light and dark themes that follow the system and can be pinned from the top bar",
         "Fully responsive design with print-optimized CV export for PDF generation"
       ],
       "url": "https://juliocesardb.com",
