@@ -254,6 +254,14 @@ const host = (url: string) => {
     border-radius: 50%;
     border: 1px solid var(--ink-3);
     background: var(--bg);
+    transition:
+      border-color 0.3s,
+      background-color 0.3s;
+  }
+  /* The stop under the pointer lights up. */
+  .arch .arch-flow li:hover::before {
+    border-color: var(--accent);
+    background: var(--accent);
   }
   .arch-flow::before,
   .arch-flow::after {
@@ -309,9 +317,6 @@ const host = (url: string) => {
   .arch-card .arch-flow li::before {
     top: calc(0.4375rem + 0.675em - var(--dot) / 2);
     background: var(--surface);
-    transition:
-      border-color 0.3s,
-      background-color 0.3s;
   }
   .arch-card .arch-flow li::after {
     content: counter(stop, decimal-leading-zero);
@@ -320,10 +325,6 @@ const host = (url: string) => {
     font-size: var(--text-meta);
     font-variant-numeric: tabular-nums;
     color: var(--ink-3);
-  }
-  .arch-card .arch-flow li:hover::before {
-    border-color: var(--accent);
-    background: var(--accent);
   }
   .arch-card .arch-flow::before,
   .arch-card .arch-flow::after {
