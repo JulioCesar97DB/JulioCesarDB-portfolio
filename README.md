@@ -56,6 +56,7 @@ The home page and the resume read the same data, so they never disagree. A proje
 .
 ├── cv.json                    # All site and resume content
 ├── astro.config.mjs           # Tailwind plugin, the @cv and @ aliases, the /archive redirect
+├── customHttp.yml             # Response headers for AWS Amplify: asset caching and security
 ├── DESIGN.md                  # The design system: tokens, components, named rules
 ├── PRODUCT.md                 # Audience, positioning and content rules
 ├── public/
