@@ -24,3 +24,8 @@ pnpm-debug.log*
 .history
 .superpowers/
 docs/superpowers/
+
+# local tooling: editor-agent settings, design-review captures, browser test artifacts
+.claude/
+.impeccable/
+.playwright-mcp/

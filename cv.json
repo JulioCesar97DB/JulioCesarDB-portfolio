@@ -29,7 +29,6 @@
       "Most of my time goes into the frontend: React, Next.js, and TypeScript, structured so a team can keep extending it. I'm just as comfortable on the other side of the API, with FastAPI and Node services, Postgres with row-level security on Supabase, and Docker deploys on Railway and AWS. Owning both sides means fewer handoffs and fewer surprises.",
       "I care about the details people feel without noticing: fast loads, accessible interfaces, and code that is pleasant to come back to."
     ],
-    "theme": "default",
     "location": {
       "address": "",
       "postalCode": "33401",
