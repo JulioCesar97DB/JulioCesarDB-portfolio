@@ -1,0 +1,25 @@
+# Response headers for AWS Amplify Hosting, applied on every deploy.
+customHeaders:
+  # Files under /_astro/ carry a content hash in their name, so a changed file
+  # is a new URL and the old one can be kept for a year without revalidating.
+  # Everything else keeps Amplify's default and is revalidated on each visit.
+  - pattern: '/_astro/*'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=31536000, immutable'
+
+  # Baseline security headers for every response. There is no
+  # Content-Security-Policy: the page inlines its stylesheet and two scripts,
+  # so a strict policy would need hashes kept in step with every build.
+  - pattern: '**/*'
+    headers:
+      - key: 'Strict-Transport-Security'
+        value: 'max-age=31536000'
+      - key: 'X-Content-Type-Options'
+        value: 'nosniff'
+      - key: 'X-Frame-Options'
+        value: 'DENY'
+      - key: 'Referrer-Policy'
+        value: 'strict-origin-when-cross-origin'
+      - key: 'Permissions-Policy'
+        value: 'camera=(), microphone=(), geolocation=()'
