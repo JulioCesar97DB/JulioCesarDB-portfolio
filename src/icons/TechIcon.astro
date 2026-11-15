@@ -4,6 +4,8 @@
 // Paths come from simple-icons at build time; nothing ships to the client
 // but the inline SVG. A name without a mark renders nothing.
 import {
+  siClaude,
+  siClaudecode,
   siCss,
   siDjango,
   siDocker,
@@ -16,6 +18,7 @@ import {
   siHtml5,
   siJavascript,
   siJest,
+  siModelcontextprotocol,
   siMongodb,
   siNextdotjs,
   siNodedotjs,
@@ -70,6 +73,9 @@ const simple: Record<string, { path: string }> = {
   "Git & GitHub": siGit,
   Jest: siJest,
   "React Testing Library": siTestinglibrary,
+  Claude: siClaude,
+  "Claude Code": siClaudecode,
+  "MCP servers": siModelcontextprotocol,
 };
 
 // Products that carry their platform's mark.
@@ -77,6 +83,7 @@ const aliases: Record<string, string> = { "Azure AD": "Azure" };
 
 // Not brands: drawn in the site's own stroke style.
 const drawn: Record<string, string[]> = {
+  "Skills & plugins": ["M12 22v-5", "M9 8V2", "M15 8V2", "M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"],
   "CI/CD": ["M4 12a8 8 0 0 1 13.66-5.66L20 8.5", "M20 4v4.5h-4.5", "M20 12a8 8 0 0 1-13.66 5.66L4 15.5", "M4 20v-4.5h4.5"],
 };
 
