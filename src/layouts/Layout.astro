@@ -11,6 +11,8 @@ import cvData from "@cv";
 interface Props {
   title?: string;
   description?: string;
+  /** Keeps the page out of search results (the not-found page). */
+  noindex?: boolean;
 }
 
 const { basics, work, education } = cvData as unknown as CV;
@@ -71,6 +73,7 @@ const structuredData = {
     <title>{title}</title>
     <meta name="description" content={metaDescription} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {Astro.props.noindex && <meta name="robots" content="noindex" />}
     <link rel="preload" href={monaSansLatin} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -101,7 +104,7 @@ const structuredData = {
     <meta name="twitter:image" content={socialImage} />
     <meta name="twitter:image:alt" content={imageAlt} />
 
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
+    {!Astro.props.noindex && <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />}
 
     <script is:inline>
       // Runs before first paint: apply a saved theme so there is no flash.
