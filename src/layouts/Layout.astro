@@ -6,6 +6,7 @@ import "@/styles/global.css";
 // in global.css, which covers every character the page sets.
 import monaSansLatin from "@/assets/fonts/mona-sans-subset.woff2?url";
 import type { CV } from "@/cv";
+import { socialLinks } from "@/utils/profiles";
 import cvData from "@cv";
 
 interface Props {
@@ -28,7 +29,7 @@ const socialImage = new URL(image, Astro.site).href;
 const imageAlt = `${name}, ${label.toLowerCase()}`;
 
 // Only the profiles the page itself links to.
-const sameAs = profiles.filter((p) => p.network === "GitHub" || p.network === "LinkedIn").map((p) => p.url);
+const sameAs = socialLinks(profiles).map((p) => p.url);
 const current = work.find((job) => job.endDate == null);
 const degree = education[0];
 
