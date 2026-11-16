@@ -2,6 +2,7 @@
 import EmailActions from "@/components/EmailActions.astro";
 import Icon from "@/icons/Icon.astro";
 import type { CV } from "@/cv";
+import { socialLinks } from "@/utils/profiles";
 import { resumeFileName } from "@/utils/resume";
 import { basics as rawBasics } from "@cv";
 
@@ -11,7 +12,7 @@ const { name, resume, profiles } = basics;
 
 // Resume size, measured from public/ at build time (see astro.config.mjs).
 const resumeSize = __RESUME_SIZE__;
-const links = profiles.filter((p) => p.network === "GitHub" || p.network === "LinkedIn");
+const links = socialLinks(profiles);
 ---
 
 <section id="contact" class="scroll-mt-20 border-t border-line bg-surface">
@@ -40,7 +41,7 @@ const links = profiles.filter((p) => p.network === "GitHub" || p.network === "Li
               rel="me noopener noreferrer"
               aria-label={`${profile.network} (opens in a new tab)`}
             >
-              <Icon name={profile.network === "GitHub" ? "github" : "linkedin"} class="size-[1.15rem]" />
+              <Icon name={profile.icon} class="size-[1.15rem]" />
             </a>
           ))
         }

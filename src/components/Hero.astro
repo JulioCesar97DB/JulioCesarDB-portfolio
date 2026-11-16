@@ -3,6 +3,7 @@ import EmailActions from "@/components/EmailActions.astro";
 import Icon from "@/icons/Icon.astro";
 import TechIcon from "@/icons/TechIcon.astro";
 import type { CV } from "@/cv";
+import { socialLinks } from "@/utils/profiles";
 import { resumeFileName } from "@/utils/resume";
 import { basics as rawBasics, work as rawWork } from "@cv";
 
@@ -12,7 +13,7 @@ const work = rawWork as CV["work"];
 const { name, label, tagline, location, resume, profiles, coreSkills = [] } = basics;
 
 const firstYear = Math.min(...work.map((job) => new Date(job.startDate).getUTCFullYear()));
-const links = profiles.filter((p) => p.network === "GitHub" || p.network === "LinkedIn");
+const links = socialLinks(profiles);
 ---
 
 <!-- No isolation or z-index here on purpose: the name must be able to render
@@ -65,7 +66,7 @@ const links = profiles.filter((p) => p.network === "GitHub" || p.network === "Li
             rel="me noopener noreferrer"
             aria-label={`${profile.network} (opens in a new tab)`}
           >
-            <Icon name={profile.network === "GitHub" ? "github" : "linkedin"} class="size-[1.15rem]" />
+            <Icon name={profile.icon} class="size-[1.15rem]" />
           </a>
         ))
       }
