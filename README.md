@@ -32,10 +32,13 @@ The source of **[juliocesardb.com](https://www.juliocesardb.com)**: a single-pag
   <a href="#what-it-is">What it is</a> ·
   <a href="#stack">Stack</a> ·
   <a href="#one-source-of-truth">One source of truth</a> ·
+  <a href="#resume">Resume</a> ·
+  <a href="#search-and-sharing">Search and sharing</a> ·
   <a href="#run-it-locally">Run it locally</a> ·
   <a href="#hosting-and-deployments">Hosting</a> ·
   <a href="#project-structure">Structure</a> ·
-  <a href="#design">Design</a>
+  <a href="#design">Design</a> ·
+  <a href="#license">License</a>
 </p>
 
 ## What it is
@@ -88,7 +91,7 @@ The home page and the resume read the same data, so they never disagree. A proje
 
 ## Run it locally
 
-Requires Node 24, the version CI uses.
+CI uses Node 24; Astro 7 needs Node 22.23 or later.
 
 ```sh
 npm ci
@@ -97,16 +100,18 @@ npm run build     # astro check, then the static build in dist/
 npm run preview   # serve dist/ locally
 ```
 
-`npm run fonts` re-cuts the self-hosted Mona Sans files to the characters the page sets ([`scripts/subset-fonts.mjs`](scripts/subset-fonts.mjs)).
+`npm run fonts` re-cuts the self-hosted Mona Sans file to the characters the page sets ([`scripts/subset-fonts.mjs`](scripts/subset-fonts.mjs)).
 
 ## Hosting and deployments
 
-[AWS Amplify](https://aws.amazon.com/amplify/) builds and deploys every push to `main`; build settings live in the Amplify console and response headers in [`customHttp.yml`](customHttp.yml). Each build publishes the commit it was built from at [`/version.json`](https://www.juliocesardb.com/version.json), which is never cached.
+[AWS Amplify](https://aws.amazon.com/amplify/) builds and deploys every push to `main`; build settings live in the Amplify console and response headers in [`customHttp.yml`](customHttp.yml). Each build publishes the commit it was built from at [`/version.json`](https://www.juliocesardb.com/version.json), which is never cached, and in a `<meta name="build-commit">` tag on every page.
 
 Two GitHub Actions workflows run alongside it:
 
 - [**CI**](.github/workflows/ci.yml) type-checks and builds every pull request and every push to `main`.
-- [**Production deployment**](.github/workflows/deploy.yml) records each push to `main` as a deployment to the `production` environment, polls `/version.json` until the live site serves that commit, and fails after 15 minutes if it does not. A newer push cancels the wait for an older one. It holds no AWS credentials; it only reads the public site.
+- [**Production deployment**](.github/workflows/deploy.yml) records each push to `main` as a deployment to the `production` environment, polls `/version.json` and the page until both report that commit, and fails after 15 minutes if they do not. A newer push cancels the wait for an older one, and re-running a superseded push records nothing. It holds no AWS credentials; it only reads the public site.
+
+Skip markers act on one side only: `[skip ci]` in a commit message skips this workflow while Amplify still deploys, so no deployment is recorded; Amplify's `[skip-cd]` skips the deploy, so the workflow fails after its 15 minutes.
 
 ## Project structure
 
@@ -116,9 +121,9 @@ Two GitHub Actions workflows run alongside it:
 ```text
 .
 ├── cv.json                    # All site and resume content
-├── astro.config.mjs           # Tailwind plugin, the @cv and @ aliases, the /archive redirect
+├── astro.config.mjs           # Tailwind, aliases, /archive redirect, build-time resume size and commit
 ├── .github/workflows/         # ci.yml (type-check and build), deploy.yml (production deployment)
-├── customHttp.yml             # Response headers for AWS Amplify: asset caching and security
+├── customHttp.yml             # Response headers for AWS Amplify: caching, security, no-store /version.json
 ├── scripts/
 │   ├── subset-fonts.mjs       # npm run fonts: cuts the self-hosted fonts to the page's characters
 │   └── wait-for-deploy.mjs    # Polls /version.json until the live site serves a commit
