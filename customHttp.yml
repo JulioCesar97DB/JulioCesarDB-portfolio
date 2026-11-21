@@ -8,6 +8,14 @@ customHeaders:
       - key: 'Cache-Control'
         value: 'public, max-age=31536000, immutable'
 
+  # The deployment check reads this file to learn which commit is live, so it
+  # must never come from a cache. Cache-Control set here takes precedence over
+  # Amplify's default (which lets CloudFront keep files until the next deploy).
+  - pattern: '/version.json'
+    headers:
+      - key: 'Cache-Control'
+        value: 'no-store'
+
   # Baseline security headers for every response. There is no
   # Content-Security-Policy: the page inlines its stylesheet and two scripts,
   # so a strict policy would need hashes kept in step with every build.

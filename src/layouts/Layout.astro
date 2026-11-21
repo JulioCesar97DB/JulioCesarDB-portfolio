@@ -86,6 +86,9 @@ const structuredData = {
     <link rel="canonical" href={canonical} />
     <link rel="sitemap" href="/sitemap.xml" />
     <meta name="author" content={name} />
+    {/* The commit this page was built from. The production deployment check
+        requires the live page to carry the pushed commit, not only /version.json. */}
+    <meta name="build-commit" content={__BUILD_COMMIT__} />
 
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content="profile" />
