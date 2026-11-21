@@ -50,6 +50,15 @@ The home page and the resume read the same data, so they never disagree. A proje
 - `/robots.txt` and `/sitemap.xml` are generated at build time; the site URL is set once, as `site` in `astro.config.mjs`.
 - The stylesheet is inlined, the text font is preloaded, and screenshots ship as AVIF with a WebP fallback.
 
+## Hosting and deployments
+
+[AWS Amplify](https://aws.amazon.com/amplify/) builds and deploys every push to `main`; build settings live in the Amplify console and response headers in [`customHttp.yml`](customHttp.yml). Each build publishes the commit it was built from at [`/version.json`](https://www.juliocesardb.com/version.json), which is never cached.
+
+Two GitHub Actions workflows run alongside it:
+
+- [**CI**](.github/workflows/ci.yml) type-checks and builds every pull request and every push to `main`.
+- [**Production deployment**](.github/workflows/deploy.yml) records each push to `main` as a deployment to the `production` environment, polls `/version.json` until the live site serves that commit, and fails after 15 minutes if it does not. A newer push cancels the wait for an older one. It holds no AWS credentials; it only reads the public site.
+
 ## Project structure
 
 ```text
@@ -57,6 +66,8 @@ The home page and the resume read the same data, so they never disagree. A proje
 ├── cv.json                    # All site and resume content
 ├── astro.config.mjs           # Tailwind plugin, the @cv and @ aliases, the /archive redirect
 ├── customHttp.yml             # Response headers for AWS Amplify: asset caching and security
+├── scripts/
+│   └── wait-for-deploy.mjs    # Polls /version.json until the live site serves a commit
 ├── DESIGN.md                  # The design system: tokens, components, named rules
 ├── PRODUCT.md                 # Audience, positioning and content rules
 ├── public/
@@ -73,7 +84,7 @@ The home page and the resume read the same data, so they never disagree. A proje
     │   └── ParticleBackground.astro
     ├── icons/                 # Icon.astro (UI), TechIcon.astro (technology marks)
     ├── layouts/Layout.astro   # <head>, metadata, fonts
-    ├── pages/                 # index.astro (/), resume.astro (/resume), robots.txt and sitemap.xml
+    ├── pages/                 # index.astro (/), resume.astro (/resume), robots.txt, sitemap.xml, version.json
     ├── scripts/               # interactions.ts, theme.ts, particles/
     ├── styles/global.css      # Tokens, base and component layers
     ├── utils/                 # Dates, anchors, resume file name

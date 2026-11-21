@@ -1,0 +1,42 @@
+name: Production deployment
+
+# Amplify builds and deploys every push to main from its own webhook and
+# reports nothing back to GitHub. This job records each push as a deployment
+# to the production environment and passes only once the live site serves
+# that exact commit (read from /version.json), so the Deployments section
+# shows what is really live. It needs no AWS credentials.
+on:
+  push:
+    branches: [main]
+
+# A newer push cancels the wait for an older one: the older deployment ends
+# instead of waiting for a commit that the newer deploy has replaced.
+concurrency:
+  group: production-deployment
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Wait for the live site to serve this commit
+    runs-on: ubuntu-latest
+    # A backstop above the script's own 15-minute limit.
+    timeout-minutes: 20
+    environment:
+      name: production
+      url: https://www.juliocesardb.com
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node scripts/wait-for-deploy.mjs
+        env:
+          SITE_URL: https://www.juliocesardb.com
+          EXPECTED_COMMIT: ${{ github.sha }}
+          TIMEOUT_SECONDS: 900
+          INTERVAL_SECONDS: 15
