@@ -109,9 +109,9 @@ npm run preview   # serve dist/ locally
 Two GitHub Actions workflows run alongside it:
 
 - [**CI**](.github/workflows/ci.yml) type-checks and builds every pull request and every push to `main`.
-- [**Production deployment**](.github/workflows/deploy.yml) records each push to `main` as a deployment to the `production` environment, polls `/version.json` and the page until both report that commit, and fails after 15 minutes if they do not. A newer push cancels the wait for an older one, and re-running a superseded push records nothing. It holds no AWS credentials; it only reads the public site.
+- [**Production deployment**](.github/workflows/deploy.yml) records each push to `main` as a deployment to the `production` environment, polls `/version.json` and the page until both report that commit, and fails after 15 minutes if they do not. A newer push cancels the wait for an older one. Use **Re-run all jobs** to check a push again: it first asks whether the commit is still the head of `main`, and records nothing if a newer commit has replaced it. **Re-run failed jobs** cannot ask again, so it skips the check. It holds no AWS credentials; it only reads the public site.
 
-Skip markers act on one side only: `[skip ci]` in a commit message skips this workflow while Amplify still deploys, so no deployment is recorded; Amplify's `[skip-cd]` skips the deploy, so the workflow fails after its 15 minutes.
+Skip markers act on one side only: `[skip ci]` (or GitHub's other markers, such as `[skip actions]`) in a commit message skips this workflow while Amplify still deploys, so no deployment is recorded; Amplify's `[skip-cd]` skips the deploy, so the workflow fails after its 15 minutes.
 
 ## Project structure
 
@@ -126,7 +126,7 @@ Skip markers act on one side only: `[skip ci]` in a commit message skips this wo
 ├── customHttp.yml             # Response headers for AWS Amplify: caching, security, no-store /version.json
 ├── scripts/
 │   ├── subset-fonts.mjs       # npm run fonts: cuts the self-hosted fonts to the page's characters
-│   └── wait-for-deploy.mjs    # Polls /version.json until the live site serves a commit
+│   └── wait-for-deploy.mjs    # Polls /version.json and the page until the live site serves a commit
 ├── DESIGN.md                  # The design system: tokens, components, named rules
 ├── PRODUCT.md                 # Audience, positioning and content rules
 ├── public/
