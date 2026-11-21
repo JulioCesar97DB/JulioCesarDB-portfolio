@@ -1,8 +1,42 @@
+<div align="center">
+
 # Julio César Díaz · Portfolio
 
 The source of **[juliocesardb.com](https://www.juliocesardb.com)**: a single-page portfolio and a print-ready resume, both rendered from one JSON file.
 
-[![The portfolio's first screen: name, role, core stack and the start of Selected work](.github/preview.jpg)](https://www.juliocesardb.com)
+**[Live site](https://www.juliocesardb.com)** · **[Resume](https://www.juliocesardb.com/resume)** · **[Resume PDF](https://www.juliocesardb.com/resume.pdf)**
+
+<p>
+  <a href="https://github.com/JulioCesar97DB/JulioCesarDB-portfolio/actions/workflows/ci.yml"><img src="https://github.com/JulioCesar97DB/JulioCesarDB-portfolio/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI status"></a>
+  <a href="https://github.com/JulioCesar97DB/JulioCesarDB-portfolio/actions/workflows/deploy.yml"><img src="https://github.com/JulioCesar97DB/JulioCesarDB-portfolio/actions/workflows/deploy.yml/badge.svg?branch=main" alt="Production deployment status"></a>
+  <a href="LICENSE.txt"><img src="https://img.shields.io/github/license/JulioCesar97DB/JulioCesarDB-portfolio?style=flat&labelColor=1c1d22&color=2e3039" alt="MIT license"></a>
+</p>
+
+<p>
+  <a href="https://astro.build"><img src="https://img.shields.io/badge/Astro-7-2e3039?style=flat&logo=astro&logoColor=white&labelColor=1c1d22" alt="Astro 7"></a>
+  <a href="https://tailwindcss.com"><img src="https://img.shields.io/badge/Tailwind%20CSS-4-2e3039?style=flat&logo=tailwindcss&logoColor=white&labelColor=1c1d22" alt="Tailwind CSS 4"></a>
+  <a href="https://www.typescriptlang.org"><img src="https://img.shields.io/badge/TypeScript-6-2e3039?style=flat&logo=typescript&logoColor=white&labelColor=1c1d22" alt="TypeScript 6"></a>
+  <a href="https://nodejs.org"><img src="https://img.shields.io/badge/Node.js-24-2e3039?style=flat&logo=nodedotjs&logoColor=white&labelColor=1c1d22" alt="Node.js 24"></a>
+  <a href="https://aws.amazon.com/amplify/"><img src="https://img.shields.io/badge/AWS%20Amplify-Hosting-2e3039?style=flat&labelColor=1c1d22" alt="AWS Amplify Hosting"></a>
+  <a href="https://github.com/JulioCesar97DB/JulioCesarDB-portfolio/actions"><img src="https://img.shields.io/badge/GitHub%20Actions-CI-2e3039?style=flat&logo=githubactions&logoColor=white&labelColor=1c1d22" alt="GitHub Actions CI"></a>
+</p>
+
+<br>
+
+<a href="https://www.juliocesardb.com"><img src=".github/preview.jpg" alt="The portfolio's first screen: name, role, core stack and the start of Selected work" width="880"></a>
+
+</div>
+
+<br>
+<p align="center">
+  <a href="#what-it-is">What it is</a> ·
+  <a href="#stack">Stack</a> ·
+  <a href="#one-source-of-truth">One source of truth</a> ·
+  <a href="#run-it-locally">Run it locally</a> ·
+  <a href="#hosting-and-deployments">Hosting</a> ·
+  <a href="#project-structure">Structure</a> ·
+  <a href="#design">Design</a>
+</p>
 
 ## What it is
 
@@ -17,7 +51,7 @@ Light and dark themes follow the system and can be pinned from the top bar.
 
 ## Stack
 
-| | |
+| Layer | Choice |
 | --- | --- |
 | **Framework** | [Astro 7](https://astro.build), static output, no client framework |
 | **Styling** | [Tailwind CSS 4](https://tailwindcss.com), configured in CSS through `@theme` |
@@ -25,6 +59,8 @@ Light and dark themes follow the system and can be pinned from the top bar.
 | **Type** | Mona Sans Variable, self-hosted and cut to the characters the page sets; the system monospace for dates. The resume also sets Geist Mono |
 | **Icons** | One hand-drawn stroke set, plus technology marks from [simple-icons](https://simpleicons.org) inlined at build time |
 | **Client JavaScript** | Three small modules, no dependencies: interactions, theme, and the particle field |
+| **Hosting** | [AWS Amplify](https://aws.amazon.com/amplify/), deploying every push to `main` |
+| **CI** | GitHub Actions on Node 24: type-check and build, then a check that each deploy went live |
 
 ## One source of truth
 
@@ -50,6 +86,19 @@ The home page and the resume read the same data, so they never disagree. A proje
 - `/robots.txt` and `/sitemap.xml` are generated at build time; the site URL is set once, as `site` in `astro.config.mjs`.
 - The stylesheet is inlined, the text font is preloaded, and screenshots ship as AVIF with a WebP fallback.
 
+## Run it locally
+
+Requires Node 24, the version CI uses.
+
+```sh
+npm ci
+npm run dev       # dev server at http://localhost:4321
+npm run build     # astro check, then the static build in dist/
+npm run preview   # serve dist/ locally
+```
+
+`npm run fonts` re-cuts the self-hosted Mona Sans files to the characters the page sets ([`scripts/subset-fonts.mjs`](scripts/subset-fonts.mjs)).
+
 ## Hosting and deployments
 
 [AWS Amplify](https://aws.amazon.com/amplify/) builds and deploys every push to `main`; build settings live in the Amplify console and response headers in [`customHttp.yml`](customHttp.yml). Each build publishes the commit it was built from at [`/version.json`](https://www.juliocesardb.com/version.json), which is never cached.
@@ -61,12 +110,17 @@ Two GitHub Actions workflows run alongside it:
 
 ## Project structure
 
+<details>
+<summary>The tree, with what each part holds</summary>
+
 ```text
 .
 ├── cv.json                    # All site and resume content
 ├── astro.config.mjs           # Tailwind plugin, the @cv and @ aliases, the /archive redirect
+├── .github/workflows/         # ci.yml (type-check and build), deploy.yml (production deployment)
 ├── customHttp.yml             # Response headers for AWS Amplify: asset caching and security
 ├── scripts/
+│   ├── subset-fonts.mjs       # npm run fonts: cuts the self-hosted fonts to the page's characters
 │   └── wait-for-deploy.mjs    # Polls /version.json until the live site serves a commit
 ├── DESIGN.md                  # The design system: tokens, components, named rules
 ├── PRODUCT.md                 # Audience, positioning and content rules
@@ -90,6 +144,8 @@ Two GitHub Actions workflows run alongside it:
     ├── utils/                 # Dates, anchors, resume file name
     └── cv.d.ts                # Types for cv.json
 ```
+
+</details>
 
 ## Design
 
