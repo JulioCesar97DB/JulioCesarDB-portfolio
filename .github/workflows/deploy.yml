@@ -19,11 +19,17 @@ jobs:
   # job only runs while this commit is still the head of main. Otherwise it is
   # skipped and no deployment is recorded: the commit is neither shown as live
   # nor as failed, because it was superseded, not broken.
+  #
+  # "Re-run failed jobs" (or re-running verify alone) does not re-run this job;
+  # GitHub reuses its earlier output, which may be stale. So this job also
+  # records the attempt it ran in, and verify runs only in that same attempt:
+  # a partial re-run is always skipped, and "Re-run all jobs" asks again.
   current:
     name: Is this commit still the head of main?
     runs-on: ubuntu-latest
     outputs:
       head: ${{ steps.head.outputs.head }}
+      attempt: ${{ github.run_attempt }}
     steps:
       - id: head
         env:
@@ -39,15 +45,21 @@ jobs:
             echo "head=true" >> "$GITHUB_OUTPUT"
           elif [ "$head" = "$SHA" ]; then
             echo "head=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "::notice::$SHA is no longer the head of $BRANCH ($head is); no deployment is recorded for it."
+          elif [ "$(gh api "repos/$REPO/compare/$SHA...$head" --jq .status)" = "ahead" ]; then
+            echo "::notice::$SHA is no longer the head of $BRANCH ($head, a newer commit, is); no deployment is recorded for it."
             echo "head=false" >> "$GITHUB_OUTPUT"
+          else
+            # Only a head strictly ahead of this commit supersedes it. Behind,
+            # diverged or unreadable can be the API lagging just after a push
+            # (or a force-push), so the check runs: it is truthful either way.
+            echo "::warning::$BRANCH's head reads as $head, not ahead of $SHA; checking the deployment anyway."
+            echo "head=true" >> "$GITHUB_OUTPUT"
           fi
 
   verify:
     name: Wait for the live site to serve this commit
     needs: current
-    if: needs.current.outputs.head == 'true'
+    if: needs.current.outputs.head == 'true' && needs.current.outputs.attempt == format('{0}', github.run_attempt)
     runs-on: ubuntu-latest
     # A newer push cancels the wait for an older one: the older deployment ends
     # instead of waiting for a commit that the newer deploy has replaced. The
