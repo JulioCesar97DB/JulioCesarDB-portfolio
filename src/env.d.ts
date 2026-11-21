@@ -20,6 +20,9 @@ declare module "@cv" {
 /** Resume PDF size label (e.g. "1.5 MB"), injected at build time. */
 declare const __RESUME_SIZE__: string;
 
+/** Full SHA of the commit the site was built from, or "unknown", injected at build time. */
+declare const __BUILD_COMMIT__: string;
+
 declare namespace App {
   interface Locals {
     /** Ids of the technology marks already written on the page being rendered. */
